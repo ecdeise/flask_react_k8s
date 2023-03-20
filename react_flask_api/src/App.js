@@ -6,13 +6,15 @@ function ContactForm({ onSubmit }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
 
   const handleSubmit = event => {
     event.preventDefault();
-    onSubmit({ name, email, phone });
+    onSubmit({ name, email, phone, address });
     setName('');
     setEmail('');
     setPhone('');
+    setAddress('');
   };
 
   return (
@@ -28,6 +30,10 @@ function ContactForm({ onSubmit }) {
       <label>
         Phone:
         <input type="tel" value={phone} onChange={event => setPhone(event.target.value)} />
+      </label>
+      <label>
+        Address:
+        <input type="text" value={address} onChange={event => setAddress(event.target.value)} />
       </label>
       <button type="submit">Save</button>
     </form>
@@ -61,6 +67,7 @@ function ContactTable({ contacts, onDelete, onUpdate }) {
           <th>Name</th>
           <th>Email</th>
           <th>Phone</th>
+          <th>Address</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -70,6 +77,7 @@ function ContactTable({ contacts, onDelete, onUpdate }) {
             <td>{isEditable(contact) ? <input type="text" value={editableContact.name} onChange={e => setEditableContact({...editableContact, name: e.target.value})} /> : contact.name}</td>
             <td>{isEditable(contact) ? <input type="text" value={editableContact.email} onChange={e => setEditableContact({...editableContact, email: e.target.value})} /> : contact.email}</td>
             <td>{isEditable(contact) ? <input type="text" value={editableContact.phone} onChange={e => setEditableContact({...editableContact, phone: e.target.value})} /> : contact.phone}</td>
+            <td>{isEditable(contact) ? <input type="text" value={editableContact.address} onChange={e => setEditableContact({...editableContact, address: e.target.value})} /> : contact.address}</td>
             <td>
               {isEditable(contact) ? (
                 <>
