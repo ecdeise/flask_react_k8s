@@ -103,9 +103,19 @@ function ContactApp() {
 
   const [contacts, setContacts] = useState([]);
 
+  // for dev hackery on KIND
+  const baseUrl = 'http://172.18.0.2:30000';
+  const endpointUrl = '/api/contacts';
+  const url = `${baseUrl}${endpointUrl}`;
+
   useEffect(() => {
-    axios.get('http://localhost:5000/api/contacts')
-      .then(response => {console.log(response.data);
+    //axios.get('http://localhost:5000/api/contacts')
+    console.log(`GET ${baseUrl}/api/contacts`);
+    //axios.get('http://flask-app-svc:30000/api/contacts')
+    axios.get(`${baseUrl}/api/contacts`)
+      .then(response => {
+        console.log(`GET /api/contacts HTTP/1.1 ${response.status}`);
+        console.log(response.data);
         return response;
       })
       .then(response => setContacts(response.data.contacts))
@@ -113,14 +123,22 @@ function ContactApp() {
   }, []);
 
   const handleCreate = contact => {
-    axios.post('http://localhost:5000/api/contacts', contact)
-      .then(response => setContacts(contacts => [...contacts, response.data]))
+    //axios.post('http://localhost:5000/api/contacts', contact)
+    axios.post(`${baseUrl}/api/contacts`, contact)
+      .then(response => {
+        console.log(`POST /api/contacts HTTP/1.1 ${response.status}`);
+        console.log(response.data);
+        setContacts(contacts => [...contacts, response.data]);
+      })
       .catch(error => console.error(error));
   };
 
   const handleUpdate = contact => {
-    axios.put(`http://localhost:5000/api/contacts/${contact.id}`, contact)
+    //axios.put(`http://localhost:5000/api/contacts/${contact.id}`, contact)
+    axios.put(`${baseUrl}/api/contacts/${contact.id}`, contact)
       .then(response => {
+        console.log(`PUT /api/contacts/${contact.id} HTTP/1.1 ${response.status}`);
+        console.log(response.data);
         const updatedContact = response.data;
         setContacts(contacts =>
           contacts.map(c => (c.id === updatedContact.id ? { ...c, ...updatedContact } : c))
@@ -131,8 +149,12 @@ function ContactApp() {
   
 
   const handleDelete = contact => {
-    axios.delete(`http://localhost:5000/api/contacts/${contact.id}`)
-      .then(() => setContacts(contacts => contacts.filter(c => c.id !== contact.id)))
+    //axios.delete(`http://localhost:5000/api/contacts/${contact.id}`)
+    axios.delete(`${baseUrl}/api/contacts/${contact.id}`)
+      .then(response => {
+        console.log(`DELETE /api/contacts/${contact.id} HTTP/1.1 ${response.status}`);
+        setContacts(contacts => contacts.filter(c => c.id !== contact.id));
+      })
       .catch(error => console.error(error));
   };
 

@@ -19,6 +19,8 @@ spec:
           ports:
             - containerPort: 5000
           env:
+            - name: REACT_APP_SERVICE
+              value: react-app-service
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:

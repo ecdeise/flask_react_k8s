@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: flask-app-allow-react
+spec:
+  podSelector:
+    matchLabels:
+      app: flask-app
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: react-flask-app
+      ports:
+        - protocol: TCP
+          port: 5000
