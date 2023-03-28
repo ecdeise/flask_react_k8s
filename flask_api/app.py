@@ -1,19 +1,31 @@
 import logging
+import os
 import sys
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 from flask_cors import CORS, cross_origin
+from config import load_config
+
 
 app = Flask(__name__)
-cors = CORS(app)  # enable CORS for all routes
+config_class = load_config()
+# get config from env
+app.config.from_object(config_class)
+# enable CORS for all routes
+cors = CORS(app)
+
+
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://testuser:testpassword@localhost/testdb'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://testuser:testpassword@postgres-service/testdb'
-app.config['SQLALCHEMY_ECHO'] = True
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://testuser:testpassword@postgres-service/testdb'
+# app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
 # Create the necessary tables
-# db.create_all()
+if os.environ.get('MODE') in ('DEVELOPMENT', 'TESTING'):
+    # Create the necessary tables
+    print('creating db')
+    db.create_all()
 
 # set up logging
 # Log the successful retrieval of the contact
