@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import psycopg2
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
@@ -14,12 +15,9 @@ config_class = load_config()
 app.config.from_object(config_class)
 # enable CORS for all routes
 cors = CORS(app)
-
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://testuser:testpassword@localhost/testdb'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://testuser:testpassword@postgres-service/testdb'
-# app.config['SQLALCHEMY_ECHO'] = True
+# init the db
 db = SQLAlchemy(app)
+
 
 # Create the necessary tables
 if os.environ.get('MODE') in ('DEVELOPMENT', 'TESTING'):
@@ -199,6 +197,7 @@ def update_contact(id):
         return jsonify({'message': 'Contact updated successfully.'})
     except Exception as e:
         app.logger.error(str(e))
+        logging.error(e)
         return jsonify({'error': 'Failed to update contact.'}), 500
 
 

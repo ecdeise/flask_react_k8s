@@ -1,4 +1,53 @@
-.App {
+/* Define some styles for the header */
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+
+/* Style the logo in the header */
+header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+.header-link {
+  color: #aaa;
+}
+
+
+/* Define some styles for the body */
+main {
+  max-width: 1200px;
+  margin:  auto;
+  padding: 20px;
+}
+
+/* Define some styles for the footer */
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Style the links in the footer */
+footer a {
+  color: #fff;
+}
+
+/* Center the content vertically on the page */
+html, body, #root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the body take up the remaining space */
+main {
+  flex: 1;
+}
+
+/* .App {
   text-align: center;
 }
 
@@ -21,4 +70,4 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
+} */
