@@ -1,11 +1,11 @@
 import logging
-import os
 import sys
-import psycopg2
 from flask import Flask, request, jsonify
+from flask_login import UserMixin, LoginManager, login_required, current_user, login_user, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 from flask_cors import CORS, cross_origin
+from werkzeug.security import generate_password_hash, check_password_hash
 from config import load_config
 
 
@@ -17,13 +17,15 @@ app.config.from_object(config_class)
 cors = CORS(app)
 # init the db
 db = SQLAlchemy(app)
+# authentication setup
+login_manager = LoginManager(app)
 
 
 # Create the necessary tables
-if os.environ.get('MODE') in ('DEVELOPMENT', 'TESTING'):
-    # Create the necessary tables
-    print('creating db')
-    db.create_all()
+# if os.environ.get('MODE') in ('DEVELOPMENT', 'TESTING'):
+#     # Create the necessary tables
+#     print('creating db')
+#     db.create_all()
 
 # set up logging
 # Log the successful retrieval of the contact
@@ -32,6 +34,10 @@ app.logger.setLevel(logging.DEBUG)
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s %(message)s')
+
+# Log the value of SQLALCHEMY_DATABASE_URI
+app.logger.debug(
+    f"SQLALCHEMY_DATABASE_URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
 # We check if we are running directly or not
 if __name__ != '__main__':
@@ -50,6 +56,27 @@ class Contact(db.Model):
 
     def __repr__(self):
         return '<Contact %r>' % self.name
+
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True)
+    password_hash = db.Column(db.String(100))
+    email = db.Column(db.String(100), unique=True)
+
+    def __repr__(self):
+        return f'<User {self.username}>'
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 @app.route('/', methods=['GET'])
@@ -112,6 +139,50 @@ def db_test():
         return jsonify({'error': f'Exception Error retrieving contact with id 1: {str(e)}'}), 500
 
 
+@app.route('/api/db_authn', methods=['GET'])
+@cross_origin()
+def db_authn():
+    app.logger.info(f'/api/db_authn route')
+    logging.info(f'/api/db_authn route')
+    try:
+        user = User.query.get(1)
+        if not user:
+            # Return a 404 error if the contact is not found
+            app.logger.info(f'no user at /api/db_authn route')
+            logging.info(f'no user at /api/db_authn route')
+            return jsonify({'error': 'User not found'}), 404
+
+        # Log the successful retrieval of the contact
+        app.logger.info(f'Retrieved contact with id {user.id}')
+        logging.info(f'Retrieved contact with id {user.id}')
+
+        return jsonify({
+            'id': user.id,
+            'username': user.username,
+        })
+    except SQLAlchemyError as e:
+        # Log the error that occurred
+        app.logger.info(f'SQLAlchemyError /api/db_authn route (app.logger)')
+        logging.info(f'SQLAlchemyError /api/db_authn route (logger.info)')
+        app.logger.error(
+            f'SQLAlchemyError Error retrieving user with id 1: {str(e)}')
+        logging.error(
+            f'SQLAlchemyError Error retrieving user with id 1: {str(e)}')
+        # Return a 500 error if there is a server error
+        return jsonify({'error': f'Exception Error retrieving user with id 1: {str(e)}'}), 500
+    except Exception as e:
+        app.logger.info(f'exception /api/db_authn route (app.logger)')
+        logging.info(f'exception /api/db_authn route (logger.info)')
+        # Log any other errors that occur
+        app.logger.error(
+            f'Exception Error retrieving user with id 1: {str(e)}')
+        logging.error(
+            f'Exception Error retrieving user with id 1: {str(e)}')
+        # Return a 500 error if there is a server error
+        return jsonify({'error': f'Exception Error retrieving user with id 1: {str(e)}'}), 500
+
+
+@login_required
 @app.route('/api/contacts', methods=['GET'])
 @cross_origin()
 def get_contacts():
