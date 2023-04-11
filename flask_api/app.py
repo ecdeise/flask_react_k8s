@@ -1,3 +1,4 @@
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 import logging
 import sys
 from flask import Flask, request, jsonify
@@ -58,14 +59,14 @@ class Contact(db.Model):
         return '<Contact %r>' % self.name
 
 
-class User(db.Model, UserMixin):
+class Authuser(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True)
     password_hash = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True)
 
     def __repr__(self):
-        return f'<User {self.username}>'
+        return f'<Authuser {self.username}>'
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -76,9 +77,102 @@ class User(db.Model, UserMixin):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return Authuser.query.get(int(user_id))
 
 
+# Sign up
+@app.route('/signup', methods=['POST'])
+@cross_origin()
+def signup():
+    username = request.json['username']
+    password = request.json['password']
+    email = request.json['email']
+
+    if not username or not password or not email:
+        return jsonify({'error': 'All fields are required'}), 400
+
+    if Authuser.query.filter_by(username=username).first():
+        return jsonify({'error': 'Username already exists'}), 400
+
+    user = Authuser(username=username, email=email)
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({'message': 'User created successfully'}), 201
+
+
+# Login
+@app.route('/login', methods=['POST'])
+@cross_origin()
+def login():
+    username = request.json['username']
+    password = request.json['password']
+
+    authuser = Authuser.query.filter_by(username=username).first()
+
+    if not authuser or not authuser.check_password(password):
+        return jsonify({'error': 'Invalid username or password'}), 401
+
+    login_user(authuser)
+    return jsonify({'message': 'Logged in successfully'}), 200
+
+
+# Logout
+@app.route('/logout', methods=['POST'])
+@cross_origin()
+def logout():
+
+    try:
+        username = request.json['username']
+        if username is None:
+            raise ValueError('No username provided')
+        authuser = Authuser.query.filter_by(username=username).first()
+        app.logger.info(
+            f'authuser: {username, authuser}')
+        logging.info(
+            f'authuser: {username, authuser}')
+        if authuser is None:
+            return jsonify({'error': f'User {username} not found'}), 404
+        logout_user()
+        return jsonify({'message': 'Logged out successfully'}), 200
+    except SQLAlchemyError as e:
+        app.logger.error(
+            f'SQLAlchemyError Error retrieving username: {str(e)}')
+        logging.error(
+            f'SQLAlchemyError Error retrieving username: {str(e)}')
+        # Return a 500 error if there is a server error
+        return jsonify({'error': f'Exception Error retrieving username: {str(e)}'}), 500
+    except Exception as e:
+        app.logger.error(
+            f'Exception Error retrieving user: {username}')
+        logging.error(
+            f'Exception Error retrieving user: {username}')
+        # Return a 500 error if there is a server error
+        return jsonify({'error': f'Exception Error retrieving user: {username}'}), 500
+
+
+# Check login status
+@app.route('/check_login')
+def check_login():
+    if current_user.is_authenticated:
+        return jsonify({'message': 'User is logged in'}), 200
+    else:
+        return jsonify({'message': 'User is not logged in'}), 401
+
+
+# Error handling
+@login_manager.unauthorized_handler
+def unauthorized():
+    return jsonify({'error': 'Unauthorized access'}), 401
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return jsonify({'error': 'Resource not found'}), 404
+
+
+# Routes
 @app.route('/', methods=['GET'])
 def index():
     app.logger.info(f'index route')
@@ -145,41 +239,41 @@ def db_authn():
     app.logger.info(f'/api/db_authn route')
     logging.info(f'/api/db_authn route')
     try:
-        user = User.query.get(1)
-        if not user:
+        authuser = AuthUser.query.get(1)
+        if not authuser:
             # Return a 404 error if the contact is not found
             app.logger.info(f'no user at /api/db_authn route')
             logging.info(f'no user at /api/db_authn route')
             return jsonify({'error': 'User not found'}), 404
 
         # Log the successful retrieval of the contact
-        app.logger.info(f'Retrieved contact with id {user.id}')
-        logging.info(f'Retrieved contact with id {user.id}')
+        app.logger.info(f'Retrieved contact with id {authuser.id}')
+        logging.info(f'Retrieved contact with id {authuser.id}')
 
         return jsonify({
-            'id': user.id,
-            'username': user.username,
+            'id': authuser.id,
+            'username': authuser.username,
         })
     except SQLAlchemyError as e:
         # Log the error that occurred
         app.logger.info(f'SQLAlchemyError /api/db_authn route (app.logger)')
         logging.info(f'SQLAlchemyError /api/db_authn route (logger.info)')
         app.logger.error(
-            f'SQLAlchemyError Error retrieving user with id 1: {str(e)}')
+            f'SQLAlchemyError Error retrieving authuser with id 1: {str(e)}')
         logging.error(
-            f'SQLAlchemyError Error retrieving user with id 1: {str(e)}')
+            f'SQLAlchemyError Error retrieving authuser with id 1: {str(e)}')
         # Return a 500 error if there is a server error
-        return jsonify({'error': f'Exception Error retrieving user with id 1: {str(e)}'}), 500
+        return jsonify({'error': f'Exception Error retrieving authuser with id 1: {str(e)}'}), 500
     except Exception as e:
         app.logger.info(f'exception /api/db_authn route (app.logger)')
         logging.info(f'exception /api/db_authn route (logger.info)')
         # Log any other errors that occur
         app.logger.error(
-            f'Exception Error retrieving user with id 1: {str(e)}')
+            f'Exception Error retrieving authuser with id 1: {str(e)}')
         logging.error(
-            f'Exception Error retrieving user with id 1: {str(e)}')
+            f'Exception Error retrieving authuser with id 1: {str(e)}')
         # Return a 500 error if there is a server error
-        return jsonify({'error': f'Exception Error retrieving user with id 1: {str(e)}'}), 500
+        return jsonify({'error': f'Exception Error retrieving authuser with id 1: {str(e)}'}), 500
 
 
 @login_required
@@ -187,7 +281,7 @@ def db_authn():
 @cross_origin()
 def get_contacts():
     try:
-        contacts = Contact.query.all()
+        contacts = Contact.query.order_by(Contact.name).all()
         result = []
         for contact in contacts:
             result.append({
@@ -254,6 +348,7 @@ def add_contact():
         return jsonify({'error': 'Could not add contact.'}), 500
 
 
+@login_required
 @app.route('/api/contacts/<int:id>', methods=['PUT'])
 @cross_origin()
 def update_contact(id):
@@ -272,6 +367,7 @@ def update_contact(id):
         return jsonify({'error': 'Failed to update contact.'}), 500
 
 
+@login_required
 @app.route('/api/contacts/<int:id>', methods=['DELETE'])
 @cross_origin()
 def delete_contact(id):
