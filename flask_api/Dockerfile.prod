@@ -18,6 +18,10 @@ RUN pip install gunicorn
 # Copy the app code
 COPY . .
 
+# Application Environment variables
+ENV MODE PRODUCTION
+RUN echo "MODE is set to $MODE"
+
 # Expose port 5000 for the Flask app
 EXPOSE 5000
 

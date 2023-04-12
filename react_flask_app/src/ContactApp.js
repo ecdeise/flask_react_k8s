@@ -17,9 +17,16 @@ function ContactApp() {
   // export NODE_ENV=development
   // To Confirm: echo $NODE_ENV
 
-  const baseUrl = config[process.env.NODE_ENV].baseUrl;
+  //const baseUrl = config[process.env.NODE_ENV].baseUrl;
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  // const baseUrl =
+  //   process.env.NODE_ENV === 'production'
+  //     ? config.production.baseUrl
+  //     : config.development.baseUrl;
   const endpointUrl = '/api/contacts';
   const url = `${baseUrl}${endpointUrl}`;
+  console.log(`baseUrl: ${baseUrl}`);
+  console.log(process.env.NODE_ENV);
 
   useEffect(() => {
     console.log(`GET ${baseUrl}/api/contacts`);

@@ -14,6 +14,15 @@ import ContactApp from './ContactApp';
 import Main from './Main';
 import Footer from './Footer';
 import SignUp from './Signup';
+import config from './config.json';
+
+const baseUrl = process.env.REACT_APP_BASE_URL;
+// const baseUrl =
+//   process.env.NODE_ENV === 'production'
+//     ? config.production.baseUrl
+//     : config.development.baseUrl;
+// console.log(process.env.NODE_ENV);
+console.log(`baseurl: ${baseUrl}`);
 
 function TabPanel(props) {
   const {children, value, index, ...other} = props;

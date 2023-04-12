@@ -1,6 +1,5 @@
 # config.py
 import os
-import psycopg2
 
 
 class Config:
