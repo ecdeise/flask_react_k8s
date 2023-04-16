@@ -7,7 +7,7 @@ function Logout({onLogout, username}) {
   const baseUrl = config[process.env.NODE_ENV].baseUrl;
   const handleLogout = async () => {
     axios
-      .post(`${baseUrl}/logout`, {
+      .post(`${baseUrl}/auth/logout`, {
         username: username,
       })
       .then((response) => {

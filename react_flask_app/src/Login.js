@@ -18,7 +18,7 @@ function Login({onLogin}) {
 
   const handleLogin = () => {
     axios
-      .post(`${baseUrl}/login`, {
+      .post(`${baseUrl}/auth/login`, {
         username: username,
         password: password,
       })

@@ -22,7 +22,7 @@ function SignUp({onSignUp}) {
 
   const handleSignUp = () => {
     axios
-      .post(`${baseUrl}/signup`, {
+      .post(`${baseUrl}/auth/signup`, {
         username: username,
         password: password,
         email: email,
