@@ -14,7 +14,6 @@ function Logout({onLogout, username}) {
         console.log(response);
         console.log(response.data.logged_out);
         onLogout(response.data.logged_out, username);
-        //onLogin(false, username, password);
         localStorage.clear(); //for localStorage
         sessionStorage.clear(); //for sessionStorage
       })

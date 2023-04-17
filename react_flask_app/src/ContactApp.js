@@ -28,10 +28,16 @@ function ContactApp() {
   console.log(`baseUrl: ${baseUrl}`);
   console.log(process.env.NODE_ENV);
 
+  const accessToken = sessionStorage.getItem('access_token');
+
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+
   useEffect(() => {
     console.log(`GET ${baseUrl}/api/contacts`);
     axios
-      .get(`${baseUrl}/api/contacts`)
+      .get(`${baseUrl}/api/contacts`, {headers})
       .then((response) => {
         console.log(`GET /api/contacts HTTP/1.1 ${response.status}`);
         console.log(response.data);
@@ -43,7 +49,7 @@ function ContactApp() {
 
   const handleCreate = (contact) => {
     axios
-      .post(`${baseUrl}/api/contacts`, contact)
+      .post(`${baseUrl}/api/contacts`, contact, {headers})
       .then((response) => {
         console.log(`POST /api/contacts HTTP/1.1 ${response.status}`);
         console.log(response.data);
@@ -54,7 +60,7 @@ function ContactApp() {
 
   const handleUpdate = (contact) => {
     axios
-      .put(`${baseUrl}/api/contacts/${contact.id}`, contact)
+      .put(`${baseUrl}/api/contacts/${contact.id}`, contact, {headers})
       .then((response) => {
         console.log(
           `PUT /api/contacts/${contact.id} HTTP/1.1 ${response.status}`
@@ -72,7 +78,7 @@ function ContactApp() {
 
   const handleDelete = (contact) => {
     axios
-      .delete(`${baseUrl}/api/contacts/${contact.id}`)
+      .delete(`${baseUrl}/api/contacts/${contact.id}`, {headers})
       .then((response) => {
         console.log(
           `DELETE /api/contacts/${contact.id} HTTP/1.1 ${response.status}`

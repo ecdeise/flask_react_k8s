@@ -1,6 +1,6 @@
 import logging
 from . import main_bp
-from flask import jsonify, render_template, request, redirect, url_for
+from flask import jsonify
 
 # Routes
 

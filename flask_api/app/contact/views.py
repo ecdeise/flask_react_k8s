@@ -1,12 +1,13 @@
 import logging
-from flask import jsonify, request
-from models import Contact, to_dict, db
+from flask import current_app, jsonify, request
+from flask_jwt_extended import jwt_required
+from models import Authuser, Contact, to_dict, db
 from sqlalchemy.exc import SQLAlchemyError
 from . import contact_bp
 
 
 @contact_bp.route("/", methods=["GET"])
-# @login_required
+@jwt_required()
 def get_all_contacts():
     try:
         contacts = Contact.query.order_by(Contact.name).all()
@@ -18,7 +19,7 @@ def get_all_contacts():
 
 
 @contact_bp.route("/<int:contact_id>", methods=["GET"])
-# @login_required
+@jwt_required()
 def get_contact_by_id(contact_id):
     try:
         contact = Contact.query.get_or_404(contact_id)
@@ -29,7 +30,7 @@ def get_contact_by_id(contact_id):
 
 
 @contact_bp.route("", methods=["POST"])
-# @login_required
+@jwt_required()
 def add_contact():
     name = request.json["name"]
     email = request.json["email"]
@@ -45,7 +46,7 @@ def add_contact():
 
 
 @contact_bp.route("/<int:contact_id>", methods=["PUT"])
-# @login_required
+@jwt_required()
 def update_contact(contact_id):
     try:
         contact = Contact.query.get_or_404(contact_id)
@@ -67,7 +68,7 @@ def update_contact(contact_id):
 
 
 @contact_bp.route("/<int:contact_id>", methods=["DELETE"])
-# @login_required
+@jwt_required()
 def delete_contact(contact_id):
     try:
         contact = Contact.query.get_or_404(contact_id)

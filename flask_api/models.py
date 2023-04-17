@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import class_mapper
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
 
 db = SQLAlchemy()
 
@@ -28,6 +28,8 @@ class Authuser(db.Model):
     username = db.Column(db.String(50), unique=True)
     password_hash = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True)
+    authenticated = db.Column(db.Boolean, default=False)
+    isadmin = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f"<Authuser {self.username}>"
@@ -37,3 +39,47 @@ class Authuser(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def is_active(self):
+        """True, as all users are active."""
+        return True
+
+    def get_id(self):
+        """Return the id requirement."""
+        return self.id
+
+    def get_user_by_email(self):
+        return self.email
+
+    def get_username(self):
+        return self.username
+
+    def is_authenticated(self):
+        """Return True if the user is authenticated."""
+        # return self.authenticated
+        return True
+
+    def is_admin(self):
+        """Return True if the user is admin."""
+        return self.isadmin
+
+    # def is_anonymous(self):
+    #     """False, as anonymous users aren't supported."""
+    #     return False
+
+    #     def check_password(self, password):
+    #     return check_password_hash(self.password_hash, password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    @staticmethod
+    def get_jwt_identity(payload):
+        user_id = payload["identity"]
+        return Authuser.query.get(user_id)
+
+    @staticmethod
+    @jwt_required()
+    def identity():
+        user_id = get_jwt_identity().id
+        return Authuser.query.get(user_id)

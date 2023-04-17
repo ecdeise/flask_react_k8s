@@ -1,7 +1,8 @@
 from models import Authuser, db
 from . import auth_bp
-from flask import jsonify, render_template, request, redirect, url_for
+from flask import jsonify, request
 from sqlalchemy.exc import SQLAlchemyError
+from flask_jwt_extended import create_access_token, jwt_required
 
 
 @auth_bp.route("/")
@@ -32,24 +33,39 @@ def signup():
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    username = request.json["username"]
-    password = request.json["password"]
+    data = request.get_json()
+    user = Authuser.query.filter_by(username=data["username"]).first()
+    if user is None or not user.check_password(data["password"]):
+        return jsonify({"message": "Invalid username or password"}), 401
+    access_token = create_access_token(identity=user.id)
+    return jsonify(access_token=access_token)
 
-    authuser = Authuser.query.filter_by(username=username).first()
 
-    if not authuser or not authuser.check_password(password):
-        return jsonify({"error": "Invalid username or password"}), 401
+@auth_bp.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    return jsonify({"message": "success"})
 
-    # login_user(authuser)
-    # if current_user.is_authenticated:
-    #     logging.info({current_user})
-    return jsonify({"message": "Logged in successfully"}), 200
+
+# @auth_bp.route("/login", methods=["POST"])
+# def login():
+#     username = request.json["username"]
+#     password = request.json["password"]
+
+#     authuser = Authuser.query.filter_by(username=username).first()
+
+#     if not authuser or not authuser.check_password(password):
+#         return jsonify({"error": "Invalid username or password"}), 401
+#     authuser.authenticated = True
+
+#     # if current_user.is_authenticated:
+#     #     logging.info({current_user})
+#     return jsonify({"message": "Logged in successfully"}), 200
 
 
 @auth_bp.route("/logout", methods=["POST"])
-# @login_required
+@jwt_required()
 def logout():
-    # logout_user()
     return jsonify({"message": "Logged out successfully"}), 200
 
 

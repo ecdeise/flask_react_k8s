@@ -23,9 +23,9 @@ function Login({onLogin}) {
         password: password,
       })
       .then((response) => {
-        console.log(response);
-        console.log(response.data);
-        localStorage.setItem('access_token', response.data.access_token);
+        console.log('token granted');
+        // console.log(response.data);
+        sessionStorage.setItem('access_token', response.data.access_token);
         onLogin(true, username, password);
       })
       .catch((error) => {
