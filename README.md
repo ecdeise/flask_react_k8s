@@ -1,4 +1,4 @@
-wORK IN PROGRESS
+WORK IN PROGRESS
 
 This is a sample flask, sqlalchemy, postgres, and react web application project and tutorial. It is not good code and isn't meant to be. The intent here to run through end-to-end the operations of how to get a simple flask API, database and react front end running on K8s in KIND. I'll walk you through the process as well as every headache and pain-point I experienced. By the end of this tutorial you'll have a containerized web application running in K8s on a KIND cluster. My goal is to save you some pain and I'll detail the those that I had as well as how I debugged and eventually resolved them. You will likely have your own miseries, but I'll do my best to make something that just works. I'll pick up moving this to AWS in a subsequent tutorial and may take on some CI/CD after that.
 
