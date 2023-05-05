@@ -38,18 +38,18 @@ function LibraryApp() {
     Authorization: `Bearer ${accessToken}`,
   };
 
-  useEffect(() => {
-    console.log(`GET ${baseUrl}/api/library/all`);
-    axios
-      .get(`${baseUrl}/api/library/all`, {headers})
-      .then((response) => {
-        console.log(`GET /api/library HTTP/1.1 ${response.status}`);
-        console.log(response.data);
-        return response;
-      })
-      .then((response) => setBooks(response.data.books))
-      .catch((error) => console.error(error));
-  }, []);
+  // useEffect(() => {
+  //   console.log(`GET ${baseUrl}/api/library/all`);
+  //   axios
+  //     .get(`${baseUrl}/api/library/all`, {headers})
+  //     .then((response) => {
+  //       console.log(`GET /api/library HTTP/1.1 ${response.status}`);
+  //       console.log(response.data);
+  //       return response;
+  //     })
+  //     .then((response) => setBooks(response.data.books))
+  //     .catch((error) => console.error(error));
+  // }, []);
 
   const handleInfo = (isbn) => {
     console.log(isbn.isbn);
@@ -62,47 +62,6 @@ function LibraryApp() {
       })
       .catch((error) => console.error(error));
   };
-
-  // const handleCreate = (contact) => {
-  //   axios
-  //     .post(`${baseUrl}/api/contacts`, contact, {headers})
-  //     .then((response) => {
-  //       console.log(`POST /api/contacts HTTP/1.1 ${response.status}`);
-  //       console.log(response.data);
-  //       setContacts((contacts) => [...contacts, contact]);
-  //     })
-  //     .catch((error) => console.error(error));
-  // };
-
-  // const handleUpdate = (contact) => {
-  //   axios
-  //     .put(`${baseUrl}/api/contacts/${contact.id}`, contact, {headers})
-  //     .then((response) => {
-  //       console.log(
-  //         `PUT /api/contacts/${contact.id} HTTP/1.1 ${response.status}`
-  //       );
-  //       console.log(response.data);
-  //       const updatedContact = response.data;
-  //       setContacts((contacts) =>
-  //         contacts.map((c) =>
-  //           c.id === updatedContact.id ? {...c, ...updatedContact} : c
-  //         )
-  //       );
-  //     })
-  //     .catch((error) => console.error(error));
-  // };
-
-  // const handleDelete = (contact) => {
-  //   axios
-  //     .delete(`${baseUrl}/api/contacts/${contact.id}`, {headers})
-  //     .then((response) => {
-  //       console.log(
-  //         `DELETE /api/contacts/${contact.id} HTTP/1.1 ${response.status}`
-  //       );
-  //       setContacts((contacts) => contacts.filter((c) => c.id !== contact.id));
-  //     })
-  //     .catch((error) => console.error(error));
-  // };
 
   return (
     <>
@@ -134,7 +93,8 @@ function LibraryApp() {
             </div>
             {books ? (
               <>
-                <LibraryDataGrid key={JSON.stringify(books)} books={books} />
+                <LibraryDataGrid />
+                {/* key={JSON.stringify(books)} books={books} /> */}
                 {/* <BookCardCollection
                   key={JSON.stringify(books)}
                   books={books}

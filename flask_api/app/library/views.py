@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from isbnlib import meta, desc, classify, cover
-from models import Book, to_dict, db
+from flask_jwt_extended import jwt_required
+from models import Book, Contact, to_dict, db
+from sqlalchemy.exc import SQLAlchemyError
 from . import library_bp
 
 
@@ -23,6 +25,23 @@ def get_book_by_isbn(isbn):
         "cover": cover_url,
     }
     return jsonify(info)
+
+
+# This route deletes a book by its ID
+@library_bp.route("/book/<int:book_id>", methods=["DELETE"])
+def delete_book(book_id):
+    # Get the book from the database
+    book = Book.query.filter_by(id=book_id).first()
+
+    # Check if the book exists
+    if not book:
+        return jsonify({"message": "Book not found."}), 404
+
+    # Delete the book from the database
+    db.session.delete(book)
+    db.session.commit()
+
+    return jsonify({"message": "Book deleted successfully."}), 200
 
 
 # This route takes information about a book and adds it to the catalog

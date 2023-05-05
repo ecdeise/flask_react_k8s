@@ -1,57 +1,96 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import {DataGrid} from '@material-ui/data-grid';
 import {Tooltip} from '@material-ui/core';
 
-const columns = [
-  {
-    field: 'title',
-    headerName: 'Title',
-    width: 250,
-    renderCell: (params) => (
-      <Tooltip
-        title={
-          <div>
-            <img
-              src={params.row.image}
-              alt={params.row.title}
-              style={{width: 120}}
-            />
-            <p>{params.row.description}</p>
-          </div>
-        }
-      >
-        <div>{params.value}</div>
-      </Tooltip>
-    ),
-  },
-  {field: 'authors', headerName: 'Authors', width: 200},
-  // {field: 'genre', headerName: 'Genre', width: 140},
-  // {field: 'classification', headerName: 'Classification', width: 140},
-  {field: 'publisher', headerName: 'Publisher', width: 200},
-  {field: 'year', headerName: 'Year', width: 120},
-  {field: 'isbn13', headerName: 'ISBN-13', width: 140},
-];
+const baseUrl = process.env.REACT_APP_BASE_URL;
+// const baseUrl =
+//   process.env.NODE_ENV === 'production'
+//     ? config.production.baseUrl
+//     : config.development.baseUrl;
+const endpointUrl = '/api/library';
+const library_url = `${baseUrl}${endpointUrl}`;
+console.log(`baseUrl: ${baseUrl}`);
+console.log(process.env.NODE_ENV);
 
-export default function LibraryDataGrid({books}) {
+const accessToken = sessionStorage.getItem('access_token');
+
+const headers = {
+  Authorization: `Bearer ${accessToken}`,
+};
+
+export default function LibraryDataGrid() {
+  //{books, handleDelete}) {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [rows, setRows] = useState([]);
+  const [book, setBook] = useState([]);
+  const [books, setBooks] = useState([]);
+
+  const columns = [
+    {
+      field: 'title',
+      headerName: 'Title',
+      width: 250,
+      editable: true,
+      renderCell: (params) => (
+        <Tooltip
+          title={
+            <div>
+              <img
+                src={params.row.image}
+                alt={params.row.title}
+                style={{width: 120}}
+              />
+              <p>{params.row.description}</p>
+            </div>
+          }
+        >
+          <div>{params.value}</div>
+        </Tooltip>
+      ),
+    },
+    {field: 'authors', headerName: 'Authors', width: 200, editable: true},
+    {field: 'publisher', headerName: 'Publisher', width: 200, editable: true},
+    {field: 'year', headerName: 'Year', width: 120, editable: true},
+    {field: 'isbn13', headerName: 'ISBN-13', width: 140, editable: true},
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 120,
+      renderCell: (params) => (
+        <div>
+          <button onClick={() => handleDelete(params.id)}>Delete</button>
+        </div>
+      ),
+    },
+  ];
 
   useEffect(() => {
-    const newRows = books.map((book) => ({
-      id: book.id,
-      image: book.smallthumbnail,
-      title: book.title,
-      authors: book.authors,
-      genre: book.genre,
-      classification: book.classification,
-      publisher: book.publisher,
-      isbn13: book.isbn13,
-      year: book.year,
-      description: book.description,
-    }));
-    setRows(newRows);
-  }, [books]);
+    console.log(`GET ${baseUrl}/api/library/all`);
+    axios
+      .get(`${baseUrl}/api/library/all`, {headers})
+      .then((response) => {
+        console.log(`GET /api/library HTTP/1.1 ${response.status}`);
+        console.log(response.data);
+        return response;
+      })
+      .then((response) => setBooks(response.data.books))
+      .catch((error) => console.error(error));
+  }, []);
+
+  const handleDelete = (id) => {
+    axios
+      .delete(`${baseUrl}/api/library/book/${id}`, {headers})
+      .then((response) => {
+        console.log(
+          `DELETE /api/library/book/${id} HTTP/1.1 ${response.status}`
+        );
+        console.log(response.data);
+        setBooks(books.filter((book) => book.id !== id));
+      })
+      .catch((error) => console.error(error));
+  };
 
   const handlePageChange = (params) => {
     setPage(params.page);
@@ -64,7 +103,7 @@ export default function LibraryDataGrid({books}) {
   return (
     <div style={{height: 650, width: '100%'}}>
       <DataGrid
-        rows={rows}
+        rows={books}
         columns={columns}
         page={page}
         pageSize={pageSize}
