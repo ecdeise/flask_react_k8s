@@ -64,7 +64,6 @@ def protected():
 
 
 @auth_bp.route("/logout", methods=["POST"])
-@jwt_required()
 def logout():
     return jsonify({"message": "Logged out successfully"}), 200
 

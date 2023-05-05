@@ -23,6 +23,26 @@ class Contact(db.Model):
         return "<Contact %r>" % self.name
 
 
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False)
+    authors = db.Column(db.String(80), nullable=False)
+    isbn13 = db.Column(db.String(20), nullable=True)
+    isbn10 = db.Column(db.String(20), nullable=True)
+    language = db.Column(db.String(40), nullable=True)
+    publisher = db.Column(db.String(40), nullable=False)
+    year = db.Column(db.String(20), nullable=False)
+    classification = db.Column(db.String(120), nullable=True)
+    genre = db.Column(db.String(120), nullable=True)
+    smallthumbnail = db.Column(db.String(255), nullable=True)
+    thumbnail = db.Column(db.String(255), nullable=True)
+    description = db.Column(db.String(500), nullable=True)
+    location = db.Column(db.String(80), nullable=True)
+
+    def __repr__(self):
+        return "<Book %r>" % self.title
+
+
 class Authuser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True)

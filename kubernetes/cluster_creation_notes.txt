@@ -1,0 +1,17 @@
+1) create the context
+ecdeise@odin:~/.../kubernetes$ kubectl config get-contexts
+CURRENT   NAME   CLUSTER   AUTHINFO   NAMESPACE
+ecdeise@odin:~/.../kubernetes$ kubectl config set-context kind-1 --cluster=kind-1 --user=kind-1
+Context "kind-1" created.
+ecdeise@odin:~/.../kubernetes$ kubectl config use-context kind-1
+
+2) create the cluster
+ecdeise@odin:~/.../kubernetes$ kind create cluster --config config_on_cluster_creat.yaml
+
+
+3) do database stuff
+kubectl exec -it postgres-5887bc5c57-7f7tg -- psql -U postgres -d testdb
+
+4) add everything else 
+
+4) troubleshooting
