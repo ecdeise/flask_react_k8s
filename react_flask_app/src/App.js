@@ -8,13 +8,15 @@ import {
   IconButton,
 } from '@material-ui/core';
 import {AccountCircle} from '@material-ui/icons';
-import Login from './Login';
-import Logout from './Logout';
-import ContactApp from './ContactApp';
+import Login from './Authentication/Login';
+import Logout from './Authentication/Logout';
+import ContactApp from './Contact/ContactApp';
 import Main from './Main';
 import Footer from './Footer';
-import SignUp from './Signup';
+import SignUp from './Authentication/Signup';
+import LibraryApp from './Library/LibraryApp';
 import config from './config.json';
+import {checkSession} from './Authentication/session';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 // const baseUrl =
@@ -46,10 +48,23 @@ function App() {
   );
   const [username, setUsername] = useState('');
 
+  // useEffect(() => {
+  //   checkSession;
+  //   if (!loggedIn) {
+  //     setValue(2);
+  //   }
+  // }, [loggedIn]);
+
   useEffect(() => {
-    if (!loggedIn) {
-      setValue(2);
-    }
+    const checkSessionInterval = setInterval(() => {
+      const valid_session = checkSession();
+      setLoggedIn(valid_session);
+      if (!loggedIn) {
+        setValue(2);
+      }
+    }, 1 * 60 * 1000); // Check session every 5 minutes
+
+    return () => clearInterval(checkSessionInterval); // Clear the interval on unmount
   }, [loggedIn]);
 
   const handleLogin = (isLoggedIn, username) => {
@@ -96,19 +111,25 @@ function App() {
             disabled={!loggedIn}
           />
           <Tab
-            label="Contact App"
+            label="Contacts"
             id="tab-1"
             aria-controls="tabpanel-1"
+            disabled={!loggedIn}
+          />
+          <Tab
+            label="Library"
+            id="tab-2"
+            aria-controls="tabpanel-2"
             disabled={!loggedIn}
           />
 
           <Tab
             label={loggedIn ? `Logout (${username})` : 'Login'}
-            id="tab-2"
-            aria-controls="tabpanel-2"
+            id="tab-3"
+            aria-controls="tabpanel-3"
           />
           {!loggedIn && (
-            <Tab label="Signup" id="tab-3" aria-controls="tabpanel-3" />
+            <Tab label="Signup" id="tab-4" aria-controls="tabpanel-4" />
           )}
 
           <IconButton color="inherit">
@@ -129,10 +150,13 @@ function App() {
       <TabPanel value={value} index={1}>
         {loggedIn && <ContactApp />}
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={2}>
+        {loggedIn && <LibraryApp />}
+      </TabPanel>
+      <TabPanel value={value} index={4}>
         {!loggedIn && <SignUp onSignUp={handleSignUp} />}
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={3}>
         {loggedIn ? (
           <>
             <Typography variant="h6" gutterBottom>

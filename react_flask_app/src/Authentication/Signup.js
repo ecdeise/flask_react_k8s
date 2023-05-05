@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Typography, Button} from '@material-ui/core';
 import axios from 'axios';
-import config from './config.json';
+import config from '../config.json';
 
 function SignUp({onSignUp}) {
   const [username, setUsername] = useState('');
