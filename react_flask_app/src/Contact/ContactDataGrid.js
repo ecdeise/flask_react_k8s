@@ -12,6 +12,8 @@ function ContactDataGrid() {
   const [newContactPhone, setNewContactPhone] = useState('');
   const [newContactAddress, setNewContactAddress] = useState('');
   const classes = useStyles();
+  const [showForm, setShowForm] = useState(false);
+
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const endpointUrl = '/api/contacts';
   const url = `${baseUrl}${endpointUrl}`;
@@ -115,33 +117,47 @@ function ContactDataGrid() {
 
   return (
     <div style={{height: 400, width: '100%'}}>
-      <Container maxWidth="sm">
-        <form className={classes.form} onSubmit={handleAddContact}>
-          <TextField
-            label="Name"
-            value={newContactName}
-            onChange={(e) => setNewContactName(e.target.value)}
-          />
-          <TextField
-            label="Email"
-            value={newContactEmail}
-            onChange={(e) => setNewContactEmail(e.target.value)}
-          />
-          <TextField
-            label="Phone"
-            value={newContactPhone}
-            onChange={(e) => setNewContactPhone(e.target.value)}
-          />
-          <TextField
-            label="Address"
-            value={newContactAddress}
-            onChange={(e) => setNewContactAddress(e.target.value)}
-          />
-          <Button variant="contained" color="primary" type="submit">
-            Add Contact
-          </Button>
-        </form>
-      </Container>
+      <Button
+        color="primary"
+        startIcon={<Save />}
+        onClick={() => setShowForm(!showForm)}
+        size="small"
+        style={{fontSize: '0.8rem', marginBottom: 14}}
+      >
+        {showForm ? 'Minimize' : 'New Contact'}
+      </Button>
+      {showForm && (
+        <div>
+          <Container maxWidth="sm">
+            <form className={classes.form} onSubmit={handleAddContact}>
+              <TextField
+                label="Name"
+                value={newContactName}
+                onChange={(e) => setNewContactName(e.target.value)}
+              />
+              <TextField
+                label="Email"
+                value={newContactEmail}
+                onChange={(e) => setNewContactEmail(e.target.value)}
+              />
+              <TextField
+                label="Phone"
+                value={newContactPhone}
+                onChange={(e) => setNewContactPhone(e.target.value)}
+              />
+              <TextField
+                label="Address"
+                value={newContactAddress}
+                onChange={(e) => setNewContactAddress(e.target.value)}
+              />
+              <Button color="primary" type="submit" startIcon={<Save />}>
+                Add Contact
+              </Button>
+            </form>
+          </Container>
+        </div>
+      )}
+
       <DataGrid
         rows={contacts}
         columns={columns}

@@ -5,9 +5,9 @@ import axios from 'axios';
 import config from '../config.json';
 import {Container, Button} from '@material-ui/core';
 //import useStyles from './Styles';
-import AddBookForm from './AddBookForm';
-import BookInfoCard from './BookInfoCard';
-import BookCardCollection from './BookCardCollection';
+//import AddBookForm from './AddBookForm';
+//import BookInfoCard from './BookInfoCard';
+//import BookCardCollection from './BookCardCollection';
 import LibraryDataGrid from './LibraryDataGrid';
 
 function LibraryApp() {
@@ -15,7 +15,6 @@ function LibraryApp() {
   const [book, setBook] = useState([]);
   const [books, setBooks] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  //const classes = useStyles();
 
   // config for dev and prod - based on
   // export NODE_ENV=development
@@ -51,6 +50,11 @@ function LibraryApp() {
   //     .catch((error) => console.error(error));
   // }, []);
 
+  const handleSave = () => {
+    setBooks([...books, book]);
+    setBook({});
+  };
+
   const handleInfo = (isbn) => {
     console.log(isbn.isbn);
     axios
@@ -68,7 +72,8 @@ function LibraryApp() {
       {
         <Container>
           <div>
-            <div>
+            <h1>The Library at Trowbridge</h1>
+            {/* <div>
               <h1>The Library</h1>
               <Button
                 variant="contained"
@@ -86,23 +91,14 @@ function LibraryApp() {
                 <BookInfoCard
                   key={JSON.stringify(book)}
                   book={book}
+                  books={books}
                   setBook={setBook}
                   setBooks={setBooks}
                 />
               ) : null}
-            </div>
-            {books ? (
-              <>
-                <LibraryDataGrid />
-                {/* key={JSON.stringify(books)} books={books} /> */}
-                {/* <BookCardCollection
-                  key={JSON.stringify(books)}
-                  books={books}
-                  // onDelete={handleDelete}
-                  // onUpdate={handleUpdate}
-                /> */}
-              </>
-            ) : null}
+            </div> */}
+            {/* <AddBookForm /> */}
+            <LibraryDataGrid />
           </div>
         </Container>
       }

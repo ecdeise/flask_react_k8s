@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {DataGrid} from '@material-ui/data-grid';
-import {Tooltip} from '@material-ui/core';
+import {Tooltip, Button} from '@material-ui/core';
+import {Delete, Save} from '@material-ui/icons';
+import AddBookForm from './AddBookForm';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 // const baseUrl =
@@ -24,21 +26,21 @@ export default function LibraryDataGrid() {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [rows, setRows] = useState([]);
-  const [book, setBook] = useState([]);
+  // const [book, setBook] = useState([]);
   const [books, setBooks] = useState([]);
 
   const columns = [
     {
       field: 'title',
       headerName: 'Title',
-      width: 250,
+      width: 340,
       editable: true,
       renderCell: (params) => (
         <Tooltip
           title={
             <div>
               <img
-                src={params.row.image}
+                src={params.row.smallthumbnail}
                 alt={params.row.title}
                 style={{width: 120}}
               />
@@ -60,7 +62,13 @@ export default function LibraryDataGrid() {
       width: 120,
       renderCell: (params) => (
         <div>
-          <button onClick={() => handleDelete(params.id)}>Delete</button>
+          <Button
+            color="secondary"
+            startIcon={<Delete />}
+            onClick={() => handleDelete(params.id)}
+            size="small"
+            style={{fontSize: '0.8rem'}}
+          ></Button>
         </div>
       ),
     },
@@ -101,13 +109,14 @@ export default function LibraryDataGrid() {
   };
 
   return (
-    <div style={{height: 650, width: '100%'}}>
+    <div style={{height: 550, width: '100%'}}>
+      <AddBookForm books={books} setBooks={setBooks} />
       <DataGrid
         rows={books}
         columns={columns}
         page={page}
         pageSize={pageSize}
-        rowCount={rows.length}
+        rowCount={books.length}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         checkboxSelection

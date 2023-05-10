@@ -9,9 +9,9 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-export default function BookInfoCard({book, setBooks}) {
+export default function BookInfoCard({book}) {
   const [showDescription, setShowDescription] = React.useState(false);
-  // const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const accessToken = sessionStorage.getItem('access_token');
 
@@ -34,7 +34,7 @@ export default function BookInfoCard({book, setBooks}) {
       .then((response) => {
         console.log(`POST /api/library/addbook HTTP/1.1 ${response.status}`);
         console.log(response.data);
-        const newBook = response.data;
+        const newBook = response.data.book;
         setBooks((books) => [...books, newBook]);
       })
       .catch((error) => console.error(error));
