@@ -22,12 +22,11 @@ const headers = {
 };
 
 export default function LibraryDataGrid() {
-  //{books, handleDelete}) {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [rows, setRows] = useState([]);
-  // const [book, setBook] = useState([]);
   const [books, setBooks] = useState([]);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   const columns = [
     {
@@ -108,9 +107,26 @@ export default function LibraryDataGrid() {
     setPageSize(params.pageSize);
   };
 
+  const handleAddBookClick = () => {
+    setShowAddForm(!showAddForm); // toggle the state of the form
+  };
+
   return (
     <div style={{height: 550, width: '100%'}}>
-      <AddBookForm books={books} setBooks={setBooks} />
+      <Button
+        color="primary"
+        onClick={handleAddBookClick}
+        style={{marginBottom: '1rem'}}
+      >
+        {showAddForm ? 'View Library' : 'Add New Book'}
+      </Button>
+      {showAddForm && (
+        <AddBookForm
+          books={books}
+          setBooks={setBooks}
+          setShowAddForm={setShowAddForm}
+        />
+      )}
       <DataGrid
         rows={books}
         columns={columns}

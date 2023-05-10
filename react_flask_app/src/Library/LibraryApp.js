@@ -37,19 +37,6 @@ function LibraryApp() {
     Authorization: `Bearer ${accessToken}`,
   };
 
-  // useEffect(() => {
-  //   console.log(`GET ${baseUrl}/api/library/all`);
-  //   axios
-  //     .get(`${baseUrl}/api/library/all`, {headers})
-  //     .then((response) => {
-  //       console.log(`GET /api/library HTTP/1.1 ${response.status}`);
-  //       console.log(response.data);
-  //       return response;
-  //     })
-  //     .then((response) => setBooks(response.data.books))
-  //     .catch((error) => console.error(error));
-  // }, []);
-
   const handleSave = () => {
     setBooks([...books, book]);
     setBook({});
@@ -73,31 +60,6 @@ function LibraryApp() {
         <Container>
           <div>
             <h1>The Library at Trowbridge</h1>
-            {/* <div>
-              <h1>The Library</h1>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setShowForm(!showForm)}
-                style={{marginBottom: '10px'}}
-              >
-                {showForm ? 'Hide Form' : 'Add Book'}
-              </Button>
-              {showForm && (
-                <AddBookForm onSubmit={handleInfo} setBook={setBook} />
-              )}
-
-              {book ? (
-                <BookInfoCard
-                  key={JSON.stringify(book)}
-                  book={book}
-                  books={books}
-                  setBook={setBook}
-                  setBooks={setBooks}
-                />
-              ) : null}
-            </div> */}
-            {/* <AddBookForm /> */}
             <LibraryDataGrid />
           </div>
         </Container>
