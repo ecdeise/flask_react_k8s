@@ -183,6 +183,8 @@ Icon
 
 # Thumbnails
 ._*
+*.PNG
+*.png
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
@@ -208,5 +210,6 @@ docker_notes.txt
 scratch.txt
 notes.txt
 contact.txt
+*.txt
 
 # End of https://www.gitignore.io/api/osx

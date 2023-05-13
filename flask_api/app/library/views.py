@@ -7,6 +7,7 @@ from . import library_bp
 
 
 @library_bp.route("/all", methods=["GET"])
+@jwt_required()
 def get_all_books():
     books = Book.query.order_by(db.func.split_part(Book.authors, ",", 1)).all()
     return jsonify({"books": [to_dict(book) for book in books]})
@@ -29,6 +30,7 @@ def get_book_by_isbn(isbn):
 
 # This route deletes a book by its ID
 @library_bp.route("/book/<int:book_id>", methods=["DELETE"])
+@jwt_required()
 def delete_book(book_id):
     # Get the book from the database
     book = Book.query.filter_by(id=book_id).first()
@@ -46,6 +48,7 @@ def delete_book(book_id):
 
 # This route takes information about a book and adds it to the catalog
 @library_bp.route("/addbook", methods=["POST"])
+@jwt_required()
 def add_book():
     book_info = request.get_json()["book_info"]
     classification = request.get_json()["classification"]

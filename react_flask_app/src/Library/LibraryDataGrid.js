@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {DataGrid} from '@material-ui/data-grid';
-import {Tooltip, Button} from '@material-ui/core';
+// import {DataGrid} from '@material-ui/data-grid';
+import {DataGrid, GridToolbar} from '@mui/x-data-grid';
+import {Container, Tooltip, TextField, Button} from '@material-ui/core';
 import {Delete, Save} from '@material-ui/icons';
 import AddBookForm from './AddBookForm';
 
@@ -115,10 +116,11 @@ export default function LibraryDataGrid() {
     <div style={{height: 550, width: '100%'}}>
       <Button
         color="primary"
+        // startIcon={<Save />}
         onClick={handleAddBookClick}
         style={{marginBottom: '1rem'}}
       >
-        {showAddForm ? 'View Library' : 'Add New Book'}
+        {showAddForm ? 'Close Form' : 'Add New Book'}
       </Button>
       {showAddForm && (
         <AddBookForm
@@ -133,10 +135,11 @@ export default function LibraryDataGrid() {
         page={page}
         pageSize={pageSize}
         rowCount={books.length}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
+        //onPageChange={handlePageChange}
+        //onPageSizeChange={handlePageSizeChange}
         checkboxSelection
-        rowsPerPageOptions={[10, 20, 30]}
+        //rowsPerPageOptions={[5, 10, 25, 50]}
+        slots={{toolbar: GridToolbar}}
       />
     </div>
   );
