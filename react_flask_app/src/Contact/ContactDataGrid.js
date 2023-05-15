@@ -8,6 +8,8 @@ import axios from 'axios';
 function ContactDataGrid() {
   const [contacts, setContacts] = useState([]);
   const [newContactName, setNewContactName] = useState('');
+  const [newContactFirstName, setNewContactFirstName] = useState('');
+  const [newContactLastName, setNewContactLastName] = useState('');
   const [newContactEmail, setNewContactEmail] = useState('');
   const [newContactPhone, setNewContactPhone] = useState('');
   const [newContactAddress, setNewContactAddress] = useState('');
@@ -26,10 +28,11 @@ function ContactDataGrid() {
 
   const columns = [
     {field: 'id', headerName: 'ID'}, //, hide: true},
-    {field: 'name', headerName: 'Name', flex: 1, editable: true},
-    {field: 'email', headerName: 'Email', flex: 1, editable: true},
-    {field: 'phone', headerName: 'Phone', flex: 1, editable: true},
-    {field: 'address', headerName: 'Address', flex: 2, editable: true},
+    {field: 'firstname', headerName: 'First Name', flex: 1, editable: true},
+    {field: 'lastname', headerName: 'Last Name', flex: 1, editable: true},
+    {field: 'email', headerName: 'Email', flex: 2, editable: true},
+    {field: 'phone', headerName: 'Phone', flex: 2, editable: true},
+    {field: 'address', headerName: 'Address', flex: 3, editable: true},
     {
       field: 'action',
       headerName: 'Action',
@@ -96,6 +99,8 @@ function ContactDataGrid() {
     event.preventDefault(); // prevent default form submission behavior
     const newContact = {
       name: newContactName,
+      firstname: newContactFirstName,
+      lastname: newContactLastName,
       email: newContactEmail,
       phone: newContactPhone,
       address: newContactAddress,
@@ -108,6 +113,8 @@ function ContactDataGrid() {
         setContacts((contacts) => [...contacts, ...response.data.contacts]);
         // reset the form fields
         setNewContactName('');
+        setNewContactFirstName('');
+        setNewContactLastName('');
         setNewContactEmail('');
         setNewContactPhone('');
         setNewContactAddress('');
@@ -131,9 +138,14 @@ function ContactDataGrid() {
           <Container maxWidth="sm">
             <form className={classes.form} onSubmit={handleAddContact}>
               <TextField
-                label="Name"
-                value={newContactName}
-                onChange={(e) => setNewContactName(e.target.value)}
+                label="First Name"
+                value={newContactFirstName}
+                onChange={(e) => setNewContactFirstName(e.target.value)}
+              />
+              <TextField
+                label="Last Name"
+                value={newContactLastName}
+                onChange={(e) => setNewContactLastName(e.target.value)}
               />
               <TextField
                 label="Email"

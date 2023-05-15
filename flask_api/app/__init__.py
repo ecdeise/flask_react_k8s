@@ -67,6 +67,8 @@ def configure_logging(app):
 def configure_database(app):
     db.init_app(app)
     migrate = Migrate(app, db)
+    with app.app_context():
+        db.create_all()
 
 
 def register_blueprints(app):

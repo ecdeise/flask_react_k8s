@@ -14,13 +14,26 @@ def to_dict(model):
 
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
+    firstname = db.Column(db.String(80), nullable=False)
+    lastname = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone = db.Column(db.String(20), nullable=True)
     address = db.Column(db.String(120), nullable=True)
 
     def __repr__(self):
         return "<Contact %r>" % self.name
+
+
+# class Contact(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     first_name = db.Column(db.String(80), nullable=False)
+#     last_name = db.Column(db.String(80), nullable=False)
+#     email = db.Column(db.String(120), unique=True, nullable=False)
+#     phone = db.Column(db.String(20), nullable=True)
+#     address = db.Column(db.String(120), nullable=True)
+
+#     def __repr__(self):
+#         return "<Contact %r>" % self.name
 
 
 class Book(db.Model):
@@ -45,9 +58,9 @@ class Book(db.Model):
 
 class Authuser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True)
+    username = db.Column(db.String(50), nullable=False, unique=True)
     password_hash = db.Column(db.String(100))
-    email = db.Column(db.String(100), unique=True)
+    email = db.Column(db.String(100), nullable=False, unique=True)
     authenticated = db.Column(db.Boolean, default=False)
     isadmin = db.Column(db.Boolean, default=False)
 

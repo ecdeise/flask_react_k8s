@@ -10,7 +10,7 @@ from . import contact_bp
 @jwt_required()
 def get_all_contacts():
     try:
-        contacts = Contact.query.order_by(Contact.name).all()
+        contacts = Contact.query.order_by(Contact.lastname).all()
 
         logging.info(f"Retrieved {len(contacts)} contacts")
         return jsonify({"contacts": [to_dict(contact) for contact in contacts]}), 200
@@ -31,13 +31,20 @@ def get_contact_by_id(contact_id):
 @contact_bp.route("", methods=["POST"])
 @jwt_required()
 def add_contact():
-    name = request.json["name"]
+    firstname = request.json["firstname"]
+    lastname = request.json["lastname"]
     email = request.json["email"]
     phone = request.json["phone"]
     address = request.json["address"]
-    if not name or not email:
+    if not lastname or not email:
         return jsonify({"error": "Name and email are required"}), 400
-    contact = Contact(name=name, email=email, phone=phone, address=address)
+    contact = Contact(
+        firstname=firstname,
+        lastname=lastname,
+        email=email,
+        phone=phone,
+        address=address,
+    )
     db.session.add(contact)
     db.session.commit()
     return jsonify({"contacts": [to_dict(contact)]}), 201
@@ -48,13 +55,16 @@ def add_contact():
 def update_contact(contact_id):
     try:
         contact = Contact.query.get_or_404(contact_id)
-        name = request.json["name"]
+        firstname = request.json["firstname"]
+        lastname = request.json["lastname"]
         email = request.json["email"]
         phone = request.json["phone"]
         address = request.json["address"]
-        if not name or not email:
+        if not lastname or not email:
             return jsonify({"error": "Name and email are required"}), 400
-        contact.name = name
+
+        contact.firstname = firstname
+        contact.lastname = lastname
         contact.email = email
         contact.phone = phone
         contact.address = address

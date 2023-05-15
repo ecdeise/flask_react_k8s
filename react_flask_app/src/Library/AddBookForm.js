@@ -208,7 +208,7 @@ function AddBookForm(props) {
       {Object.keys(book).length === 0 ? (
         <form className={classes.form} onSubmit={handleInfo}>
           <TextField
-            label="Scanned ISBN"
+            label="ISBN"
             variant="outlined"
             value={isbn}
             onChange={(event) => setIsbn(event.target.value)}
@@ -239,7 +239,7 @@ function AddBookForm(props) {
           {!showBookInfo && (
             <form className={classes.form} onSubmit={handleInfo}>
               <TextField
-                label="Scanned or Entered ISBN"
+                label="ISBN"
                 variant="outlined"
                 value={isbn}
                 onChange={(event) => setIsbn(event.target.value)}
