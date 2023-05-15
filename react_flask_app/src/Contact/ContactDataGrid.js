@@ -27,10 +27,18 @@ function ContactDataGrid() {
   };
 
   const columns = [
-    {field: 'id', headerName: 'ID'}, //, hide: true},
-    {field: 'firstname', headerName: 'First Name', flex: 1, editable: true},
+    {field: 'id', headerName: 'ID', hide: true},
     {field: 'lastname', headerName: 'Last Name', flex: 1, editable: true},
-    {field: 'email', headerName: 'Email', flex: 2, editable: true},
+    {field: 'firstname', headerName: 'First Name', flex: 1, editable: true},
+    {
+      field: 'email',
+      headerName: 'Email',
+      flex: 2,
+      editable: true,
+      renderCell: (params) => (
+        <a href={`mailto:${params.value}`}>{params.value}</a>
+      ),
+    },
     {field: 'phone', headerName: 'Phone', flex: 2, editable: true},
     {field: 'address', headerName: 'Address', flex: 3, editable: true},
     {
