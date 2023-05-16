@@ -15,6 +15,7 @@ import Main from './Main';
 import Footer from './Footer';
 import SignUp from './Authentication/Signup';
 import LibraryApp from './Library/LibraryApp';
+import RecipeApp from './Recipe/RecipeApp';
 import config from './config.json';
 import {checkSession} from './Authentication/session';
 
@@ -94,6 +95,83 @@ function App() {
     }
   }, []);
 
+  // return (
+  //   <div>
+  //     <AppBar position="static">
+  //       <Tabs
+  //         value={value}
+  //         onChange={(event, newValue) => setValue(newValue)}
+  //         aria-label="tabs"
+  //         variant={loggedIn ? 'standard' : 'fullWidth'}
+  //         indicatorColor="primary"
+  //       >
+  //         <Tab
+  //           label="Home"
+  //           id="tab-0"
+  //           aria-controls="tabpanel-0"
+  //           disabled={!loggedIn}
+  //         />
+  //         <Tab
+  //           label="Contacts"
+  //           id="tab-1"
+  //           aria-controls="tabpanel-1"
+  //           disabled={!loggedIn}
+  //         />
+  //         <Tab
+  //           label="Library"
+  //           id="tab-2"
+  //           aria-controls="tabpanel-2"
+  //           disabled={!loggedIn}
+  //         />
+
+  //         <Tab
+  //           label={loggedIn ? `Logout (${username})` : 'Login'}
+  //           id="tab-3"
+  //           aria-controls="tabpanel-3"
+  //         />
+  //         {!loggedIn && (
+  //           <Tab label="Signup" id="tab-4" aria-controls="tabpanel-4" />
+  //         )}
+
+  //         <IconButton color="inherit">
+  //           <AccountCircle />
+  //           {loggedIn ? (
+  //             <Typography variant="subtitle1">
+  //               Logged in as {username}
+  //             </Typography>
+  //           ) : (
+  //             <Typography variant="subtitle1">Logged out</Typography>
+  //           )}
+  //         </IconButton>
+  //       </Tabs>
+  //     </AppBar>
+  //     <TabPanel value={value} index={0}>
+  //       {loggedIn && <Main />}
+  //     </TabPanel>
+  //     <TabPanel value={value} index={1}>
+  //       {loggedIn && <ContactApp />}
+  //     </TabPanel>
+  //     <TabPanel value={value} index={2}>
+  //       {loggedIn && <LibraryApp />}
+  //     </TabPanel>
+  //     <TabPanel value={value} index={4}>
+  //       {!loggedIn && <SignUp onSignUp={handleSignUp} />}
+  //     </TabPanel>
+  //     <TabPanel value={value} index={3}>
+  //       {loggedIn ? (
+  //         <>
+  //           <Typography variant="h6" gutterBottom>
+  //             You are logged in as {username}
+  //           </Typography>
+  //           <Logout onLogout={handleLogout} username={username} />
+  //         </>
+  //       ) : (
+  //         <Login onLogin={handleLogin} />
+  //       )}
+  //     </TabPanel>
+  //     <Footer />
+  //   </div>
+  // );
   return (
     <div>
       <AppBar position="static">
@@ -122,14 +200,14 @@ function App() {
             aria-controls="tabpanel-2"
             disabled={!loggedIn}
           />
-
+          <Tab label="Recipes" id="tab-3" aria-controls="tabpanel-3" />
           <Tab
             label={loggedIn ? `Logout (${username})` : 'Login'}
-            id="tab-3"
-            aria-controls="tabpanel-3"
+            id="tab-4"
+            aria-controls="tabpanel-4"
           />
           {!loggedIn && (
-            <Tab label="Signup" id="tab-4" aria-controls="tabpanel-4" />
+            <Tab label="Signup" id="tab-5" aria-controls="tabpanel-5" />
           )}
 
           <IconButton color="inherit">
@@ -153,10 +231,13 @@ function App() {
       <TabPanel value={value} index={2}>
         {loggedIn && <LibraryApp />}
       </TabPanel>
-      <TabPanel value={value} index={4}>
+      <TabPanel value={value} index={3}>
+        {loggedIn && <RecipeApp />}
+      </TabPanel>
+      <TabPanel value={value} index={5}>
         {!loggedIn && <SignUp onSignUp={handleSignUp} />}
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={4}>
         {loggedIn ? (
           <>
             <Typography variant="h6" gutterBottom>
