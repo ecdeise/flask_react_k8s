@@ -3,7 +3,6 @@ import io
 import pytesseract
 from PIL import Image
 from flask import Flask, request, jsonify
-from isbnlib import meta, desc, classify, cover
 from flask_jwt_extended import jwt_required
 
 # from models import Book, Contact, to_dict, db

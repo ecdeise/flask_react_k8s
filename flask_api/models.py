@@ -24,18 +24,6 @@ class Contact(db.Model):
         return "<Contact %r>" % self.name
 
 
-# class Contact(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     first_name = db.Column(db.String(80), nullable=False)
-#     last_name = db.Column(db.String(80), nullable=False)
-#     email = db.Column(db.String(120), unique=True, nullable=False)
-#     phone = db.Column(db.String(20), nullable=True)
-#     address = db.Column(db.String(120), nullable=True)
-
-#     def __repr__(self):
-#         return "<Contact %r>" % self.name
-
-
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
@@ -54,6 +42,23 @@ class Book(db.Model):
 
     def __repr__(self):
         return "<Book %r>" % self.title
+
+
+class Recipe(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    recipename = db.Column(db.String(100), nullable=False)
+    imageurl = db.Column(db.String(255))
+    recipesource = db.Column(db.String(100))
+    author = db.Column(db.String(80))
+    keywords = db.Column(db.String(100))
+    rating = db.Column(db.String(20))
+    cooktime = db.Column(db.String(40))
+    allergens = db.Column(db.String(100))
+    summary = db.Column(db.String(255))
+    recipe = db.Column(db.Text, nullable=False)
+
+    def __repr__(self):
+        return "<Recipe %r>" % self.name
 
 
 class Authuser(db.Model):
