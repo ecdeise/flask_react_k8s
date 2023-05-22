@@ -41,7 +41,9 @@ const RecipeForm = ({apiResponse, setApiResponse}) => {
     setRecipeAllergens('');
     setRecipeSummary('');
     setRecipeContent('');
-    setApiResponse('');
+    if (apiResponse) {
+      setApiResponse('');
+    }
   };
 
   const handleSnackbarClose = () => {
