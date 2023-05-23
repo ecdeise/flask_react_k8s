@@ -15,7 +15,7 @@ const headers = {
   Authorization: `Bearer ${accessToken}`,
 };
 
-const RecipeForm = ({apiResponse, setApiResponse}) => {
+const RecipeForm = ({apiResponse, setApiResponse, recipes, setRecipes}) => {
   const [recipeName, setRecipeName] = useState('');
   const [recipeSource, setRecipeSource] = useState('');
   const [recipeAuthor, setRecipeAuthor] = useState('');
@@ -26,7 +26,7 @@ const RecipeForm = ({apiResponse, setApiResponse}) => {
   const [recipeAllergens, setRecipeAllergens] = useState('');
   const [recipeSummary, setRecipeSummary] = useState('');
   const [recipeContent, setRecipeContent] = useState(apiResponse);
-  const [recipes, setRecipes] = useState();
+  //const [recipes, setRecipes] = useState([]);
   const [saveStatus, setSaveStatus] = useState();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
@@ -72,9 +72,8 @@ const RecipeForm = ({apiResponse, setApiResponse}) => {
         console.log(response.data.recipe);
         setSaveStatus('success');
         setSnackbarOpen(true);
+        setRecipes([...recipes, ...response.data.recipe]); // Add new book to books array
         onSave();
-
-        //setBooks([...recipes, ...response.data.recipe]); // Add new book to books array
       })
       .catch((error) => {
         console.error(error);

@@ -9,10 +9,12 @@ import {
   Button,
 } from '@material-ui/core';
 import AddRecipe from './AddRecipe';
+import RecipeDataGrid from './RecipeDataGrid';
 
 function RecipeMain() {
   const [showAddRecipe, setShowAddRecipe] = useState(false);
   const [cameraOn, setCameraOn] = useState(false);
+  const [recipes, setRecipes] = useState([]);
 
   const toggleAddRecipe = () => {
     setShowAddRecipe(!showAddRecipe);
@@ -31,8 +33,14 @@ function RecipeMain() {
           {showAddRecipe ? 'Cancel' : 'Add New Recipe'}
         </Button>
         {showAddRecipe && (
-          <AddRecipe cameraOn={cameraOn} setCameraOn={setCameraOn} />
+          <AddRecipe
+            cameraOn={cameraOn}
+            setCameraOn={setCameraOn}
+            recipes={recipes}
+            setRecipes={setRecipes}
+          />
         )}
+        <RecipeDataGrid recipes={recipes} setRecipes={setRecipes} />
       </div>
     </Container>
   );

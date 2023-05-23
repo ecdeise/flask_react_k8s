@@ -8,7 +8,7 @@ from . import recipe_bp
 @recipe_bp.route("/all", methods=["GET"])
 # @jwt_required()
 def get_all_recipes():
-    recipes = Recipe.query.order_by(db.func.split_part(Recipe.name, ",", 1)).all()
+    recipes = Recipe.query.order_by(db.func.split_part(Recipe.recipename, ",", 1)).all()
     return jsonify({"recipes": [to_dict(recipe) for recipe in recipes]})
 
 

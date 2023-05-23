@@ -11,7 +11,7 @@ import {
 import ImageCapture from './ImageCapture';
 import RecipeForm from './RecipeForm';
 
-function AddRecipe({cameraOn, setCameraOn}) {
+function AddRecipe({cameraOn, setCameraOn, recipes, setRecipes}) {
   const [selectedOption, setSelectedOption] = useState('manual');
   const [showImageCapture, setShowImageCapture] = useState(false);
   const [showManualInput, setShowManualInput] = useState(false);
@@ -96,7 +96,7 @@ function AddRecipe({cameraOn, setCameraOn}) {
             >
               Back to Options
             </Button>
-            <RecipeForm />
+            <RecipeForm recipes={recipes} setRecipes={setRecipes} />
           </div>
         ) : (
           <Button
