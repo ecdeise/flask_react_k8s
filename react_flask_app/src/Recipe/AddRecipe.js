@@ -11,11 +11,11 @@ import {
 import ImageCapture from './ImageCapture';
 import RecipeForm from './RecipeForm';
 
-function RecipeApp() {
-  const [selectedOption, setSelectedOption] = useState('manual'); // Set "Add Recipe Manually" as default
+function AddRecipe({cameraOn, setCameraOn}) {
+  const [selectedOption, setSelectedOption] = useState('manual');
   const [showImageCapture, setShowImageCapture] = useState(false);
   const [showManualInput, setShowManualInput] = useState(false);
-  const [cameraOn, setCameraOn] = useState(false);
+  //const [cameraOn, setCameraOn] = useState(false);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -42,10 +42,9 @@ function RecipeApp() {
   return (
     <Container>
       <div>
-        <h1>Recipe Database</h1>
         {!showImageCapture && !showManualInput && (
           <FormControl component="fieldset">
-            <FormLabel component="legend">Add Recipe</FormLabel>
+            <FormLabel component="legend">Select Source</FormLabel>
             <RadioGroup
               name="recipeOptions"
               value={selectedOption}
@@ -54,29 +53,29 @@ function RecipeApp() {
               <FormControlLabel
                 value="manual"
                 control={<Radio />}
-                label="Manually"
+                label="Manual Input"
               />
               <FormControlLabel
                 value="link"
                 control={<Radio />}
-                label="From Link"
+                label="Link to a URL"
               />
               <FormControlLabel
                 value="image"
                 control={<Radio />}
-                label="From Image"
+                label="Import an Image"
               />
               <FormControlLabel
                 value="webcam"
                 control={<Radio />}
-                label="From Webcam"
+                label="Screenshot from Webcam"
               />
             </RadioGroup>
           </FormControl>
         )}
         {showImageCapture ? (
           <div>
-            <h2>Capture Image</h2>
+            <h2>Capture Image From WebCam</h2>
             <ImageCapture cameraOn={cameraOn} setCameraOn={setCameraOn} />
             {!cameraOn && (
               <Button
@@ -90,8 +89,6 @@ function RecipeApp() {
           </div>
         ) : showManualInput ? (
           <div>
-            <h2>Manual Input</h2>
-            <RecipeForm />
             <Button
               // variant="contained"
               color="primary"
@@ -99,6 +96,7 @@ function RecipeApp() {
             >
               Back to Options
             </Button>
+            <RecipeForm />
           </div>
         ) : (
           <Button
@@ -114,4 +112,4 @@ function RecipeApp() {
   );
 }
 
-export default RecipeApp;
+export default AddRecipe;

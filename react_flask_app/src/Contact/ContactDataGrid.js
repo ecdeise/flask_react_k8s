@@ -28,8 +28,8 @@ function ContactDataGrid() {
 
   const columns = [
     {field: 'id', headerName: 'ID', hide: true},
-    {field: 'lastname', headerName: 'Last Name', flex: 1, editable: true},
-    {field: 'firstname', headerName: 'First Name', flex: 1, editable: true},
+    {field: 'lastname', headerName: 'Last Name', flex: 2, editable: true},
+    {field: 'firstname', headerName: 'First Name', flex: 2, editable: true},
     {
       field: 'email',
       headerName: 'Email',

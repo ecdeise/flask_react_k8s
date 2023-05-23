@@ -27,8 +27,11 @@ const ImageCapture = ({cameraOn, setCameraOn}) => {
   // const [cameraOn, setCameraOn] = useState(false);
   const classes = useStyles();
   const [apiResponse, setApiResponse] = useState(null);
+  const [timeRemaining, setTimeRemaining] = useState(10); // camera turns off after 10 seconds
 
   useEffect(() => {
+    let cameraTimeout;
+
     const enableCamera = async () => {
       try {
         const constraints = {audio: false, video: true};
@@ -38,6 +41,10 @@ const ImageCapture = ({cameraOn, setCameraOn}) => {
           videoRef.current.srcObject = stream;
         }
         setCameraOn(true);
+        // Set timeout to deactivate the camera after 20 seconds
+        cameraTimeout = setTimeout(() => {
+          setCameraOn(false);
+        }, timeRemaining * 1000);
       } catch (error) {
         console.log('Error accessing media devices:', error);
       }
@@ -48,6 +55,7 @@ const ImageCapture = ({cameraOn, setCameraOn}) => {
         stream.getTracks().forEach((track) => track.stop());
         setStream(null);
         setCameraOn(false);
+        clearTimeout(cameraTimeout);
       }
     };
 
@@ -59,6 +67,7 @@ const ImageCapture = ({cameraOn, setCameraOn}) => {
 
     return () => {
       disableCamera();
+      clearTimeout(cameraTimeout);
     };
   }, [cameraOn]);
 
@@ -149,7 +158,7 @@ const ImageCapture = ({cameraOn, setCameraOn}) => {
               startIcon={<SaveIcon />}
               onClick={sendImageToAPI}
             >
-              Process Image
+              Extract Text From Image
             </Button>
           </div>
         )}

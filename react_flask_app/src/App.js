@@ -15,9 +15,9 @@ import Main from './Main';
 import Footer from './Footer';
 import SignUp from './Authentication/Signup';
 import LibraryApp from './Library/LibraryApp';
-import RecipeApp from './Recipe/RecipeApp';
 import config from './config.json';
 import {checkSession} from './Authentication/session';
+import RecipeMain from './Recipe/RecipeMain';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 // const baseUrl =
@@ -155,7 +155,7 @@ function App() {
         {loggedIn && <LibraryApp />}
       </TabPanel>
       <TabPanel value={value} index={3}>
-        {loggedIn && <RecipeApp />}
+        {loggedIn && <RecipeMain />}
       </TabPanel>
       <TabPanel value={value} index={5}>
         {!loggedIn && <SignUp onSignUp={handleSignUp} />}
