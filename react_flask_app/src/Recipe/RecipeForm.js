@@ -1,8 +1,18 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import {TextField, Button, Paper, Container, Snackbar} from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Paper,
+  Container,
+  Snackbar,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {Rating} from '@mui/material';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -15,7 +25,14 @@ const headers = {
   Authorization: `Bearer ${accessToken}`,
 };
 
-const RecipeForm = ({apiResponse, setApiResponse, recipes, setRecipes}) => {
+const RecipeForm = ({
+  apiResponse,
+  setApiResponse,
+  recipes,
+  setRecipes,
+  selectedRow,
+}) => {
+  const [id, setRecipeId] = useState('');
   const [recipeName, setRecipeName] = useState('');
   const [recipeSource, setRecipeSource] = useState('');
   const [recipeAuthor, setRecipeAuthor] = useState('');
@@ -29,6 +46,33 @@ const RecipeForm = ({apiResponse, setApiResponse, recipes, setRecipes}) => {
   //const [recipes, setRecipes] = useState([]);
   const [saveStatus, setSaveStatus] = useState();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [showTextFields, setShowTextFields] = useState(true);
+
+  useEffect(() => {
+    if (selectedRow) {
+      setRecipeId(selectedRow.id);
+      setRecipeName(selectedRow.recipename);
+      setRecipeSource(selectedRow.recipesource);
+      setRecipeAuthor(selectedRow.author);
+      setRecipeKeyword(selectedRow.keywords);
+      setRecipeRating(selectedRow.rating);
+      setRecipeImage(selectedRow.imageurl);
+      setRecipeTime(selectedRow.cooktime);
+      setRecipeAllergens(selectedRow.allergens);
+      setRecipeSummary(selectedRow.summary);
+      setRecipeContent(selectedRow.recipe);
+    }
+  }, [selectedRow]);
+
+  useEffect(() => {
+    if (selectedRow) {
+      setEditMode(true);
+      // Rest of the code
+    } else {
+      setEditMode(false);
+    }
+  }, [selectedRow]);
 
   const onSave = () => {
     setRecipeName('');
@@ -82,115 +126,188 @@ const RecipeForm = ({apiResponse, setApiResponse, recipes, setRecipes}) => {
       });
   };
 
+  const updateRecipe = () => {
+    if (selectedRow) {
+      const recipeId = selectedRow.id; // Replace 'id' with the actual property name of the ID in your row data
+
+      // Create an object with the updated recipe data
+      const updatedRecipe = {
+        recipeName: recipeName,
+        recipeSource: recipeSource,
+        recipeAuthor: recipeAuthor,
+        recipeKeyword: recipeKeyword,
+        recipeRating: recipeRating,
+        recipeImage: recipeImage,
+        recipeTime: recipeTime,
+        recipeAllergens: recipeAllergens,
+        recipeSummary: recipeSummary,
+        recipeContent: recipeContent,
+      };
+      console.log(recipeId);
+      console.log(updatedRecipe);
+      axios
+        .put(`${baseUrl}/api/recipe/${recipeId}`, updatedRecipe, {
+          headers,
+        })
+
+        .then((response) => {
+          console.log(`${recipe_url}/${recipeId} ${response.status}`);
+          console.log(response.data.recipe);
+          setSaveStatus('success');
+          setSnackbarOpen(true);
+          // Update the corresponding recipe in the recipes array
+          const updatedRecipes = recipes.map((recipe) =>
+            recipe.id === recipeId ? response.data.recipe[0] : recipe
+          );
+          setRecipes(updatedRecipes);
+        })
+        .catch((error) => {
+          console.error(error);
+          setSaveStatus('error');
+          setSnackbarOpen(true);
+        });
+    }
+  };
+
   return (
     <Container maxWidth="md">
-      <h2 style={{textAlign: 'center'}}>Recipe</h2>
-      <div style={{display: 'flex'}}>
-        <div style={{flex: 1, paddingRight: '8px'}}>
-          <Paper elevation={3}>
-            <div style={{padding: '16px'}}>
-              <TextField
-                label="Name"
-                value={recipeName}
-                onChange={(e) => setRecipeName(e.target.value)}
-                fullWidth
-              />
+      {!recipeName && showTextFields ? (
+        <h2 style={{textAlign: 'center'}}>Recipe</h2>
+      ) : (
+        <h2 style={{textAlign: 'center'}}>{recipeName}</h2>
+      )}
+
+      <Accordion
+        expanded={showTextFields}
+        onChange={() => setShowTextFields(!showTextFields)}
+      >
+        <AccordionSummary
+          style={{
+            height: '30px',
+            minHeight: 'unset',
+            backgroundColor: '#607D8B',
+            color: 'white',
+            boxShadow:
+              '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
+          }}
+          expandIcon={<ExpandMoreIcon style={{color: 'white'}} />}
+        >
+          {showTextFields ? <h4>Collapse Details</h4> : <h4>Expand Details</h4>}
+        </AccordionSummary>
+
+        <AccordionDetails>
+          <div style={{display: 'flex', width: '100%'}}>
+            <div style={{flex: 1, paddingRight: '8px'}}>
+              <Paper elevation={3}>
+                <div style={{padding: '16px'}}>
+                  <TextField
+                    label="Name"
+                    value={recipeName}
+                    onChange={(e) => setRecipeName(e.target.value)}
+                    fullWidth
+                  />
+                </div>
+                <div style={{padding: '16px'}}>
+                  <TextField
+                    label="Image URL"
+                    value={recipeImage}
+                    onChange={(e) => setRecipeImage(e.target.value)}
+                    fullWidth
+                  />
+                </div>
+                <div style={{padding: '16px'}}>
+                  <TextField
+                    label="Source"
+                    value={recipeSource}
+                    onChange={(e) => setRecipeSource(e.target.value)}
+                    fullWidth
+                  />
+                </div>
+              </Paper>
             </div>
-            <div style={{padding: '16px'}}>
-              <TextField
-                label="Image URL"
-                value={recipeImage}
-                onChange={(e) => setRecipeImage(e.target.value)}
-                fullWidth
-              />
+            <div style={{flex: 1, paddingLeft: '8px'}}>
+              <Paper elevation={3}>
+                <div style={{padding: '16px'}}>
+                  <TextField
+                    label="Author"
+                    value={recipeAuthor}
+                    onChange={(e) => setRecipeAuthor(e.target.value)}
+                    fullWidth
+                  />
+                </div>
+                <div style={{padding: '16px'}}>
+                  <TextField
+                    label="Keywords"
+                    value={recipeKeyword}
+                    onChange={(e) => setRecipeKeyword(e.target.value)}
+                    fullWidth
+                  />
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    padding: '28px',
+                  }}
+                >
+                  <Rating
+                    name="Rating"
+                    defaultValue={2.5}
+                    precision={0.5}
+                    value={recipeRating}
+                    onChange={(e) => setRecipeRating(e.target.value)}
+                    fullWidth
+                  />
+                </div>
+              </Paper>
             </div>
-            <div style={{padding: '16px'}}>
-              <TextField
-                label="Source"
-                value={recipeSource}
-                onChange={(e) => setRecipeSource(e.target.value)}
-                fullWidth
-              />
+            <div style={{flex: 1, paddingLeft: '8px'}}>
+              <Paper elevation={3}>
+                <div style={{padding: '16px'}}>
+                  <TextField
+                    label="Cook Time"
+                    value={recipeTime}
+                    onChange={(e) => setRecipeTime(e.target.value)}
+                    fullWidth
+                  />
+                </div>
+                <div style={{padding: '16px'}}>
+                  <TextField
+                    label="Allergens"
+                    value={recipeAllergens}
+                    onChange={(e) => setRecipeAllergens(e.target.value)}
+                    fullWidth
+                  />
+                </div>
+                <div style={{padding: '16px'}}>
+                  <TextField
+                    label="Summary"
+                    value={recipeSummary}
+                    onChange={(e) => setRecipeSummary(e.target.value)}
+                    fullWidth
+                  />
+                </div>
+              </Paper>
             </div>
-          </Paper>
-        </div>
-        <div style={{flex: 1, paddingLeft: '8px'}}>
-          <Paper elevation={3}>
-            <div style={{padding: '16px'}}>
-              <TextField
-                label="Author"
-                value={recipeAuthor}
-                onChange={(e) => setRecipeAuthor(e.target.value)}
-                fullWidth
-              />
-            </div>
-            <div style={{padding: '16px'}}>
-              <TextField
-                label="Keywords"
-                value={recipeKeyword}
-                onChange={(e) => setRecipeKeyword(e.target.value)}
-                fullWidth
-              />
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                padding: '28px',
-              }}
-            >
-              <Rating
-                name="Rating"
-                defaultValue={2.5}
-                precision={0.5}
-                value={recipeRating}
-                onChange={(e) => setRecipeRating(e.target.value)}
-                fullWidth
-              />
-            </div>
-          </Paper>
-        </div>
-        <div style={{flex: 1, paddingLeft: '8px'}}>
-          <Paper elevation={3}>
-            <div style={{padding: '16px'}}>
-              <TextField
-                label="Cook Time"
-                value={recipeTime}
-                onChange={(e) => setRecipeTime(e.target.value)}
-                fullWidth
-              />
-            </div>
-            <div style={{padding: '16px'}}>
-              <TextField
-                label="Allergens"
-                value={recipeAllergens}
-                onChange={(e) => setRecipeAllergens(e.target.value)}
-                fullWidth
-              />
-            </div>
-            <div style={{padding: '16px'}}>
-              <TextField
-                label="Summary"
-                value={recipeSummary}
-                onChange={(e) => setRecipeSummary(e.target.value)}
-                fullWidth
-              />
-            </div>
-          </Paper>
-        </div>
-      </div>
+          </div>
+        </AccordionDetails>
+      </Accordion>
       <Paper elevation={5} style={{marginTop: '16px'}}>
         <div style={{padding: '16px', maxHeight: '800px', overflow: 'auto'}}>
           <ReactQuill
             value={recipeContent}
             onChange={setRecipeContent}
-            style={{height: '300px', width: '100%'}}
+            style={{height: showTextFields ? '300px' : '600px', width: '100%'}}
           />
         </div>
       </Paper>
       <div style={{marginTop: '32px', textAlign: 'center'}}>
-        <Button variant="contained" color="primary" onClick={saveRecipe}>
-          Save Recipe
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={editMode ? updateRecipe : saveRecipe}
+        >
+          {editMode ? 'Update Recipe' : 'Save Recipe'}
         </Button>
       </div>
 

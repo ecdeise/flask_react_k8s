@@ -54,3 +54,61 @@ def add_recipe():
 
     # Return a response indicating success
     return jsonify({"recipe": [to_dict(recipe)]}), 201
+
+
+@recipe_bp.route("/<int:recipe_id>", methods=["DELETE"])
+# @jwt_required()
+def delete_recipe(recipe_id):
+    # Get the book from the database
+    recipe = Recipe.query.filter_by(id=recipe_id).first()
+
+    # Check if the book exists
+    if not recipe:
+        return jsonify({"message": "Recipe not found."}), 404
+
+    # Delete the book from the database
+    db.session.delete(recipe)
+    db.session.commit()
+
+    return jsonify({"message": "Recipe deleted successfully."}), 200
+
+
+@recipe_bp.route("/<int:recipe_id>", methods=["PUT"])
+# @jwt_required()
+def update_recipe(recipe_id):
+    try:
+        recipe = Recipe.query.get_or_404(recipe_id)
+        # Get the data from the request
+        data = request.json
+
+        # Extract the recipe data from the request
+        recipe_name = data.get("recipeName")
+        recipe_source = data.get("recipeSource")
+        recipe_author = data.get("recipeAuthor")
+        recipe_keyword = data.get("recipeKeyword")
+        recipe_rating = data.get("recipeRating")
+        recipe_image = data.get("recipeImage")
+        recipe_time = data.get("recipeTime")
+        recipe_allergens = data.get("recipeAllergens")
+        recipe_summary = data.get("recipeSummary")
+        recipe_content = data.get("recipeContent")
+
+        # Check if all the required fields are present
+        if not recipe_name or not recipe_content:
+            return jsonify({"message": "Please provide all the required fields."}), 400
+
+        recipe.recipename = recipe_name
+        recipe.imageurl = recipe_image
+        recipe.recipesource = recipe_source
+        recipe.author = recipe_author
+        recipe.keywords = recipe_keyword
+        recipe.rating = recipe_rating
+        recipe.cooktime = recipe_time
+        recipe.allergens = recipe_allergens
+        recipe.summary = recipe_summary
+        recipe.recipe = recipe_content
+
+        db.session.commit()
+        return jsonify({"recipe": [to_dict(recipe)]}), 200
+    except SQLAlchemyError as e:
+        return jsonify({"error": str(e)}), 500
