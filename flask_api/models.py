@@ -57,6 +57,9 @@ class Recipe(db.Model):
     summary = db.Column(db.String(255))
     recipe = db.Column(db.Text, nullable=False)
 
+    user_id = db.Column(db.Integer, db.ForeignKey("authuser.id"), nullable=False)
+    user = db.relationship("Authuser", backref=db.backref("recipes", lazy=True))
+
     def __repr__(self):
         return "<Recipe %r>" % self.name
 

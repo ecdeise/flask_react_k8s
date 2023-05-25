@@ -20,6 +20,8 @@ const endpointUrl = '/api/recipe';
 const recipe_url = `${baseUrl}${endpointUrl}`;
 
 const accessToken = sessionStorage.getItem('access_token');
+//get user_id from session
+const user_id = sessionStorage.getItem('user_id');
 
 const headers = {
   Authorization: `Bearer ${accessToken}`,
@@ -107,6 +109,7 @@ const RecipeForm = ({
       recipeAllergens,
       recipeSummary,
       recipeContent,
+      user_id,
     };
 
     axios
@@ -142,6 +145,7 @@ const RecipeForm = ({
         recipeAllergens: recipeAllergens,
         recipeSummary: recipeSummary,
         recipeContent: recipeContent,
+        user_id: user_id,
       };
       console.log(recipeId);
       console.log(updatedRecipe);
@@ -171,12 +175,12 @@ const RecipeForm = ({
 
   return (
     <Container maxWidth="md">
+      AuthUser ID: {user_id}
       {!recipeName && showTextFields ? (
         <h2 style={{textAlign: 'center'}}>Recipe</h2>
       ) : (
         <h2 style={{textAlign: 'center'}}>{recipeName}</h2>
       )}
-
       <Accordion
         expanded={showTextFields}
         onChange={() => setShowTextFields(!showTextFields)}
@@ -310,7 +314,6 @@ const RecipeForm = ({
           {editMode ? 'Update Recipe' : 'Save Recipe'}
         </Button>
       </div>
-
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={5000}

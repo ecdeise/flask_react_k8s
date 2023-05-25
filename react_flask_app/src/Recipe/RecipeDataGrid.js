@@ -28,9 +28,12 @@ function RecipeDataGrid({recipes, setRecipes}) {
   const url = `${baseUrl}${endpointUrl}`;
 
   const accessToken = sessionStorage.getItem('access_token');
+  //get user_id from session
+  const user_id = sessionStorage.getItem('user_id');
 
   const headers = {
     Authorization: `Bearer ${accessToken}`,
+    'X-User-ID': user_id,
   };
 
   const columns = [
@@ -45,6 +48,7 @@ function RecipeDataGrid({recipes, setRecipes}) {
     {field: 'allergens', headerName: 'Allergens', flex: 1},
     {field: 'summary', headerName: 'Summary', flex: 1},
     {field: 'recipe', headerName: 'Recipe', flex: 1},
+    {field: 'user_id', headerName: 'User', flex: 1},
 
     {
       field: 'action',
@@ -64,7 +68,7 @@ function RecipeDataGrid({recipes, setRecipes}) {
   ];
 
   useEffect(() => {
-    console.log(`GET ${baseUrl}/api/recipe/all`);
+    console.log(`GET ${baseUrl}/api/recipe/byauthuser`);
     axios
       .get(`${baseUrl}/api/recipe/all`, {headers})
       .then((response) => {

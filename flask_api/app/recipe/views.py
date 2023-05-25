@@ -5,10 +5,17 @@ from sqlalchemy.exc import SQLAlchemyError
 from . import recipe_bp
 
 
-@recipe_bp.route("/all", methods=["GET"])
+@recipe_bp.route("/byauthuser", methods=["GET"])
 # @jwt_required()
-def get_all_recipes():
-    recipes = Recipe.query.order_by(db.func.split_part(Recipe.recipename, ",", 1)).all()
+def get_all_recipes_by_authuser():
+    user_id = request.headers.get("X-User-ID")
+    # recipes = Recipe.query.order_by(db.func.split_part(Recipe.recipename, ",", 1)).all()
+    recipes = (
+        Recipe.query.join(Recipe.authuser)
+        .filter(Authuser.id == user_id)
+        .order_by(db.func.split_part(Recipe.recipename, ",", 1))
+        .all()
+    )
     return jsonify({"recipes": [to_dict(recipe) for recipe in recipes]})
 
 
@@ -29,6 +36,7 @@ def add_recipe():
     recipe_allergens = data.get("recipeAllergens")
     recipe_summary = data.get("recipeSummary")
     recipe_content = data.get("recipeContent")
+    user_id = data.get("user_id")
 
     # Check if all the required fields are present
     if not recipe_name or not recipe_content:
@@ -46,6 +54,7 @@ def add_recipe():
         allergens=recipe_allergens,
         summary=recipe_summary,
         recipe=recipe_content,
+        user_id=user_id,
     )
 
     # Save the recipe to the database

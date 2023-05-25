@@ -38,7 +38,7 @@ def login():
     if user is None or not user.check_password(data["password"]):
         return jsonify({"message": "Invalid username or password"}), 401
     access_token = create_access_token(identity=user.id)
-    return jsonify(access_token=access_token)
+    return jsonify(access_token=access_token, user_id=user.id)
 
 
 @auth_bp.route("/protected", methods=["GET"])

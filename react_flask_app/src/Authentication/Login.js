@@ -26,6 +26,7 @@ function Login({onLogin}) {
         console.log('token granted');
         // console.log(response.data);
         sessionStorage.setItem('access_token', response.data.access_token);
+        sessionStorage.setItem('user_id', response.data.user_id);
         sessionStorage.setItem('created_at', Date.now());
         onLogin(true, username, password);
         window.location.href = '/'; // redirect to home page
