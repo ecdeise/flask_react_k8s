@@ -19,16 +19,42 @@ const headers = {
   Authorization: `Bearer ${accessToken}`,
 };
 
-const ImageCapture = ({cameraOn, setCameraOn}) => {
+const ImageCapture = ({
+  cameraOn,
+  setCameraOn,
+  id,
+  setRecipeId,
+  recipes,
+  setRecipes,
+  selectedRow,
+  recipeName,
+  setRecipeName,
+  recipeSource,
+  setRecipeSource,
+  recipeAuthor,
+  setRecipeAuthor,
+  recipeKeyword,
+  setRecipeKeyword,
+  recipeRating,
+  setRecipeRating,
+  recipeImage,
+  setRecipeImage,
+  recipeTime,
+  setRecipeTime,
+  recipeAllergens,
+  setRecipeAllergens,
+  recipeSummary,
+  setRecipeSummary,
+  recipeContent,
+  setRecipeContent,
+}) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [stream, setStream] = useState(null);
   const [image, setImage] = useState(null);
-  // const [cameraOn, setCameraOn] = useState(false);
   const classes = useStyles();
-  const [apiResponse, setApiResponse] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(10); // camera turns off after 10 seconds
-
+  const [imageCaptureApiResponse, setImageCaptureApiResponse] = useState(false);
   useEffect(() => {
     let cameraTimeout;
 
@@ -96,26 +122,35 @@ const ImageCapture = ({cameraOn, setCameraOn}) => {
       return;
     }
 
+    // process response and build input for recipeform
+    const processApiResponse = (apiResponseContent) => {
+      setImageCaptureApiResponse(true);
+      setRecipeContent(apiResponseContent);
+      setRecipeSource('WebCam Screenshot');
+      setRecipeName('To Be Updated');
+      // console.log(recipeContent);
+      // console.log(recipeSource);
+    };
+
     // Create a FormData object
     const formData = new FormData();
     formData.append('image', image);
 
-    // Make the API request using Axios or fetch
-    // Example with Axios:
+    // Make the API request using Axios
     axios
       .post(`${baseUrl}/api/processimage/imagetotext`, formData, {headers})
       .then((response) => {
-        setApiResponse(response.data);
-        console.log(response.data);
+        processApiResponse(response.data);
       })
       .catch((error) => {
         console.log('Error sending image:', error);
+        setImageCaptureApiResponse(false);
       });
 
     // Deactivate webcam and clear the image
     setCameraOn(false);
     setImage(null);
-    setApiResponse(null);
+    setImageCaptureApiResponse(null);
   };
 
   return (
@@ -178,14 +213,33 @@ const ImageCapture = ({cameraOn, setCameraOn}) => {
           </div>
         </>
       )}
-      {apiResponse && (
+      {imageCaptureApiResponse && (
         <div style={{marginTop: '10px'}}>
           <RecipeForm
-            apiResponse={apiResponse}
-            setApiResponse={setApiResponse}
-            onSave={() => {
-              // Save recipe logic here
-            }}
+            id={id}
+            recipeName={recipeName}
+            recipeSource={recipeSource}
+            recipeAuthor={recipeAuthor}
+            recipeKeyword={recipeKeyword}
+            recipeRating={recipeRating}
+            recipeImage={recipeImage}
+            recipeTime={recipeTime}
+            recipeAllergens={recipeAllergens}
+            recipeSummary={recipeSummary}
+            recipeContent={recipeContent}
+            setRecipeId={setRecipeId}
+            setRecipeName={setRecipeName}
+            setRecipeSource={setRecipeSource}
+            setRecipeAuthor={setRecipeAuthor}
+            setRecipeKeyword={setRecipeKeyword}
+            setRecipeRating={setRecipeRating}
+            setRecipeImage={setRecipeImage}
+            setRecipeTime={setRecipeTime}
+            setRecipeAllergens={setRecipeAllergens}
+            setRecipeSummary={setRecipeSummary}
+            setRecipeContent={setRecipeContent}
+            recipes={recipes}
+            setRecipes={setRecipes}
           />
         </div>
       )}

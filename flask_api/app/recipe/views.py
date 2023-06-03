@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_jwt_extended import jwt_required
-from models import Recipe, to_dict, db
+from models import Authuser, Recipe, to_dict, db
 from sqlalchemy.exc import SQLAlchemyError
 from . import recipe_bp
 
@@ -9,9 +9,8 @@ from . import recipe_bp
 # @jwt_required()
 def get_all_recipes_by_authuser():
     user_id = request.headers.get("X-User-ID")
-    # recipes = Recipe.query.order_by(db.func.split_part(Recipe.recipename, ",", 1)).all()
     recipes = (
-        Recipe.query.join(Recipe.authuser)
+        Recipe.query.join(Authuser)
         .filter(Authuser.id == user_id)
         .order_by(db.func.split_part(Recipe.recipename, ",", 1))
         .all()

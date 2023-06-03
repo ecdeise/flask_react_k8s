@@ -78,6 +78,8 @@ def register_blueprints(app):
     from app.library import library_bp
     from app.processimage import processimage_bp
     from app.recipe import recipe_bp
+    from app.processurl import processurl_bp
+    from app.imageupload import imageupload_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(main_bp)
@@ -85,6 +87,8 @@ def register_blueprints(app):
     app.register_blueprint(library_bp, url_prefix="/api/library")
     app.register_blueprint(processimage_bp, url_prefix="/api/processimage")
     app.register_blueprint(recipe_bp, url_prefix="/api/recipe")
+    app.register_blueprint(processurl_bp, url_prefix="/api/processurl")
+    app.register_blueprint(imageupload_bp, url_prefix="/api/imageupload")
 
 
 def initialize_extensions(app):

@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   CardContent,
+  Paper,
   Typography,
   Dialog,
   DialogContent,
@@ -16,7 +17,32 @@ import {Delete, Save} from '@material-ui/icons';
 import axios from 'axios';
 import RecipeForm from './RecipeForm';
 
-function RecipeDataGrid({recipes, setRecipes}) {
+function RecipeDataGrid({
+  recipes,
+  setRecipes,
+  id,
+  setRecipeId,
+  recipeName,
+  setRecipeName,
+  recipeSource,
+  setRecipeSource,
+  recipeAuthor,
+  setRecipeAuthor,
+  recipeKeyword,
+  setRecipeKeyword,
+  recipeRating,
+  setRecipeRating,
+  recipeImage,
+  setRecipeImage,
+  recipeTime,
+  setRecipeTime,
+  recipeAllergens,
+  setRecipeAllergens,
+  recipeSummary,
+  setRecipeSummary,
+  recipeContent,
+  setRecipeContent,
+}) {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [rows, setRows] = useState([]);
@@ -49,7 +75,6 @@ function RecipeDataGrid({recipes, setRecipes}) {
     {field: 'summary', headerName: 'Summary', flex: 1},
     {field: 'recipe', headerName: 'Recipe', flex: 1},
     {field: 'user_id', headerName: 'User', flex: 1},
-
     {
       field: 'action',
       headerName: 'Action',
@@ -59,7 +84,6 @@ function RecipeDataGrid({recipes, setRecipes}) {
         <Button
           color="secondary"
           startIcon={<Delete />}
-          onClick={() => handleRowDelete(params.id)}
           size="small"
           style={{fontSize: '0.8rem'}}
         ></Button>
@@ -70,9 +94,9 @@ function RecipeDataGrid({recipes, setRecipes}) {
   useEffect(() => {
     console.log(`GET ${baseUrl}/api/recipe/byauthuser`);
     axios
-      .get(`${baseUrl}/api/recipe/all`, {headers})
+      .get(`${baseUrl}/api/recipe/byauthuser`, {headers})
       .then((response) => {
-        console.log(`GET /api/recipe/all HTTP/1.1 ${response.status}`);
+        console.log(`GET /api/recipe/byauthuser HTTP/1.1 ${response.status}`);
         console.log(response.data);
         return response;
       })
@@ -93,6 +117,16 @@ function RecipeDataGrid({recipes, setRecipes}) {
       .catch((error) => console.error(error));
   };
 
+  const handleCellClick = (params) => {
+    const isActionCell = params.field === 'action';
+    if (isActionCell) {
+      handleRowDelete(params.id);
+    } else {
+      setSelectedRow(params.row);
+      handleDialogOpen();
+    }
+  };
+
   const handleDialogOpen = () => {
     setOpenDialog(true);
   };
@@ -104,19 +138,18 @@ function RecipeDataGrid({recipes, setRecipes}) {
   return (
     <div>
       <div style={{height: 700, width: '100%'}}>
-        <DataGrid
-          rows={recipes}
-          columns={columns}
-          page={page}
-          rowCount={recipes.length}
-          pageSize={10}
-          rowsPerPageOptions={[5, 10, 25]}
-          slots={{toolbar: GridToolbar}}
-          onRowClick={(params) => {
-            setSelectedRow(params.row);
-            handleDialogOpen();
-          }}
-        />
+        <Paper elevation={4} style={{padding: '0.5rem'}}>
+          <DataGrid
+            rows={recipes}
+            columns={columns}
+            page={page}
+            rowCount={recipes.length}
+            pageSize={10}
+            rowsPerPageOptions={[5, 10, 25]}
+            slots={{toolbar: GridToolbar}}
+            onCellClick={handleCellClick}
+          />
+        </Paper>
       </div>
       {selectedRow && (
         <Dialog
@@ -131,6 +164,28 @@ function RecipeDataGrid({recipes, setRecipes}) {
               <CardContent>
                 <RecipeForm
                   selectedRow={selectedRow}
+                  id={id}
+                  recipeName={recipeName}
+                  recipeSource={recipeSource}
+                  recipeAuthor={recipeAuthor}
+                  recipeKeyword={recipeKeyword}
+                  recipeRating={recipeRating}
+                  recipeImage={recipeImage}
+                  recipeTime={recipeTime}
+                  recipeAllergens={recipeAllergens}
+                  recipeSummary={recipeSummary}
+                  recipeContent={recipeContent}
+                  setRecipeId={setRecipeId}
+                  setRecipeName={setRecipeName}
+                  setRecipeSource={setRecipeSource}
+                  setRecipeAuthor={setRecipeAuthor}
+                  setRecipeKeyword={setRecipeKeyword}
+                  setRecipeRating={setRecipeRating}
+                  setRecipeImage={setRecipeImage}
+                  setRecipeTime={setRecipeTime}
+                  setRecipeAllergens={setRecipeAllergens}
+                  setRecipeSummary={setRecipeSummary}
+                  setRecipeContent={setRecipeContent}
                   recipes={recipes}
                   setRecipes={setRecipes}
                 />

@@ -13,6 +13,7 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_ECHO = True
+    UPLOAD_FOLDER = "/home/ecdeise/Code/flask_react_k8s/flask_api/uploads"
     SQLALCHEMY_DATABASE_URI = (
         "postgresql+psycopg2://testuser:testpassword@localhost:5434/testdb"
     )

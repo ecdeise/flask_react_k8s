@@ -28,24 +28,31 @@ const headers = {
 };
 
 const RecipeForm = ({
-  apiResponse,
-  setApiResponse,
   recipes,
   setRecipes,
   selectedRow,
+  recipeName,
+  setRecipeName,
+  recipeSource,
+  setRecipeSource,
+  recipeAuthor,
+  setRecipeAuthor,
+  recipeKeyword,
+  setRecipeKeyword,
+  recipeRating,
+  setRecipeRating,
+  recipeImage,
+  setRecipeImage,
+  recipeTime,
+  setRecipeTime,
+  recipeAllergens,
+  setRecipeAllergens,
+  recipeSummary,
+  setRecipeSummary,
+  recipeContent,
+  setRecipeContent,
+  setRecipeId,
 }) => {
-  const [id, setRecipeId] = useState('');
-  const [recipeName, setRecipeName] = useState('');
-  const [recipeSource, setRecipeSource] = useState('');
-  const [recipeAuthor, setRecipeAuthor] = useState('');
-  const [recipeKeyword, setRecipeKeyword] = useState('');
-  const [recipeRating, setRecipeRating] = useState('');
-  const [recipeImage, setRecipeImage] = useState('');
-  const [recipeTime, setRecipeTime] = useState('');
-  const [recipeAllergens, setRecipeAllergens] = useState('');
-  const [recipeSummary, setRecipeSummary] = useState('');
-  const [recipeContent, setRecipeContent] = useState(apiResponse);
-  //const [recipes, setRecipes] = useState([]);
   const [saveStatus, setSaveStatus] = useState();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -70,7 +77,6 @@ const RecipeForm = ({
   useEffect(() => {
     if (selectedRow) {
       setEditMode(true);
-      // Rest of the code
     } else {
       setEditMode(false);
     }
@@ -87,9 +93,6 @@ const RecipeForm = ({
     setRecipeAllergens('');
     setRecipeSummary('');
     setRecipeContent('');
-    if (apiResponse) {
-      setApiResponse('');
-    }
   };
 
   const handleSnackbarClose = () => {
@@ -119,7 +122,7 @@ const RecipeForm = ({
         console.log(response.data.recipe);
         setSaveStatus('success');
         setSnackbarOpen(true);
-        setRecipes([...recipes, ...response.data.recipe]); // Add new book to books array
+        setRecipes([...recipes, ...response.data.recipe]);
         onSave();
       })
       .catch((error) => {
@@ -131,7 +134,7 @@ const RecipeForm = ({
 
   const updateRecipe = () => {
     if (selectedRow) {
-      const recipeId = selectedRow.id; // Replace 'id' with the actual property name of the ID in your row data
+      const recipeId = selectedRow.id;
 
       // Create an object with the updated recipe data
       const updatedRecipe = {
