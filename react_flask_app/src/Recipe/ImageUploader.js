@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import {Button, Container, Grid, Typography} from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
+import RecipeDialog from './RecipeDialog';
+import RecipeForm from './RecipeForm';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -12,11 +14,40 @@ const headers = {
   Authorization: `Bearer ${accessToken}`,
 };
 
-function ImageUploader() {
+function ImageUploader({
+  id,
+  setRecipeId,
+  recipes,
+  setRecipes,
+  selectedRow,
+  recipeName,
+  setRecipeName,
+  recipeSource,
+  setRecipeSource,
+  recipeAuthor,
+  setRecipeAuthor,
+  recipeKeyword,
+  setRecipeKeyword,
+  recipeRating,
+  setRecipeRating,
+  recipeImage,
+  setRecipeImage,
+  recipeTime,
+  setRecipeTime,
+  recipeAllergens,
+  setRecipeAllergens,
+  recipeSummary,
+  setRecipeSummary,
+  recipeContent,
+  setRecipeContent,
+}) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [saveResponse, setsaveResponse] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [filename, setFileName] = useState('');
+  const [filepath, setFilePath] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleFileSelect = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -24,6 +55,13 @@ function ImageUploader() {
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
+  };
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
   };
 
   const handleUpload = () => {
@@ -38,6 +76,10 @@ function ImageUploader() {
           // Handle the successful upload response
           console.log(response.data);
           setsaveResponse(response.data);
+          setFileName(response.data.filename);
+          setFilePath(response.data.filepath);
+          setRecipeContent(response.data.text);
+          setOpenDialog(true);
           setSnackbarMessage(
             `Image uploaded successfully. Filepath: ${response.data.filepath}`
           );
@@ -87,11 +129,46 @@ function ImageUploader() {
       </Grid>
       <Grid item xs={12}>
         {saveResponse && (
-          <Typography variant="body1" gutterBottom>
-            Filename: {saveResponse.filename}
-            Filepath: {saveResponse.filepath}
-            Text: {saveResponse.text}
-          </Typography>
+          <RecipeDialog
+            open={openDialog}
+            onClose={handleDialogClose}
+            maxWidth="lg"
+            fullWidth
+          >
+            <RecipeForm
+              id={id}
+              recipeName={recipeName}
+              recipeSource={recipeSource}
+              recipeAuthor={recipeAuthor}
+              recipeKeyword={recipeKeyword}
+              recipeRating={recipeRating}
+              recipeImage={recipeImage}
+              recipeTime={recipeTime}
+              recipeAllergens={recipeAllergens}
+              recipeSummary={recipeSummary}
+              recipeContent={recipeContent}
+              setRecipeId={setRecipeId}
+              setRecipeName={setRecipeName}
+              setRecipeSource={setRecipeSource}
+              setRecipeAuthor={setRecipeAuthor}
+              setRecipeKeyword={setRecipeKeyword}
+              setRecipeRating={setRecipeRating}
+              setRecipeImage={setRecipeImage}
+              setRecipeTime={setRecipeTime}
+              setRecipeAllergens={setRecipeAllergens}
+              setRecipeSummary={setRecipeSummary}
+              setRecipeContent={setRecipeContent}
+              recipes={recipes}
+              setRecipes={setRecipes}
+            />
+            <div>{filename}</div>
+            <div>{filepath}</div>
+          </RecipeDialog>
+          // <Typography variant="body1" gutterBottom>
+          //   Filename: {saveResponse.filename}
+          //   Filepath: {saveResponse.filepath}
+          //   Text: {saveResponse.text}
+          // </Typography>
         )}
         {saveResponse === 'error' && (
           <Typography variant="body1" gutterBottom color="error">

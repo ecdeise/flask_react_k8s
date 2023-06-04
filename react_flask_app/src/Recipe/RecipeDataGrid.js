@@ -16,6 +16,7 @@ import {
 import {Delete, Save} from '@material-ui/icons';
 import axios from 'axios';
 import RecipeForm from './RecipeForm';
+import RecipeDialog from './RecipeDialog';
 
 function RecipeDataGrid({
   recipes,
@@ -152,47 +153,40 @@ function RecipeDataGrid({
         </Paper>
       </div>
       {selectedRow && (
-        <Dialog
+        <RecipeDialog
           open={openDialog}
           onClose={handleDialogClose}
           maxWidth="lg"
           fullWidth
         >
-          {/* <DialogTitle>Recipe ID: {selectedRow.id}</DialogTitle> */}
-          <DialogContent>
-            <Card>
-              <CardContent>
-                <RecipeForm
-                  selectedRow={selectedRow}
-                  id={id}
-                  recipeName={recipeName}
-                  recipeSource={recipeSource}
-                  recipeAuthor={recipeAuthor}
-                  recipeKeyword={recipeKeyword}
-                  recipeRating={recipeRating}
-                  recipeImage={recipeImage}
-                  recipeTime={recipeTime}
-                  recipeAllergens={recipeAllergens}
-                  recipeSummary={recipeSummary}
-                  recipeContent={recipeContent}
-                  setRecipeId={setRecipeId}
-                  setRecipeName={setRecipeName}
-                  setRecipeSource={setRecipeSource}
-                  setRecipeAuthor={setRecipeAuthor}
-                  setRecipeKeyword={setRecipeKeyword}
-                  setRecipeRating={setRecipeRating}
-                  setRecipeImage={setRecipeImage}
-                  setRecipeTime={setRecipeTime}
-                  setRecipeAllergens={setRecipeAllergens}
-                  setRecipeSummary={setRecipeSummary}
-                  setRecipeContent={setRecipeContent}
-                  recipes={recipes}
-                  setRecipes={setRecipes}
-                />
-              </CardContent>
-            </Card>
-          </DialogContent>
-        </Dialog>
+          <RecipeForm
+            selectedRow={selectedRow}
+            id={id}
+            recipeName={recipeName}
+            recipeSource={recipeSource}
+            recipeAuthor={recipeAuthor}
+            recipeKeyword={recipeKeyword}
+            recipeRating={recipeRating}
+            recipeImage={recipeImage}
+            recipeTime={recipeTime}
+            recipeAllergens={recipeAllergens}
+            recipeSummary={recipeSummary}
+            recipeContent={recipeContent}
+            setRecipeId={setRecipeId}
+            setRecipeName={setRecipeName}
+            setRecipeSource={setRecipeSource}
+            setRecipeAuthor={setRecipeAuthor}
+            setRecipeKeyword={setRecipeKeyword}
+            setRecipeRating={setRecipeRating}
+            setRecipeImage={setRecipeImage}
+            setRecipeTime={setRecipeTime}
+            setRecipeAllergens={setRecipeAllergens}
+            setRecipeSummary={setRecipeSummary}
+            setRecipeContent={setRecipeContent}
+            recipes={recipes}
+            setRecipes={setRecipes}
+          />
+        </RecipeDialog>
       )}
     </div>
   );

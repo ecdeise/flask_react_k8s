@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import RecipeForm from './RecipeForm';
+import RecipeDialog from './RecipeDialog';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -136,45 +137,39 @@ function UrlInput({
       </Grid>
       <div>
         {recipeContent && (
-          <Dialog
+          <RecipeDialog
             open={openDialog}
             onClose={handleDialogClose}
             maxWidth="lg"
             fullWidth
           >
-            <DialogContent>
-              <Card>
-                <CardContent>
-                  <RecipeForm
-                    id={id}
-                    recipes={recipes}
-                    setRecipes={setRecipes}
-                    recipeContent={recipeContent}
-                    recipeName={recipeName}
-                    recipeSource={recipeSource}
-                    recipeAuthor={recipeAuthor}
-                    recipeKeyword={recipeKeyword}
-                    recipeRating={recipeRating}
-                    recipeImage={recipeImage}
-                    recipeTime={recipeTime}
-                    recipeAllergens={recipeAllergens}
-                    recipeSummary={recipeSummary}
-                    setRecipeId={setRecipeId}
-                    setRecipeName={setRecipeName}
-                    setRecipeSource={setRecipeSource}
-                    setRecipeAuthor={setRecipeAuthor}
-                    setRecipeKeyword={setRecipeKeyword}
-                    setRecipeRating={setRecipeRating}
-                    setRecipeImage={setRecipeImage}
-                    setRecipeTime={setRecipeTime}
-                    setRecipeAllergens={setRecipeAllergens}
-                    setRecipeSummary={setRecipeSummary}
-                    setRecipeContent={setRecipeContent}
-                  />
-                </CardContent>
-              </Card>
-            </DialogContent>
-          </Dialog>
+            <RecipeForm
+              id={id}
+              recipes={recipes}
+              setRecipes={setRecipes}
+              recipeContent={recipeContent}
+              recipeName={recipeName}
+              recipeSource={recipeSource}
+              recipeAuthor={recipeAuthor}
+              recipeKeyword={recipeKeyword}
+              recipeRating={recipeRating}
+              recipeImage={recipeImage}
+              recipeTime={recipeTime}
+              recipeAllergens={recipeAllergens}
+              recipeSummary={recipeSummary}
+              setRecipeId={setRecipeId}
+              setRecipeName={setRecipeName}
+              setRecipeSource={setRecipeSource}
+              setRecipeAuthor={setRecipeAuthor}
+              setRecipeKeyword={setRecipeKeyword}
+              setRecipeRating={setRecipeRating}
+              setRecipeImage={setRecipeImage}
+              setRecipeTime={setRecipeTime}
+              setRecipeAllergens={setRecipeAllergens}
+              setRecipeSummary={setRecipeSummary}
+              setRecipeContent={setRecipeContent}
+            />
+          </RecipeDialog>
         )}
       </div>
       <Snackbar

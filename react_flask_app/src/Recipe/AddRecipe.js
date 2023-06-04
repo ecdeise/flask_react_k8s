@@ -7,11 +7,16 @@ import {
   RadioGroup,
   Button,
   Grid,
+  Card,
+  CardContent,
+  Dialog,
+  DialogContent,
 } from '@material-ui/core';
 import ImageCapture from './ImageCapture';
 import RecipeForm from './RecipeForm';
 import UrlInput from './UrlInput';
 import ImageUploader from './ImageUploader';
+import RecipeDialog from './RecipeDialog';
 
 function AddRecipe({
   cameraOn,
@@ -48,6 +53,7 @@ function AddRecipe({
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
   const [urlApiResponse, setUrlApiResponse] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -65,6 +71,7 @@ function AddRecipe({
       setShowManualInput(true);
       setShowLinkInput(false);
       setShowImageUpload(false);
+      handleDialogOpen();
     }
     if (selectedOption === 'link') {
       setShowImageCapture(false);
@@ -79,6 +86,14 @@ function AddRecipe({
       setShowImageUpload(true);
     } else {
     }
+  };
+
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
   };
 
   const handleReturnToOptions = () => {
@@ -174,32 +189,39 @@ function AddRecipe({
             <Button color="primary" onClick={handleReturnToOptions}>
               Back to Options
             </Button>
-            <RecipeForm
-              id={id}
-              recipeName={recipeName}
-              recipeSource={recipeSource}
-              recipeAuthor={recipeAuthor}
-              recipeKeyword={recipeKeyword}
-              recipeRating={recipeRating}
-              recipeImage={recipeImage}
-              recipeTime={recipeTime}
-              recipeAllergens={recipeAllergens}
-              recipeSummary={recipeSummary}
-              recipeContent={recipeContent}
-              setRecipeId={setRecipeId}
-              setRecipeName={setRecipeName}
-              setRecipeSource={setRecipeSource}
-              setRecipeAuthor={setRecipeAuthor}
-              setRecipeKeyword={setRecipeKeyword}
-              setRecipeRating={setRecipeRating}
-              setRecipeImage={setRecipeImage}
-              setRecipeTime={setRecipeTime}
-              setRecipeAllergens={setRecipeAllergens}
-              setRecipeSummary={setRecipeSummary}
-              setRecipeContent={setRecipeContent}
-              recipes={recipes}
-              setRecipes={setRecipes}
-            />
+            <RecipeDialog
+              open={openDialog}
+              onClose={handleDialogClose}
+              maxWidth="lg"
+              fullWidth
+            >
+              <RecipeForm
+                id={id}
+                recipeName={recipeName}
+                recipeSource={recipeSource}
+                recipeAuthor={recipeAuthor}
+                recipeKeyword={recipeKeyword}
+                recipeRating={recipeRating}
+                recipeImage={recipeImage}
+                recipeTime={recipeTime}
+                recipeAllergens={recipeAllergens}
+                recipeSummary={recipeSummary}
+                recipeContent={recipeContent}
+                setRecipeId={setRecipeId}
+                setRecipeName={setRecipeName}
+                setRecipeSource={setRecipeSource}
+                setRecipeAuthor={setRecipeAuthor}
+                setRecipeKeyword={setRecipeKeyword}
+                setRecipeRating={setRecipeRating}
+                setRecipeImage={setRecipeImage}
+                setRecipeTime={setRecipeTime}
+                setRecipeAllergens={setRecipeAllergens}
+                setRecipeSummary={setRecipeSummary}
+                setRecipeContent={setRecipeContent}
+                recipes={recipes}
+                setRecipes={setRecipes}
+              />
+            </RecipeDialog>
           </div>
         ) : showLinkInput ? (
           <div>
@@ -240,7 +262,32 @@ function AddRecipe({
             <Button color="primary" onClick={handleReturnToOptions}>
               Back to Options
             </Button>
-            <ImageUploader />
+            <ImageUploader
+              id={id}
+              recipeName={recipeName}
+              recipeSource={recipeSource}
+              recipeAuthor={recipeAuthor}
+              recipeKeyword={recipeKeyword}
+              recipeRating={recipeRating}
+              recipeImage={recipeImage}
+              recipeTime={recipeTime}
+              recipeAllergens={recipeAllergens}
+              recipeSummary={recipeSummary}
+              recipeContent={recipeContent}
+              setRecipeId={setRecipeId}
+              setRecipeName={setRecipeName}
+              setRecipeSource={setRecipeSource}
+              setRecipeAuthor={setRecipeAuthor}
+              setRecipeKeyword={setRecipeKeyword}
+              setRecipeRating={setRecipeRating}
+              setRecipeImage={setRecipeImage}
+              setRecipeTime={setRecipeTime}
+              setRecipeAllergens={setRecipeAllergens}
+              setRecipeSummary={setRecipeSummary}
+              setRecipeContent={setRecipeContent}
+              recipes={recipes}
+              setRecipes={setRecipes}
+            />
           </div>
         ) : null}
       </div>

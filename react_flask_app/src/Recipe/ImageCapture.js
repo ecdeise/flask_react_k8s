@@ -7,6 +7,7 @@ import useStyles from '../Styles';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import RecipeForm from './RecipeForm';
+import RecipeDialog from './RecipeDialog';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 const endpointUrl = '/api/processimage';
@@ -55,6 +56,8 @@ const ImageCapture = ({
   const classes = useStyles();
   const [timeRemaining, setTimeRemaining] = useState(10); // camera turns off after 10 seconds
   const [imageCaptureApiResponse, setImageCaptureApiResponse] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
   useEffect(() => {
     let cameraTimeout;
 
@@ -141,6 +144,7 @@ const ImageCapture = ({
       .post(`${baseUrl}/api/processimage/imagetotext`, formData, {headers})
       .then((response) => {
         processApiResponse(response.data);
+        setOpenDialog(true);
       })
       .catch((error) => {
         console.log('Error sending image:', error);
@@ -151,6 +155,14 @@ const ImageCapture = ({
     setCameraOn(false);
     setImage(null);
     setImageCaptureApiResponse(null);
+  };
+
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -215,32 +227,39 @@ const ImageCapture = ({
       )}
       {imageCaptureApiResponse && (
         <div style={{marginTop: '10px'}}>
-          <RecipeForm
-            id={id}
-            recipeName={recipeName}
-            recipeSource={recipeSource}
-            recipeAuthor={recipeAuthor}
-            recipeKeyword={recipeKeyword}
-            recipeRating={recipeRating}
-            recipeImage={recipeImage}
-            recipeTime={recipeTime}
-            recipeAllergens={recipeAllergens}
-            recipeSummary={recipeSummary}
-            recipeContent={recipeContent}
-            setRecipeId={setRecipeId}
-            setRecipeName={setRecipeName}
-            setRecipeSource={setRecipeSource}
-            setRecipeAuthor={setRecipeAuthor}
-            setRecipeKeyword={setRecipeKeyword}
-            setRecipeRating={setRecipeRating}
-            setRecipeImage={setRecipeImage}
-            setRecipeTime={setRecipeTime}
-            setRecipeAllergens={setRecipeAllergens}
-            setRecipeSummary={setRecipeSummary}
-            setRecipeContent={setRecipeContent}
-            recipes={recipes}
-            setRecipes={setRecipes}
-          />
+          <RecipeDialog
+            open={openDialog}
+            onClose={handleDialogClose}
+            maxWidth="lg"
+            fullWidth
+          >
+            <RecipeForm
+              id={id}
+              recipeName={recipeName}
+              recipeSource={recipeSource}
+              recipeAuthor={recipeAuthor}
+              recipeKeyword={recipeKeyword}
+              recipeRating={recipeRating}
+              recipeImage={recipeImage}
+              recipeTime={recipeTime}
+              recipeAllergens={recipeAllergens}
+              recipeSummary={recipeSummary}
+              recipeContent={recipeContent}
+              setRecipeId={setRecipeId}
+              setRecipeName={setRecipeName}
+              setRecipeSource={setRecipeSource}
+              setRecipeAuthor={setRecipeAuthor}
+              setRecipeKeyword={setRecipeKeyword}
+              setRecipeRating={setRecipeRating}
+              setRecipeImage={setRecipeImage}
+              setRecipeTime={setRecipeTime}
+              setRecipeAllergens={setRecipeAllergens}
+              setRecipeSummary={setRecipeSummary}
+              setRecipeContent={setRecipeContent}
+              recipes={recipes}
+              setRecipes={setRecipes}
+            />
+          </RecipeDialog>
         </div>
       )}
     </div>
