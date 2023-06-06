@@ -107,12 +107,15 @@ function UrlInput({
     <div>
       <Grid
         container
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         style={{minHeight: '10vh'}}
       >
-        <Grid item xs={12} sm={8} md={6} lg={4}>
-          <Paper elevation={3} style={{padding: '2rem', marginBottom: '2rem'}}>
+        <Grid item xs={14} sm={10} md={8} lg={6}>
+          <Paper
+            elevation={3}
+            style={{padding: '2rem', marginBottom: '2rem', width: '100%'}}
+          >
             <Typography variant="h6" gutterBottom>
               Enter a URL
             </Typography>
@@ -123,6 +126,12 @@ function UrlInput({
               margin="normal"
               value={url}
               onChange={handleUrlChange}
+              InputLabelProps={{
+                style: {width: '100%'}, // Increase the width of the input label
+              }}
+              InputProps={{
+                style: {width: '100%'}, // Increase the width of the input field
+              }}
             />
             <Button
               variant="contained"
@@ -135,6 +144,7 @@ function UrlInput({
           </Paper>
         </Grid>
       </Grid>
+
       <div>
         {recipeContent && (
           <RecipeDialog

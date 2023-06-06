@@ -100,6 +100,11 @@ const RecipeForm = ({
   };
 
   const saveRecipe = () => {
+    if (!recipeName || !recipeContent) {
+      setSaveStatus('Error: Name and Content are required');
+      setSnackbarOpen(true);
+      return;
+    }
     // Create an object with the recipe data
     const recipe = {
       recipeName,
@@ -150,6 +155,15 @@ const RecipeForm = ({
         recipeContent: recipeContent,
         user_id: user_id,
       };
+      if (
+        !updatedRecipe.recipeName ||
+        !updatedRecipe.recipeContent ||
+        updatedRecipe.recipeContent === '<p><br></p>'
+      ) {
+        setSaveStatus('Error: Name and Content are required');
+        setSnackbarOpen(true);
+        return;
+      }
       console.log(recipeId);
       console.log(updatedRecipe);
       axios
@@ -324,7 +338,7 @@ const RecipeForm = ({
         message={
           saveStatus === 'success'
             ? 'Recipe saved successfully!'
-            : 'Error saving recipe. Please try again.'
+            : 'Error saving recipe.' + saveStatus
         }
       />
     </Container>
