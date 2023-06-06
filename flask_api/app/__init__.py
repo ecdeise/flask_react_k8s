@@ -1,4 +1,3 @@
-# # from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 import logging
 import sys
 from flask import Flask
@@ -37,9 +36,6 @@ def create_app():
     register_error_handlers(app)
 
     return app
-
-
-### Helper Functions ###
 
 
 def configure_logging(app):
