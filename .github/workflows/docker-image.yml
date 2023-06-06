@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile.prod --tag flask_api:$(date +%s)
+      run: docker build . --file flask_api/Dockerfile.prod --tag flask_api:$(date +%s)
