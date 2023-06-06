@@ -210,6 +210,6 @@ docker_notes.txt
 scratch.txt
 notes.txt
 contact.txt
-*.txt
+
 
 # End of https://www.gitignore.io/api/osx
