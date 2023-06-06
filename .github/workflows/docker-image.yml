@@ -13,4 +13,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build -f flask_api/Dockerfile -t flask-app:$(date +%s) -C .
+        run: docker build -f flask_api/Dockerfile -t flask-app:$(date +%s) .
