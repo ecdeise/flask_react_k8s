@@ -1,0 +1,10 @@
+# Exclude files and directories
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+*.env
