@@ -33,6 +33,8 @@ jobs:
       - name: Build the Docker image
         env:
           MODE: PRODUCTION
+          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           docker build -f flask_api/Dockerfile.prod -t flask-app:$(date +%s) --build-arg MODE=${MODE} ./flask_api
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login --username $DOCKERHUB_USERNAME --password-stdin
