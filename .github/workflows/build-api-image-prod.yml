@@ -35,16 +35,16 @@ jobs:
       - name: Docker login
         env:
           MODE: PRODUCTION
-          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
         run: |
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
       - name: Build Docker Image
         run: |
           docker build -f flask_api/Dockerfile.prod -t flask-app:latest --build-arg MODE=${MODE} ./flask_api
 
       - name: Push the Docker image
         run: |
-          docker tag flask-app:latest "${DOCKER_USERNAME}/flask-app:latest"
-          docker push ${{secrets.DOCKER_USERNAME}}/flask-app:latest"
+          docker tag flask-app:latest "${DOCKERHUB_USERNAME}/flask-app:latest"
+          docker push ${{secrets.DOCKERHUB_USERNAME}}/flask-app:latest"
