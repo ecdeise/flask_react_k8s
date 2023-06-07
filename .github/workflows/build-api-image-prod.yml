@@ -81,4 +81,4 @@ jobs:
           context: ./flask_api
           file: ./flask_api/Dockerfile.prod
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
