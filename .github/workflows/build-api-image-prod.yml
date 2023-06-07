@@ -40,6 +40,7 @@ jobs:
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
         run: |
           docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+
       - name: Build Docker Image
         run: |
           docker build -f flask_api/Dockerfile.prod -t flask-app:latest --build-arg MODE=${MODE} ./flask_api
@@ -47,4 +48,4 @@ jobs:
       - name: Push the Docker image
         run: |
           docker tag flask-app:latest "${DOCKERHUB_USERNAME}/flask-app:latest"
-          docker push ${{secrets.DOCKERHUB_USERNAME}}/flask-app:latest"
+          docker push "${DOCKERHUB_USERNAME}/flask-app:latest"
