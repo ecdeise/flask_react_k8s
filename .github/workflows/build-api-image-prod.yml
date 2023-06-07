@@ -21,6 +21,8 @@ name: Docker Image Build and Deploy to DockerHub
 #         run: |
 #           docker build -f flask_api/Dockerfile.prod -t flask-app:$(date +%s) --build-arg MODE=${MODE} ./flask_api
 
+name: Docker Image Build and Deploy to DockerHub
+
 on:
   workflow_dispatch:
 
@@ -44,9 +46,12 @@ jobs:
       - name: Build Docker Image
         run: |
           IMAGE_TAG=$(date +"%Y%m%d%H%M%S")
-          docker build -f flask_api/Dockerfile.prod -t $DOCKERHUB_USERNAME/flask-app:$IMAGE_TAG --build-arg MODE=${MODE} ./flask_api
+          DOCKER_IMAGE_TAG=$DOCKERHUB_USERNAME/flask-app:$IMAGE_TAG
+          docker build -f flask_api/Dockerfile.prod -t $DOCKER_IMAGE_TAG --build-arg MODE=${MODE} ./flask_api
 
       - name: Push the Docker image
         run: |
           IMAGE_TAG=$(date +"%Y%m%d%H%M%S")
-          docker push $DOCKERHUB_USERNAME/flask-app:$IMAGE_TAG
+          DOCKER_IMAGE_TAG=$DOCKERHUB_USERNAME/flask-app:$IMAGE_TAG
+          docker push $DOCKER_IMAGE_TAG
+
