@@ -35,9 +35,8 @@ jobs:
           MODE: PRODUCTION
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-          DOCKERHUB_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
         run: |
           docker build -f flask_api/Dockerfile.prod -t flask-app:$(date +%s) --build-arg MODE=${MODE} ./flask_api
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login --username $DOCKERHUB_USERNAME --password $DOCKER_PASSWORD
-          docker tag flask-app:$(date +%s) $DOCKERHUB_USERNAME/flask-app:$(date +%s)
-          docker push $DOCKERHUB_USERNAME/flask-app:$(date +%s)
+          docker login --username "${DOCKER_USERNAME}" --password "${DOCKERHUB_TOKEN}"
+          docker tag flask-app:$(date +%s) "${DOCKER_USERNAME}/flask-app:$(date +%s)"
+          docker push "${DOCKER_USERNAME}/flask-app:$(date +%s)"
