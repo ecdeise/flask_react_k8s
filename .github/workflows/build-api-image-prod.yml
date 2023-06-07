@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image Build and Deploy to DockerHub
 
 # on:
 #   push:
@@ -35,6 +35,6 @@ jobs:
           MODE: PRODUCTION
         run: |
           docker build -f flask_api/Dockerfile.prod -t flask-app:$(date +%s) --build-arg MODE=${MODE} ./flask_api
-          echo $DOCKERHUB_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login --username $DOCKERHUB_USERNAME --password-stdin
           docker tag flask-app:$(date +%s) $DOCKERHUB_USERNAME/flask-app:$(date +%s)
           docker push $DOCKERHUB_USERNAME/flask-app:$(date +%s)
