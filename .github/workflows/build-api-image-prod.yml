@@ -32,17 +32,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build the Docker image
+      - name: Docker login
         env:
           MODE: PRODUCTION
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
         run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: Build Docker Image
+        run: |
           docker build -f flask_api/Dockerfile.prod -t flask-app:latest --build-arg MODE=${MODE} ./flask_api
 
       - name: Push the Docker image
         run: |
-          echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKER_USERNAME}" --password "${DOCKERHUB_PASSWORD}"
           docker tag flask-app:latest "${DOCKER_USERNAME}/flask-app:latest"
-          docker push "${DOCKER_USERNAME}/flask-app:latest"
+          docker push ${{secrets.DOCKER_USERNAME}}/flask-app:latest"
