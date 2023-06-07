@@ -43,8 +43,10 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -f flask_api/Dockerfile.prod -t ${DOCKERHUB_USERNAME}/flask-app:latest --build-arg MODE=${MODE} ./flask_api
+          IMAGE_TAG=$(date +"%Y%m%d%H%M%S")
+          docker build -f flask_api/Dockerfile.prod -t $DOCKERHUB_USERNAME/flask-app:$IMAGE_TAG --build-arg MODE=${MODE} ./flask_api
 
       - name: Push the Docker image
         run: |
-          docker push ${DOCKERHUB_USERNAME}/flask-app:latest
+          IMAGE_TAG=$(date +"%Y%m%d%H%M%S")
+          docker push $DOCKERHUB_USERNAME/flask-app:$IMAGE_TAG
