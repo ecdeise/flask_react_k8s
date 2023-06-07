@@ -43,6 +43,6 @@ jobs:
 
       - name: Push the Docker image
         run: |
-          echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+          echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKER_USERNAME}" --password ${DOCKERHUB_PASSWORD}
           docker tag flask-app:latest "${DOCKER_USERNAME}/flask-app:latest"
           docker push "${DOCKER_USERNAME}/flask-app:latest"
