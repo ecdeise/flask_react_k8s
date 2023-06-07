@@ -43,9 +43,9 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -f flask_api/Dockerfile.prod -t flask-app:latest --build-arg MODE=${MODE} ./flask_api
+          docker build -f flask_api/Dockerfile.prod -t flask-app:v1 --build-arg MODE=${MODE} ./flask_api
 
       - name: Push the Docker image
         run: |
-          docker tag flask-app:latest "${DOCKERHUB_USERNAME}/flask-app:latest"
-          docker push "${DOCKERHUB_USERNAME}/flask-app:latest"
+          docker tag flask-app:v1 "${DOCKERHUB_USERNAME}/flask-app:v1"
+          docker push "${DOCKERHUB_USERNAME}/flask-app:v1"
