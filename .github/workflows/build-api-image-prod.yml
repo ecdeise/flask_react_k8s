@@ -1,10 +1,25 @@
-name: Docker Image Build and Deploy to DockerHub
+# name: Docker Image Build and Deploy to DockerHub
 
-# on:
-#   push:
-#     branches: ['main']
-#   pull_request:
-#     branches: ['main']
+# # on:
+# #   push:
+# #     branches: ['main']
+# #   pull_request:
+# #     branches: ['main']
+
+# # on:
+# #   workflow_dispatch:
+
+# # jobs:
+# #   build:
+# #     runs-on: ubuntu-latest
+
+# #     steps:
+# #       - uses: actions/checkout@v3
+# #       - name: Build the Docker image
+# #         env:
+# #           MODE: PRODUCTION
+# #         run: |
+# #           docker build -f flask_api/Dockerfile.prod -t flask-app:$(date +%s) --build-arg MODE=${MODE} ./flask_api
 
 # on:
 #   workflow_dispatch:
@@ -14,41 +29,56 @@ name: Docker Image Build and Deploy to DockerHub
 #     runs-on: ubuntu-latest
 
 #     steps:
-#       - uses: actions/checkout@v3
-#       - name: Build the Docker image
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: Docker login
 #         env:
 #           MODE: PRODUCTION
+#           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+#           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+#           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 #         run: |
-#           docker build -f flask_api/Dockerfile.prod -t flask-app:$(date +%s) --build-arg MODE=${MODE} ./flask_api
+#           docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
 
+#       - name: Build Docker Image
+#         run: |
+#           IMAGE_TAG=$(date +"%Y%m%d%H%M%S")
+#           DOCKER_IMAGE_TAG=$DOCKERHUB_USERNAME/flask-app:$IMAGE_TAG
+#           docker build -f flask_api/Dockerfile.prod -t $DOCKER_IMAGE_TAG --build-arg MODE=${MODE} ./flask_api
+
+#       - name: Push the Docker image
+#         run: |
+#           IMAGE_TAG=$(date +"%Y%m%d%H%M%S")
+#           DOCKER_IMAGE_TAG=$DOCKERHUB_USERNAME/flask-app:$IMAGE_TAG
+#           docker push $DOCKER_IMAGE_TAG
+
+name: ci build and push
+
+# on:
+#   push:
+#     branches:
+#       - 'main'
 on:
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Docker login
-        env:
-          MODE: PRODUCTION
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-        run: |
-          docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-
-      - name: Build Docker Image
-        run: |
-          IMAGE_TAG=$(date +"%Y%m%d%H%M%S")
-          DOCKER_IMAGE_TAG=$DOCKERHUB_USERNAME/flask-app:$IMAGE_TAG
-          docker build -f flask_api/Dockerfile.prod -t $DOCKER_IMAGE_TAG --build-arg MODE=${MODE} ./flask_api
-
-      - name: Push the Docker image
-        run: |
-          IMAGE_TAG=$(date +"%Y%m%d%H%M%S")
-          DOCKER_IMAGE_TAG=$DOCKERHUB_USERNAME/flask-app:$IMAGE_TAG
-          docker push $DOCKER_IMAGE_TAG
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./flask_api
+          file: ./Dockerfile.prod
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:latest
