@@ -1,0 +1,109 @@
+*** June 8 Table Schema creates ***
+
+-- public.authuser definition
+
+-- Drop table
+
+-- DROP TABLE public.authuser;
+
+CREATE TABLE public.authuser (
+	id serial4 NOT NULL,
+	username varchar(50) NOT NULL,
+	password_hash varchar(255) NULL,
+	email varchar(120) NULL,
+	authenticated bool NOT NULL DEFAULT false,
+	isadmin bool NOT NULL DEFAULT false,
+	CONSTRAINT authuser_email_key UNIQUE (email),
+	CONSTRAINT authuser_pkey PRIMARY KEY (id),
+	CONSTRAINT authuser_username_key UNIQUE (username)
+);
+
+-- Permissions
+
+ALTER TABLE public.authuser OWNER TO testuser;
+GRANT ALL ON TABLE public.authuser TO testuser;
+
+
+-- public.book definition
+
+-- Drop table
+
+-- DROP TABLE public.book;
+
+CREATE TABLE public.book (
+	id serial4 NOT NULL,
+	title text NOT NULL,
+	authors text NOT NULL,
+	isbn13 text NULL,
+	isbn10 text NULL,
+	"language" text NULL,
+	publisher text NOT NULL,
+	"year" text NOT NULL,
+	classification text NULL,
+	genre text NULL,
+	smallthumbnail text NULL,
+	thumbnail text NULL,
+	description text NULL,
+	"location" text NULL,
+	CONSTRAINT book_pkey PRIMARY KEY (id)
+);
+
+-- Permissions
+
+ALTER TABLE public.book OWNER TO testuser;
+GRANT ALL ON TABLE public.book TO testuser;
+
+-- public.contact definition
+
+-- Drop table
+
+-- DROP TABLE public.contact;
+
+CREATE TABLE public.contact (
+	id serial4 NOT NULL,
+	email varchar(120) NOT NULL,
+	phone varchar(20) NULL,
+	address varchar NULL,
+	firstname varchar(80) NULL,
+	lastname varchar(80) NOT NULL,
+	CONSTRAINT contact_email_key UNIQUE (email),
+	CONSTRAINT contact_pkey PRIMARY KEY (id)
+);
+
+-- Permissions
+
+ALTER TABLE public.contact OWNER TO testuser;
+GRANT ALL ON TABLE public.contact TO testuser;
+
+-- public.recipe definition
+
+-- Drop table
+
+-- DROP TABLE public.recipe;
+
+CREATE TABLE public.recipe (
+	id serial4 NOT NULL,
+	recipename varchar(100) NOT NULL,
+	imageurl varchar(255) NULL,
+	imagefile varchar(255) NULL,
+	recipesource varchar(100) NULL,
+	author varchar(80) NULL,
+	keywords varchar(100) NULL,
+	rating varchar(20) NULL,
+	cooktime varchar(40) NULL,
+	allergens varchar(100) NULL,
+	summary varchar(255) NULL,
+	recipe text NOT NULL,
+	user_id int4 NOT NULL,
+	CONSTRAINT recipe_pkey PRIMARY KEY (id)
+);
+
+-- Permissions
+
+ALTER TABLE public.recipe OWNER TO testuser;
+GRANT ALL ON TABLE public.recipe TO testuser;
+
+
+-- public.recipe foreign keys
+
+ALTER TABLE public.recipe ADD CONSTRAINT recipe_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.authuser(id);
