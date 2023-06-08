@@ -20,8 +20,8 @@ COPY . .
 
 # Application Environment variables
 ARG MODE
-ENV MODE=$MODE
-RUN echo "MODE is set to $MODE"
+ENV MODE=${MODE}
+RUN echo "MODE is set to ${MODE}"
 
 # Expose port 5000 for the Flask app
 EXPOSE 5000
