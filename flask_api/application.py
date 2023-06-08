@@ -57,7 +57,7 @@
 #     logging.info(f"ping route (logging.info)")
 #     return jsonify({"message": "pong"})
 
-from application import create_app
+from app import create_app
 
 app = create_app()
 
