@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: flask-app
-          image: docker.io/ecdeise/flask-app:v6
+          image: docker.io/ecdeise/flask-app:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5000

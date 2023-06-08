@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: react-flask-app
-          image: ecdeise/react-flask-app:v2
+          image: ecdeise/react-flask-app:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
