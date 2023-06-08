@@ -11,6 +11,7 @@ jobs:
         uses: actions/checkout@v3
 
   login:
+    needs: checkout
     runs-on: ubuntu-latest
     steps:
       - name: Login to Docker Hub
@@ -20,12 +21,14 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
   setup-buildx:
+    needs: login
     runs-on: ubuntu-latest
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
   build-push:
+    needs: setup-buildx
     runs-on: ubuntu-latest
     steps:
       - name: Build and push
@@ -35,6 +38,7 @@ jobs:
           file: ./flask_api/Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
+
 
 
 
