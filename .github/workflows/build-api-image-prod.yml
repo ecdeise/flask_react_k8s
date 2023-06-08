@@ -34,7 +34,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ./flask_api
+          context: .
           file: ./flask_api/Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
