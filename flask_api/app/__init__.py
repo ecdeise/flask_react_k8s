@@ -12,7 +12,9 @@ from models import db
 def create_app():
     app = Flask(__name__)
 
-    config_class = load_config("config.py")
+    # config_class = load_config("config.py")
+    config_class = load_config()
+
     app.config.from_object(config_class)
 
     cors = CORS(app)
