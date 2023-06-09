@@ -22,6 +22,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./react_flask_app
-          file: ./react_flask_app/Dockerfile
+          file: ./react_flask_app/Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest

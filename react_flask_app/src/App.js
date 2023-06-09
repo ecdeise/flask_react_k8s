@@ -19,7 +19,8 @@ import config from './config.json';
 import {checkSession} from './Authentication/session';
 import RecipeMain from './Recipe/RecipeMain';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
+//const baseUrl = process.env.REACT_APP_BASE_URL;
+const baseUrl = config[process.env.NODE_ENV].baseUrl;
 // const baseUrl =
 //   process.env.NODE_ENV === 'production'
 //     ? config.production.baseUrl

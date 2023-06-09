@@ -23,6 +23,8 @@ CREATE TABLE public.authuser (
 ALTER TABLE public.authuser OWNER TO testuser;
 GRANT ALL ON TABLE public.authuser TO testuser;
 
+INSERT INTO public.authuser (username, password_hash, email, authenticated, isadmin)
+VALUES ('ecdeise', 'password', 'erichcdeise@gmail.com', true, true);
 
 -- public.book definition
 

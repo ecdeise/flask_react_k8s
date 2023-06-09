@@ -6,8 +6,10 @@ import CameraIcon from '@mui/icons-material/Camera';
 import useStyles from '../Styles';
 import BookInfo from './BookInfo';
 import BarCodeScanner from './BarcodeScanner';
+import config from '../config.json';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
+//const baseUrl = process.env.REACT_APP_BASE_URL;
+const baseUrl = config[process.env.NODE_ENV].baseUrl;
 const endpointUrl = '/api/library';
 const library_url = `${baseUrl}${endpointUrl}`;
 

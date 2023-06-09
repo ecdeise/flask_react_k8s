@@ -17,6 +17,7 @@ import {Delete, Save} from '@material-ui/icons';
 import axios from 'axios';
 import RecipeForm from './RecipeForm';
 import RecipeDialog from './RecipeDialog';
+import config from '../config.json';
 
 function RecipeDataGrid({
   recipes,
@@ -50,7 +51,8 @@ function RecipeDataGrid({
   const [selectedRow, setSelectedRow] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const baseUrl = config[process.env.NODE_ENV].baseUrl;
+  //const baseUrl = process.env.REACT_APP_BASE_URL;
   const endpointUrl = '/api/recipe';
   const url = `${baseUrl}${endpointUrl}`;
 

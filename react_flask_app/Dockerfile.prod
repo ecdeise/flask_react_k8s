@@ -1,0 +1,34 @@
+# Stage 1: Build the frontend
+FROM node:14-alpine as frontend-builder
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY config.json ./
+
+RUN npm install --silent
+
+COPY . .
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+RUN npm run build
+
+# Stage 2: Create the production image
+FROM node:14-alpine
+
+WORKDIR /app
+
+COPY --from=frontend-builder /app/build ./build
+COPY package*.json ./
+COPY config.json ./
+
+RUN npm install --only=production --silent
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+EXPOSE 3000
+
+CMD ["npm", "start"]

@@ -8,8 +8,10 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import RecipeForm from './RecipeForm';
 import RecipeDialog from './RecipeDialog';
+import config from '../config.json';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
+const baseUrl = config[process.env.NODE_ENV].baseUrl;
+//const baseUrl = process.env.REACT_APP_BASE_URL;
 const endpointUrl = '/api/processimage';
 const library_url = `${baseUrl}${endpointUrl}`;
 
