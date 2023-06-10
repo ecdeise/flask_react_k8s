@@ -23,5 +23,7 @@ jobs:
         with:
           context: ./react_flask_app
           file: ./react_flask_app/Dockerfile.prod
+          build-args: |
+            "NODE_ENV=production"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest
