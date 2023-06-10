@@ -3,7 +3,6 @@ FROM node:14-alpine
 WORKDIR /app
 
 COPY package*.json ./
-COPY config.json ./
 
 RUN npm install --silent
 
