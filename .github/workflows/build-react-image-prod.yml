@@ -19,7 +19,7 @@ jobs:
       - name: Build and push
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest \
-            --build-arg NODE_ENV=production \
+            - e "NODE_ENV=production" \
             -f ./react_flask_app/Dockerfile.prod \
             ./react_flask_app
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest
