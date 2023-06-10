@@ -4,10 +4,9 @@ import {Button, Container, Grid, Typography} from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import RecipeDialog from './RecipeDialog';
 import RecipeForm from './RecipeForm';
-import config from '../config.json';
+import config from '../config';
 
-const baseUrl = config[process.env.NODE_ENV].baseUrl;
-//const baseUrl = process.env.REACT_APP_BASE_URL;
+const baseUrl = config.baseUrl;
 
 const accessToken = sessionStorage.getItem('access_token');
 const user_id = sessionStorage.getItem('user_id');

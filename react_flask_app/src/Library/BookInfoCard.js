@@ -8,13 +8,12 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import config from '../config.json';
+import config from '../config';
 
 export default function BookInfoCard({book}) {
   const [showDescription, setShowDescription] = React.useState(false);
   const [books, setBooks] = useState([]);
-  const baseUrl = config[process.env.NODE_ENV].baseUrl;
-  //const baseUrl = process.env.REACT_APP_BASE_URL;
+  const baseUrl = config.baseUrl;
   const accessToken = sessionStorage.getItem('access_token');
 
   const headers = {

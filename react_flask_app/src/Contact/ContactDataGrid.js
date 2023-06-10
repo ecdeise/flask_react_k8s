@@ -4,7 +4,7 @@ import useStyles from '../Styles';
 import {Container, TextField, Button} from '@material-ui/core';
 import {Delete, Save} from '@material-ui/icons';
 import axios from 'axios';
-import config from '../config.json';
+import config from '../config';
 
 function ContactDataGrid() {
   const [contacts, setContacts] = useState([]);
@@ -17,8 +17,7 @@ function ContactDataGrid() {
   const classes = useStyles();
   const [showForm, setShowForm] = useState(false);
 
-  //const baseUrl = process.env.REACT_APP_BASE_URL;
-  const baseUrl = config[process.env.NODE_ENV].baseUrl;
+  const baseUrl = config.baseUrl;
   const endpointUrl = '/api/contacts';
   const url = `${baseUrl}${endpointUrl}`;
 

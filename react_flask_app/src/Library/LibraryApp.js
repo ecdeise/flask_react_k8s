@@ -2,7 +2,7 @@
 
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import config from '../config.json';
+import config from '../config';
 import {Container, Button} from '@material-ui/core';
 //import useStyles from './Styles';
 //import AddBookForm from './AddBookForm';
@@ -20,12 +20,8 @@ function LibraryApp() {
   // export NODE_ENV=development
   // To Confirm: echo $NODE_ENV
 
-  const baseUrl = config[process.env.NODE_ENV].baseUrl;
-  //const baseUrl = process.env.REACT_APP_BASE_URL;
-  // const baseUrl =
-  //   process.env.NODE_ENV === 'production'
-  //     ? config.production.baseUrl
-  //     : config.development.baseUrl;
+  const baseUrl = config.baseUrl;
+
   const endpointUrl = '/api/library';
   const library_url = `${baseUrl}${endpointUrl}`;
   console.log(`baseUrl: ${baseUrl}`);

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Button} from '@material-ui/core';
 import axios from 'axios';
-import config from '../config.json';
+import config from '../config';
 
 function Logout({onLogout, username}) {
-  const baseUrl = config[process.env.NODE_ENV].baseUrl;
+  const baseUrl = config.baseUrl;
   const handleLogout = async () => {
     axios
       .post(`${baseUrl}/auth/logout`, {

@@ -15,17 +15,12 @@ import Main from './Main';
 import Footer from './Footer';
 import SignUp from './Authentication/Signup';
 import LibraryApp from './Library/LibraryApp';
-import config from './config.json';
+import config from './config';
 import {checkSession} from './Authentication/session';
 import RecipeMain from './Recipe/RecipeMain';
 
-//const baseUrl = process.env.REACT_APP_BASE_URL;
-const baseUrl = config[process.env.NODE_ENV].baseUrl;
-// const baseUrl =
-//   process.env.NODE_ENV === 'production'
-//     ? config.production.baseUrl
-//     : config.development.baseUrl;
-// console.log(process.env.NODE_ENV);
+const baseUrl = config.baseUrl;
+
 console.log(`baseurl: ${baseUrl}`);
 
 function TabPanel(props) {

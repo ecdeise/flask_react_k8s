@@ -5,14 +5,10 @@ import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 import {Container, Tooltip, TextField, Button} from '@material-ui/core';
 import {Delete, Save} from '@material-ui/icons';
 import AddBookForm from './AddBookForm';
-import config from '../config.json';
+import config from '../config';
 
-const baseUrl = config[process.env.NODE_ENV].baseUrl;
-//const baseUrl = process.env.REACT_APP_BASE_URL;
-// const baseUrl =
-//   process.env.NODE_ENV === 'production'
-//     ? config.production.baseUrl
-//     : config.development.baseUrl;
+const baseUrl = config.baseUrl;
+
 const endpointUrl = '/api/library';
 const library_url = `${baseUrl}${endpointUrl}`;
 console.log(`baseUrl: ${baseUrl}`);

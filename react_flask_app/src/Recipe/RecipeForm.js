@@ -14,10 +14,10 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {Rating} from '@mui/material';
-import config from '../config.json';
+import config from '../config';
 
-const baseUrl = config[process.env.NODE_ENV].baseUrl;
-//const baseUrl = process.env.REACT_APP_BASE_URL;
+const baseUrl = config.baseUrl;
+
 const endpointUrl = '/api/recipe';
 const recipe_url = `${baseUrl}${endpointUrl}`;
 

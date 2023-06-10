@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {Typography, Button} from '@material-ui/core';
 import axios from 'axios';
-import config from '../config.json';
+import config from '../config';
 
 function SignUp({onSignUp}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const baseUrl = config[process.env.NODE_ENV].baseUrl;
+  const baseUrl = config.baseUrl;
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
