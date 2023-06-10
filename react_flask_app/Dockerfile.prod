@@ -4,38 +4,19 @@ WORKDIR /app
 
 COPY package*.json ./
 
-# Set NODE_ENV to production
-ENV NODE_ENV=production
-
 RUN npm install --silent
-RUN npm run build
 
 COPY . .
 
+# Application Environment variables
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+# Echo NODE_ENV
+RUN echo "NODE_ENV is set to $NODE_ENV"
+
+RUN npm run build
+
 EXPOSE 3000
 
-CMD ["npm", "start"]
-
-
-# FROM node:14-alpine
-
-# WORKDIR /app
-
-# COPY package*.json ./
-
-# RUN npm install --silent
-
-# COPY . .
-
-# # Application Environment variables
-# ARG NODE_ENV=production
-# ENV NODE_ENV=${NODE_ENV}
-
-# # Echo NODE_ENV
-# RUN echo "NODE_ENV is set to $NODE_ENV"
-
-# RUN npm run build
-
-# EXPOSE 3000
-
-# CMD ["sh", "-c", "NODE_ENV=production npm start"]
+CMD ["sh", "-c", "NODE_ENV=production npm start"]
