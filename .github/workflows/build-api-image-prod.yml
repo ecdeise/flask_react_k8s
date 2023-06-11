@@ -28,7 +28,7 @@
 #           push: true
 #           tags: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
 
-name: CI Build Push to DockerHub Prod
+name: CI API Build Push to DockerHub Prod
 
 on:
   workflow_dispatch:

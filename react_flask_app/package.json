@@ -21,12 +21,13 @@
     "react-scripts": "^5.0.1"
   },
   "scripts": {
-    
     "start": "react-scripts start",
+    "build:prod": "NODE_ENV=production react-scripts build",
+    "build:dev": "NODE_ENV=development react-scripts build",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+
   "browserslist": {
     "production": [
       ">0.2%",

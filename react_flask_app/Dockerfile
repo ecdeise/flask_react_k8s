@@ -13,8 +13,9 @@ COPY . .
 # ENV NODE_CONFIG /app/config.json
 # RUN echo "NODE_ENV is set to $NODE_ENV"
 
-RUN npm run build
+RUN npm run build:dev
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "build:dev"]
+

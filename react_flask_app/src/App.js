@@ -19,8 +19,8 @@ import config from './config';
 import {checkSession} from './Authentication/session';
 import RecipeMain from './Recipe/RecipeMain';
 
+console.log(process.env.NODE_ENV);
 const baseUrl = config.baseUrl;
-
 console.log(`baseurl: ${baseUrl}`);
 
 function TabPanel(props) {
