@@ -211,5 +211,7 @@ scratch.txt
 notes.txt
 contact.txt
 
+# .gitignore
+*.pem
 
 # End of https://www.gitignore.io/api/osx

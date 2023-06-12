@@ -1,0 +1,35 @@
+# Base image
+FROM node:14-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --silent
+
+# Copy the rest of the application files
+COPY . .
+
+# Set the environment variable based on build argument
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+# Build the React application for production
+RUN npm run build:prod
+
+# Copy SSL/TLS certificate and private key files
+COPY cert.pem /app
+COPY key.pem /app
+
+# Install serve globally
+RUN npm install -g serve
+
+# Expose the desired ports
+EXPOSE 80
+EXPOSE 443
+
+# Start the application using serve with HTTPS
+CMD ["serve", "-s", "build", "-l", "443", "--ssl-cert", "cert.pem", "--ssl-key", "key.pem"]
