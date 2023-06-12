@@ -25,7 +25,7 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = (
         "postgresql+psycopg2://testuser:testpassword@localhost/testdb"
     )
-    UPLOAD_FOLDER = "app/uploads"
+    UPLOAD_FOLDER = "/app/uploads"
 
 
 class ProductionConfig(Config):
@@ -33,7 +33,7 @@ class ProductionConfig(Config):
         "postgresql+psycopg2://testuser:testpassword@postgres-service/testdb"
     )
 
-    UPLOAD_FOLDER = "app/uploads"
+    UPLOAD_FOLDER = "/app/uploads"
 
 
 # def load_config(mode=os.environ.get("MODE")):

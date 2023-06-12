@@ -3,10 +3,10 @@ kind: PersistentVolume
 metadata:
   name: image-upload-pv
 spec:
-  storageClassName: manual
   capacity:
     storage: 5Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: manual
   hostPath:
     path: /app/uploads
