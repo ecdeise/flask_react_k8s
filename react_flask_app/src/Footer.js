@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 
 function Footer() {
   const currentYear = new Date().getFullYear();
+  const environment =
+    process.env.NODE_ENV === 'production' ? 'Production' : 'Development';
 
   return (
     <Box
@@ -12,11 +14,14 @@ function Footer() {
         width: '100%',
         height: '40px',
         textAlign: 'center',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#f5f5f5', //  '#336699'
       }}
     >
       <footer>
-        <p>&copy; {currentYear} Deise-Labs. All Rights Reserved.</p>
+        <p>
+          &copy; {currentYear} Deise-Labs. All Rights Reserved. ({environment}{' '}
+          Build)
+        </p>
       </footer>
     </Box>
   );

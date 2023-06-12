@@ -48,6 +48,7 @@ function ImageUploader({
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [filename, setFileName] = useState('');
   const [filepath, setFilePath] = useState('');
+  const [image_cleanup, setImageCleanup] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleFileSelect = (event) => {
@@ -80,9 +81,10 @@ function ImageUploader({
           setFileName(response.data.filename);
           setFilePath(response.data.filepath);
           setRecipeContent(response.data.text);
+          setImageCleanup(response.data.image_cleanup);
           setOpenDialog(true);
           setSnackbarMessage(
-            `Image uploaded successfully. Filepath: ${response.data.filepath}`
+            `Image uploaded successfully. Filepath: ${response.data.filepath}, Image Cleanup: ${response.data.image_cleanup}`
           );
         })
         .catch((error) => {
@@ -162,8 +164,8 @@ function ImageUploader({
               recipes={recipes}
               setRecipes={setRecipes}
             />
-            <div>{filename}</div>
-            <div>{filepath}</div>
+            {/* <div>{filename}</div>
+            <div>{filepath}</div> */}
           </RecipeDialog>
           // <Typography variant="body1" gutterBottom>
           //   Filename: {saveResponse.filename}

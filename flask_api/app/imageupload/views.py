@@ -26,11 +26,20 @@ def upload_image():
 
         extracted_text = extract_text_from_image(filepath)
 
+        # Delete the image file - save space on mount
+        # revisit if we want to capture the path in the database
+        # should there be a requirement to persist the image itself
+        os.remove(filepath)
+
+        # remove any images - again revisit
+        image_cleanup = remove_all_images()
+
         return jsonify(
             {
                 "filename": filename,
                 "filepath": filepath,
                 "text": extracted_text,
+                "image_cleanup": image_cleanup,
             }
         )
 
@@ -43,6 +52,20 @@ def allowed_file(filename):
         and filename.rsplit(".", 1)[1].lower()
         in current_app.config["ALLOWED_EXTENSIONS"]
     )
+
+
+def remove_all_images():
+    folder = current_app.config["UPLOAD_FOLDER"]
+
+    try:
+        for filename in os.listdir(folder):
+            file_path = os.path.join(folder, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+
+        return "All images removed successfully"
+    except Exception as e:
+        return f"An error occurred while removing images: {str(e)}"
 
 
 from PIL import Image
