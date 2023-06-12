@@ -69,6 +69,7 @@ const ImageCapture = ({
         setStream(stream);
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
+          videoRef.current.setAttribute('autoplay', true);
         }
         setCameraOn(true);
         // Set timeout to deactivate the camera after 20 seconds

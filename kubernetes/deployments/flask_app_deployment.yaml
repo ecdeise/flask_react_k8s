@@ -45,6 +45,9 @@ spec:
               mountPath: /app/logs
             - name: image-upload-storage
               mountPath: /app/uploads
+            - name: dev-video0
+              mountPath: /dev/video0
+              readOnly: true
       volumes:
         - name: postgres-persistent-storage
           persistentVolumeClaim:
@@ -54,6 +57,9 @@ spec:
         - name: image-upload-storage
           persistentVolumeClaim:
             claimName: image-upload-pvc
+        - name: dev-video0
+          emptyDir:
+            medium: Memory
 # apiVersion: apps/v1
 # kind: Deployment
 # metadata:
@@ -99,9 +105,14 @@ spec:
 #               mountPath: /var/lib/postgresql/data
 #             - name: gunicorn-logs
 #               mountPath: /app/logs
+#             - name: image-upload-storage
+#               mountPath: /app/uploads
 #       volumes:
 #         - name: postgres-persistent-storage
 #           persistentVolumeClaim:
 #             claimName: postgres-pvc
 #         - name: gunicorn-logs
 #           emptyDir: {}
+#         - name: image-upload-storage
+#           persistentVolumeClaim:
+#             claimName: image-upload-pvc
