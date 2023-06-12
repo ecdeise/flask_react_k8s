@@ -8,8 +8,6 @@ from PIL import Image
 from werkzeug.utils import secure_filename
 from . import imageupload_bp
 
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
-
 
 @imageupload_bp.route("/", methods=["POST"])
 # @jwt_required()
@@ -40,7 +38,11 @@ def upload_image():
 
 
 def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+    return (
+        "." in filename
+        and filename.rsplit(".", 1)[1].lower()
+        in current_app.config["ALLOWED_EXTENSIONS"]
+    )
 
 
 from PIL import Image

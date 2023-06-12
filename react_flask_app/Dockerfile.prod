@@ -1,31 +1,3 @@
-# # Base image
-# FROM node:14-alpine
-
-# # Set the working directory
-# WORKDIR /app
-
-# # Copy package.json and package-lock.json
-# COPY package*.json ./
-
-# # Install dependencies
-# RUN npm install --silent
-
-# # Copy the rest of the application files
-# COPY . .
-
-# # Set the environment variable based on build argument
-# ARG NODE_ENV=production
-# ENV NODE_ENV=${NODE_ENV}
-
-# # Build the React application for production
-# RUN npm run build:prod
-
-# # Expose the desired port
-# EXPOSE 3000
-
-# # Start the application
-# CMD ["npm", "run", "build:prod"]
-
 # Base image
 FROM node:14-alpine
 
