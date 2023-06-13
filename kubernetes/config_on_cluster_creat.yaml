@@ -14,3 +14,28 @@ nodes:
         hostPort: 5432
         protocol: TCP
         listenAddress: '0.0.0.0'
+# apiVersion: kind.x-k8s.io/v1alpha4
+# kind: Cluster
+# nodes:
+#   - role: control-plane
+#     extraPortMappings:
+#       - containerPort: 30000
+#         hostPort: 30000
+#         protocol: TCP
+#         listenAddress: '0.0.0.0'
+#       - containerPort: 443
+#         hostPort: 30001 # Port 443 - Conflict possible with other services
+#         protocol: TCP
+#         listenAddress: '0.0.0.0'
+#   - role: worker
+#     extraPortMappings:
+#       - containerPort: 443
+#         hostPort: 30002 # Port 443 - Conflict possible with other services
+#         protocol: TCP
+#         listenAddress: '0.0.0.0'
+#   - role: worker
+#     extraPortMappings:
+#       - containerPort: 5432
+#         hostPort: 5432
+#         protocol: TCP
+#         listenAddress: '0.0.0.0'

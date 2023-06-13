@@ -6,7 +6,7 @@ spec:
   selector:
     app: react-flask-app
   ports:
-    - name: http
+    - name: https
       protocol: TCP
       port: 443
       targetPort: 443
