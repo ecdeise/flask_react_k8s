@@ -68,7 +68,7 @@ class Recipe(db.Model):
 class Authuser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
-    password_hash = db.Column(db.String(100))
+    password_hash = db.Column(db.String(128))
     email = db.Column(db.String(100), nullable=False, unique=True)
     authenticated = db.Column(db.Boolean, default=False)
     isadmin = db.Column(db.Boolean, default=False)
