@@ -20,12 +20,12 @@ jobs:
         run: |
           echo "${{ secrets.SSL_CERT }}" > $GITHUB_WORKSPACE/cert.pem
           echo "${{ secrets.SSL_KEY }}" > $GITHUB_WORKSPACE/key.pem
+          cp $GITHUB_WORKSPACE/cert.pem $GITHUB_WORKSPACE/react_flask_app/
+          cp $GITHUB_WORKSPACE/key.pem $GITHUB_WORKSPACE/react_flask_app/
       - name: Build and push
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest \
             --build-arg NODE_ENV=production \
-            --build-arg SSL_CERT=./cert.pem \
-            --build-arg SSL_KEY=./key.pem \
             -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
             $GITHUB_WORKSPACE/react_flask_app
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest

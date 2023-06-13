@@ -20,10 +20,6 @@ ENV NODE_ENV=${NODE_ENV}
 # Build the React application for production
 RUN npm run build:prod
 
-# Copy SSL/TLS certificate and private key files
-COPY cert.pem .
-COPY key.pem .
-
 # Install serve globally
 RUN npm install -g serve
 
