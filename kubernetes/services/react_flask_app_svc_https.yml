@@ -10,4 +10,5 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 443
+      nodePort: 30001
   type: NodePort
