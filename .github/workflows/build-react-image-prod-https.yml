@@ -1,4 +1,4 @@
-name: CI Frontend Build Push to DockerHub Prod
+name: CI Frontend Build Push to DockerHub Prod https
 
 on:
   workflow_dispatch:
