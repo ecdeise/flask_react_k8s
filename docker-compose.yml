@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  react_flask_app:
+    build:
+      context: ./react_flask_app
+      dockerfile: Dockerfile.prod
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  flask_api:
+    build:
+      context: ./flask_api
+      dockerfile: Dockerfile.prod
+    ports:
+      - 5000:5000
+    restart: unless-stopped
+
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=testdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

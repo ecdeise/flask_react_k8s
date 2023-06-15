@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: postgres-dev
+    image: postgres
+    ports:
+      - 5434:5432
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+
+  react_flask_app:
+    build:
+      context: ./react_flask_app
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  flask_api:
+    build:
+      context: ./flask_api
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+

@@ -9,13 +9,17 @@ RUN npm install --silent
 COPY . .
 
 # Application Environment variables
-# ENV NODE_ENV production
-# ENV NODE_CONFIG /app/config.json
-# RUN echo "NODE_ENV is set to $NODE_ENV"
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
 
 RUN npm run build:dev
 
+# Install serve globally
+RUN npm install -g serve
+
 EXPOSE 3000
 
-CMD ["npm", "run", "build:dev"]
+# CMD ["npm", "run", "build:dev"]
+# Start the application using serve
+CMD ["serve", "-s", "build"]
 

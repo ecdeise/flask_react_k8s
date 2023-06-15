@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {DataGrid} from '@material-ui/data-grid';
+//import {DataGrid} from '@material-ui/data-grid';
 import useStyles from '../Styles';
 import {Container, TextField, Button} from '@material-ui/core';
 import {Delete, Save} from '@material-ui/icons';
+import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 import axios from 'axios';
 import config from '../config';
 
@@ -185,6 +186,7 @@ function ContactDataGrid() {
         pageSize={5}
         rowsPerPageOptions={[5, 10, 25]}
         onCellEditCommit={handleCellEditCommit}
+        slots={{toolbar: GridToolbar}}
       />
     </div>
   );

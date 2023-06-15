@@ -37,7 +37,7 @@ class Book(db.Model):
     genre = db.Column(db.String(120), nullable=True)
     smallthumbnail = db.Column(db.String(255), nullable=True)
     thumbnail = db.Column(db.String(255), nullable=True)
-    description = db.Column(db.String(500), nullable=True)
+    description = db.Column(db.Text, nullable=True)
     location = db.Column(db.String(80), nullable=True)
 
     def __repr__(self):

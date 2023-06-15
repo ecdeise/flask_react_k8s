@@ -1,0 +1,28 @@
+run docker compose with specific file
+docker-compose -f <your-compose-file-name> up
+
+
+
+Run the following command:
+
+Copy code
+docker-compose down
+This command will stop the running containers and remove the associated networks and volumes created by Docker Compose.
+
+If you want to remove the containers and volumes but keep the networks intact, you can use the --volumes flag:
+
+css
+Copy code
+docker-compose down --volumes
+This will remove the containers and volumes but retain the networks defined in your Docker Compose file.
+
+If you want to remove the containers, volumes, and networks, you can use the --volumes flag along with the --networks flag:
+
+css
+Copy code
+docker-compose down --volumes --networks
+This will remove all the containers, volumes, and networks created by Docker Compose.
+
+Docker Compose will stop the containers and remove the associated resources.
+
+

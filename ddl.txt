@@ -1,4 +1,12 @@
-*** June 8 Table Schema creates ***
+CREATE ROLE testuser WITH LOGIN PASSWORD 'testpassword';
+CREATE DATABASE testdb;
+GRANT ALL PRIVILEGES ON DATABASE testdb TO testuser;
+GRANT ALL PRIVILEGES ON SCHEMA public TO testuser;
+GRANT ALL PRIVILEGES ON DATABASE testdb TO testuser;
+ALTER SCHEMA public OWNER TO testuser;
+
+
+
 
 -- public.authuser definition
 
@@ -23,8 +31,8 @@ CREATE TABLE public.authuser (
 ALTER TABLE public.authuser OWNER TO testuser;
 GRANT ALL ON TABLE public.authuser TO testuser;
 
-INSERT INTO public.authuser (username, password_hash, email, authenticated, isadmin)
-VALUES ('ecdeise', 'password', 'erichcdeise@gmail.com', true, true);
+--INSERT INTO public.authuser (username, password_hash, email, authenticated, isadmin)
+--VALUES ('ecdeise', 'password', 'erichcdeise@gmail.com', true, true);
 
 -- public.book definition
 

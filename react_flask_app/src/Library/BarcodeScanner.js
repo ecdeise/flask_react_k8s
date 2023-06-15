@@ -15,8 +15,8 @@ function BarCodeScanner({visible, onScan, onError}) {
     <>
       {visible && (
         <BarcodeScannerComponent
-          width={200}
-          height={200}
+          width={300}
+          height={300}
           onUpdate={(err, result) => {
             if (err) {
               onError(err);
