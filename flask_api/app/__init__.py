@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from config import load_config
+from flask_sslify import SSLify
 
 from models import db
 
@@ -36,6 +37,10 @@ def create_app():
 
     # Register error handlers
     register_error_handlers(app)
+
+    # Enable SSL/TLS
+    if app.config.get("ENV") == "PRODUCTION":
+        sslify = SSLify(app)
 
     return app
 
