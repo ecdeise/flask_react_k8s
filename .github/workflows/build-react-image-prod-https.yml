@@ -27,5 +27,6 @@ jobs:
             --build-arg SSL_CERT="$(cat $GITHUB_WORKSPACE/certificate.crt)" \
             --build-arg SSL_KEY="$(cat $GITHUB_WORKSPACE/private.key)" \
             -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
+            --no-cache \
             $GITHUB_WORKSPACE/react_flask_app
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest
