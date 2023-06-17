@@ -17,11 +17,8 @@ jobs:
 
       - name: Copy SSL/TLS certificates
         run: |
-          echo "${{ secrets.SSL_CERT }}" > $GITHUB_WORKSPACE/cert.pem
-          echo "${{ secrets.SSL_KEY }}" > $GITHUB_WORKSPACE/key.pem
-          cp $GITHUB_WORKSPACE/cert.pem $GITHUB_WORKSPACE/react_flask_app/
-          cp $GITHUB_WORKSPACE/key.pem $GITHUB_WORKSPACE/react_flask_app/
-          cp $GITHUB_WORKSPACE/deise_labs_self_signed_cert.pem $GITHUB_WORKSPACE/react_flask_app/
+          echo "${{ secrets.SSL_CERT }}" > $GITHUB_WORKSPACE/server.crt
+          echo "${{ secrets.SSL_KEY }}" > $GITHUB_WORKSPACE/server.key
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
