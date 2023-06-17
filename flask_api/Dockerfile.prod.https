@@ -19,8 +19,9 @@ RUN pip install -r requirements.txt
 RUN pip install gunicorn
 
 # Copy the SSL/TLS certificate
-COPY deise_labs_self_signed_cert.pem /etc/ssl/certificate.crt
-COPY deise_labs_self_signed_key.pem /etc/ssl/private.key
+
+COPY ../deise_labs_self_signed_cert.pem /etc/ssl/certificate.crt
+COPY ../deise_labs_self_signed_key.pem /etc/ssl/private.key
 
 # Copy the app code
 COPY . .
