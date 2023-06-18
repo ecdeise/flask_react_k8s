@@ -17,5 +17,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # .gitignore
-# *.pem
+*.pem
 

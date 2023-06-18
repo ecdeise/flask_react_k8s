@@ -23,10 +23,6 @@ RUN npm run build:prod
 # Install serve globally
 RUN npm install -g serve
 
-# Copy SSL/TLS certificate and key files
-# COPY deise_labs_self_signed_cert.pem /etc/ssl/certs/server.crt
-# COPY deise_labs_self_signed_key.pem /etc/ssl/private/server.key
-
 # Expose the desired port
 EXPOSE 3000
 
