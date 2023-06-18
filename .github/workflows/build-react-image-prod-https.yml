@@ -35,11 +35,11 @@ jobs:
             $GITHUB_WORKSPACE
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest
 
-      - name: Upload build logs
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-logs
-          path: /root/.npm/_logs/ # Adjust the path if needed
+      - name: Display build logs
+        run: |
+          echo "=== Build Log Start ==="
+          cat /root/.npm/_logs/2023-06-18T03_16_38_771Z-debug.log
+          echo "=== Build Log End ==="
 
       - name: Push to Docker Hub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest
