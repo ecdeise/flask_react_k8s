@@ -8,7 +8,8 @@ WORKDIR /app
 RUN npm install -g npm@latest
 
 # Copy package.json and package-lock.json
-COPY package*.json .
+COPY package.json .
+COPY package-lock.json .
 
 # Install dependencies (--silent)
 RUN npm install --legacy-peer-deps
