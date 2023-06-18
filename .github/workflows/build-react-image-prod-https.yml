@@ -26,7 +26,7 @@ jobs:
             --build-arg NODE_ENV=production \
             --build-arg SSL_CERT="$(cat $GITHUB_WORKSPACE/certificate.crt)" \
             --build-arg SSL_KEY="$(cat $GITHUB_WORKSPACE/private.key)" \
-            -f $GITHUB_WORKSPACE/Dockerfile.prod.https \
+            -f $GITHUB_WORKSPACE/flask_react_k8s/Dockerfile.prod.https \
             --no-cache \
-            $GITHUB_WORKSPACE
+            $GITHUB_WORKSPACE/flask_react_k8s
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest
