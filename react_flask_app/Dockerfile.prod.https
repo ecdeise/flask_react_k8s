@@ -26,5 +26,5 @@ RUN npm install -g serve
 # Expose the desired port
 EXPOSE 3000
 
-# Start the application using serve with HTTPS
+# Start the application using serve with HTTPS/SSL
 CMD ["serve", "-s", "build", "--ssl-cert", "/etc/ssl/certs/server.crt", "--ssl-key", "/etc/ssl/private/server.key"]
