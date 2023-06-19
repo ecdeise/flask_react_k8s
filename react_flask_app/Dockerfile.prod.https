@@ -1,12 +1,8 @@
 # Base image
-FROM node:14-alpine as builder
+FROM node:14-alpine
 
 # Set the working directory
 WORKDIR /app
-
-# Set the environment variable based on build argument
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
 
 # Update npm to the latest version
 RUN npm install -g npm@latest
@@ -25,20 +21,15 @@ COPY . .
 RUN echo "=== package.json ===" && cat package.json
 RUN echo "=== Build Context ===" && ls -la
 
+# Set the environment variable based on build argument
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
 # Build the React application for production
 RUN npm run build:prod
 
-# Intermediate stage to serve the built React application
-FROM node:14-alpine
-
-# Set the working directory
-WORKDIR /app
-
 # Install serve globally
 RUN npm install -g serve
-
-# Copy the built files from the previous stage
-COPY --from=builder /app/build ./build
 
 # Expose the desired port
 EXPOSE 3000
