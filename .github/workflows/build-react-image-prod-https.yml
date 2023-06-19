@@ -27,25 +27,25 @@ jobs:
           echo "=== Build Context ==="
           ls -la $GITHUB_WORKSPACE
 
-      - name: Build and push
-        env:
-          MODE: 'PRODUCTION' # Set the environment variable value here
-        run: |
-          echo "${{ secrets.SSL_CERT }}" > certificate.crt
-          echo "${{ secrets.SSL_KEY }}" > private.key
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest \
-            --build-arg NODE_ENV=production \
-            --build-arg SSL_CERT="$(cat certificate.crt)" \
-            --build-arg SSL_KEY="$(cat private.key)" \
-            -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
-            --no-cache \
-            $GITHUB_WORKSPACE
+      # - name: Build and push
+      #   env:
+      #     MODE: 'PRODUCTION' # Set the environment variable value here
+      #   run: |
+      #     echo "${{ secrets.SSL_CERT }}" > certificate.crt
+      #     echo "${{ secrets.SSL_KEY }}" > private.key
+      #     docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest \
+      #       --build-arg NODE_ENV=production \
+      #       --build-arg SSL_CERT="$(cat certificate.crt)" \
+      #       --build-arg SSL_KEY="$(cat private.key)" \
+      #       -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
+      #       --no-cache \
+      #       $GITHUB_WORKSPACE
 
-      - name: Display build logs
-        run: |
-          echo "=== Build Log Start ==="
-          cat /root/.npm/_logs/2023-06-18T03_16_38_771Z-debug.log
-          echo "=== Build Log End ==="
+      # - name: Display build logs
+      #   run: |
+      #     echo "=== Build Log Start ==="
+      #     cat /root/.npm/_logs/2023-06-18T03_16_38_771Z-debug.log
+      #     echo "=== Build Log End ==="
 
-      - name: Push to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest
+      # - name: Push to Docker Hub
+      #   run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest
