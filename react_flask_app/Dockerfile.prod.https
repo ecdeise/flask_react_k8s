@@ -35,4 +35,5 @@ RUN npm install -g serve
 EXPOSE 3000
 
 # Start the application using serve with HTTPS/SSL
-CMD ["serve", "-s", "build", "--ssl-cert", "/etc/ssl/certs/server.crt", "--ssl-key", "/etc/ssl/private/server.key"]
+# CMD ["serve", "-s", "build", "--ssl-cert", "/etc/ssl/certs/server.crt", "--ssl-key", "/etc/ssl/private/server.key"]
+CMD ["serve", "-s", "build", "--ssl-cert", "/app/certificate.crt", "--ssl-key", "/app/private.key"]

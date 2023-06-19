@@ -30,16 +30,26 @@ jobs:
       - name: Build and push
         env:
           NODE_ENV: 'production' # Set the environment variable value here
+        # run: |
+        #   echo "${{ secrets.SSL_CERT }}" > certificate.crt
+        #   echo "${{ secrets.SSL_KEY }}" > private.key
+        #   docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest \
+        #     --build-arg NODE_ENV=production \
+        #     --build-arg SSL_CERT="$(cat certificate.crt)" \
+        #     --build-arg SSL_KEY="$(cat private.key)" \
+        #     -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
+        #     --no-cache \
+        #     $GITHUB_WORKSPACE/react_flask_app
         run: |
-          echo "${{ secrets.SSL_CERT }}" > certificate.crt
-          echo "${{ secrets.SSL_KEY }}" > private.key
+          echo "${{ secrets.SSL_CERT }}" > $GITHUB_WORKSPACE/react_flask_app/certificate.crt
+          echo "${{ secrets.SSL_KEY }}" > $GITHUB_WORKSPACE/react_flask_app/private.key
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest \
-            --build-arg NODE_ENV=production \
-            --build-arg SSL_CERT="$(cat certificate.crt)" \
-            --build-arg SSL_KEY="$(cat private.key)" \
-            -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
-            --no-cache \
-            $GITHUB_WORKSPACE/react_flask_app
+          --build-arg NODE_ENV=production \
+          --build-arg SSL_CERT="$(cat $GITHUB_WORKSPACE/react_flask_app/certificate.crt)" \
+          --build-arg SSL_KEY="$(cat $GITHUB_WORKSPACE/react_flask_app/private.key)" \
+          -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
+          --no-cache \
+          $GITHUB_WORKSPACE/react_flask_app
 
       - name: Push to Docker Hub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest
