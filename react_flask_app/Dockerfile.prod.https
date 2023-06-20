@@ -34,10 +34,18 @@
 # # Expose the desired port
 # EXPOSE 3000
 
-# # Start the application using serve with HTTPS/SSL
-# # CMD ["serve", "-s", "build", "--ssl-cert", "/etc/ssl/certs/server.crt", "--ssl-key", "/etc/ssl/private/server.key"]
-# CMD ["serve", "-s", "build", "--ssl-cert", "/app/certificate.crt", "--ssl-key", "/app/private.key"]
+# # Set the build arguments as environment variables
+# ARG SSL_CERT
+# ARG SSL_KEY
+# ENV SSL_CERT=$SSL_CERT
+# ENV SSL_KEY=$SSL_KEY
 
+# # Debugging Steps
+# RUN echo "=== SSL_CERT ===" && echo "$SSL_CERT"
+# RUN echo "=== SSL_KEY ===" && echo "$SSL_KEY"
+
+# # Start the application using serve with HTTPS/SSL
+# CMD ["serve", "-s", "build", "--ssl-cert", "$SSL_CERT", "--ssl-key", "$SSL_KEY"]
 
 # Base image
 FROM node:14-alpine
@@ -87,4 +95,3 @@ RUN echo "=== SSL_KEY ===" && echo "$SSL_KEY"
 
 # Start the application using serve with HTTPS/SSL
 CMD ["serve", "-s", "build", "--ssl-cert", "$SSL_CERT", "--ssl-key", "$SSL_KEY"]
-
