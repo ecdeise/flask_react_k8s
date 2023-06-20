@@ -1,3 +1,24 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: react-flask-app
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: react-flask-app
+#   template:
+#     metadata:
+#       labels:
+#         app: react-flask-app
+#     spec:
+#       containers:
+#         - name: react-flask-app
+#           image: ecdeise/react-flask-app:latest
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 443
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,5 +37,13 @@ spec:
         - name: react-flask-app
           image: ecdeise/react-flask-app:latest
           imagePullPolicy: Always
+          volumeMounts:
+            - name: ssl-key-volume
+              mountPath: /app/private.key
+              subPath: private.key
           ports:
             - containerPort: 443
+      volumes:
+        - name: ssl-key-volume
+          secret:
+            secretName: ssl-key-secret
