@@ -1,38 +1,3 @@
-# name: CI API Build Push to DockerHub Prod HTTPS
-
-# on:
-#   workflow_dispatch:
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-#       - name: Login to Docker Hub
-#         uses: docker/login-action@v2
-#         with:
-#           username: ${{ secrets.DOCKERHUB_USERNAME }}
-#           password: ${{ secrets.DOCKERHUB_TOKEN }}
-#       - name: Set up Docker Buildx
-#         uses: docker/setup-buildx-action@v2
-#       - name: Copy SSL/TLS certificates
-#         run: |
-#           echo "${{ secrets.SSL_CERT }}" > $GITHUB_WORKSPACE/certificate.crt
-#           echo "${{ secrets.SSL_KEY }}" > $GITHUB_WORKSPACE/private.key
-#       - name: Build and push
-#         env:
-#           MODE: 'PRODUCTION' # Set the environment variable value here
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: ./flask_api
-#           file: ./flask_api/Dockerfile.prod.https
-#           push: true
-#           tags: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
-#           build-args: |
-#             SSL_CERT=$(cat $GITHUB_WORKSPACE/certificate.crt)
-#             SSL_KEY=$(cat $GITHUB_WORKSPACE/private.key)
-
 name: CI API Build Push to DockerHub Prod HTTPS
 
 on:
