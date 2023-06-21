@@ -27,6 +27,9 @@
 # ENV FLASK_RUN_CERT=adhoc
 # RUN echo "MODE is set to $MODE"
 
+# # Verify presence of certificate.crt and private.key
+# RUN ls /etc/ssl
+
 # # Expose port 5000 for the Flask app
 # EXPOSE 5000
 
@@ -61,6 +64,10 @@ ARG MODE=PRODUCTION
 ENV MODE=$MODE
 ENV FLASK_RUN_CERT=adhoc
 RUN echo "MODE is set to $MODE"
+
+# Copy SSL/TLS certificates
+COPY certificate.crt /etc/ssl/certificate.crt
+COPY private.key /etc/ssl/private.key
 
 # Verify presence of certificate.crt and private.key
 RUN ls /etc/ssl
