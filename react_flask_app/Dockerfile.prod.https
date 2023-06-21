@@ -86,12 +86,12 @@ EXPOSE 3000
 # Set the build arguments as environment variables
 ARG SSL_CERT
 ARG SSL_KEY
-ENV SSL_CERT=$SSL_CERT
-ENV SSL_KEY=$SSL_KEY
+ENV SSL_CERT=${SSL_CERT}
+ENV SSL_KEY=${SSL_KEY}
 
 # Debugging Steps
 RUN echo "=== SSL_CERT ===" && echo "$SSL_CERT"
 RUN echo "=== SSL_KEY ===" && echo "$SSL_KEY"
 
 # Start the application using serve with HTTPS/SSL
-CMD ["serve", "-s", "build", "--ssl-cert", "$SSL_CERT", "--ssl-key", "$SSL_KEY"]
+CMD ["serve", "-s", "build", "--ssl-cert", "/app/private.key", "--ssl-key", "/app/private.key"]
