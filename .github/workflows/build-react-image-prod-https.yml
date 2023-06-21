@@ -1,3 +1,61 @@
+# name: CI Frontend Build Push to DockerHub Prod HTTPS
+
+# on:
+#   workflow_dispatch:
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v2
+
+#       - name: Debugging Steps
+#         run: |
+#           echo "=== package.json ==="
+#           cat $GITHUB_WORKSPACE/react_flask_app/package.json
+#           echo "=== Build Context ==="
+#           ls -la $GITHUB_WORKSPACE/react_flask_app
+
+#       - name: Build and push
+#         env:
+#           NODE_ENV: 'production' # Set the environment variable value here
+
+#         # run: |
+#         #   echo "${{ secrets.SSL_CERT }}" > $GITHUB_WORKSPACE/react_flask_app/certificate.crt
+#         #   echo "${{ secrets.SSL_KEY }}" > $GITHUB_WORKSPACE/react_flask_app/private.key
+#         #   docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest \
+#         #   --build-arg NODE_ENV=production \
+#         #   --build-arg SSL_CERT="$(cat $GITHUB_WORKSPACE/react_flask_app/certificate.crt)" \
+#         #   --build-arg SSL_KEY="$(cat $GITHUB_WORKSPACE/react_flask_app/private.key)" \
+#         #   -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
+#         #   --no-cache \
+#         #   $GITHUB_WORKSPACE/react_flask_app
+
+#         run: |
+#           echo "${{ secrets.SSL_CERT }}" > certificate.crt
+#           echo "${{ secrets.SSL_KEY }}" > private.key
+#           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest \
+#             --build-arg NODE_ENV=production \
+#             --build-arg SSL_CERT="$(cat certificate.crt)" \
+#             --build-arg SSL_KEY="$(cat private.key)" \
+#             -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
+#             --no-cache \
+#             $GITHUB_WORKSPACE/react_flask_app
+
+#       - name: Push to Docker Hub
+#         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest
+
 name: CI Frontend Build Push to DockerHub Prod HTTPS
 
 on:
@@ -20,35 +78,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Debugging Steps
-        run: |
-          echo "=== package.json ==="
-          cat $GITHUB_WORKSPACE/react_flask_app/package.json
-          echo "=== Build Context ==="
-          ls -la $GITHUB_WORKSPACE/react_flask_app
-
       - name: Build and push
         env:
           NODE_ENV: 'production' # Set the environment variable value here
 
-        # run: |
-        #   echo "${{ secrets.SSL_CERT }}" > $GITHUB_WORKSPACE/react_flask_app/certificate.crt
-        #   echo "${{ secrets.SSL_KEY }}" > $GITHUB_WORKSPACE/react_flask_app/private.key
-        #   docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest \
-        #   --build-arg NODE_ENV=production \
-        #   --build-arg SSL_CERT="$(cat $GITHUB_WORKSPACE/react_flask_app/certificate.crt)" \
-        #   --build-arg SSL_KEY="$(cat $GITHUB_WORKSPACE/react_flask_app/private.key)" \
-        #   -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
-        #   --no-cache \
-        #   $GITHUB_WORKSPACE/react_flask_app
-
         run: |
-          echo "${{ secrets.SSL_CERT }}" > certificate.crt
-          echo "${{ secrets.SSL_KEY }}" > private.key
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/react-flask-app:latest \
             --build-arg NODE_ENV=production \
-            --build-arg SSL_CERT="$(cat certificate.crt)" \
-            --build-arg SSL_KEY="$(cat private.key)" \
+            --build-arg SSL_CERT="${{ secrets.SSL_CERT }}" \
+            --build-arg SSL_KEY="${{ secrets.SSL_KEY }}" \
             -f $GITHUB_WORKSPACE/react_flask_app/Dockerfile.prod.https \
             --no-cache \
             $GITHUB_WORKSPACE/react_flask_app
