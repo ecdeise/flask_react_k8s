@@ -59,6 +59,12 @@ jobs:
           echo "${{ secrets.SSL_CERT }}" > $GITHUB_WORKSPACE/certificate.crt
           echo "${{ secrets.SSL_KEY }}" > $GITHUB_WORKSPACE/private.key
 
+      - name: Verify presence of certificate.crt and private.key in workspace
+        run: |
+          ls -l $GITHUB_WORKSPACE
+          cat $GITHUB_WORKSPACE/certificate.crt
+          cat $GITHUB_WORKSPACE/private.key
+
       - name: Build and push
         env:
           MODE: 'PRODUCTION' # Set the environment variable value here
