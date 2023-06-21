@@ -1,3 +1,38 @@
+# # Base image
+# FROM python:3.8-slim-buster
+
+# # Set environment variables
+# ENV PYTHONDONTWRITEBYTECODE 1
+# ENV PYTHONUNBUFFERED 1
+
+# # Install Tesseract OCR and its dependencies
+# RUN apt-get update && apt-get install -y tesseract-ocr
+
+# # Set the working directory
+# WORKDIR /app
+
+# # Copy the requirements file
+# COPY requirements.txt .
+
+# # Install dependencies
+# RUN pip install -r requirements.txt
+# RUN pip install gunicorn
+
+# # Copy the app code
+# COPY . .
+
+# # Application Environment variables
+# ARG MODE=PRODUCTION
+# ENV MODE=$MODE
+# ENV FLASK_RUN_CERT=adhoc
+# RUN echo "MODE is set to $MODE"
+
+# # Expose port 5000 for the Flask app
+# EXPOSE 5000
+
+# # Start the Flask app using Gunicorn
+# CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--certfile", "/etc/ssl/certificate.crt", "--keyfile", "/etc/ssl/private.key", "--env", "MODE=PRODUCTION", "application:app"]
+
 # Base image
 FROM python:3.8-slim-buster
 
@@ -26,6 +61,9 @@ ARG MODE=PRODUCTION
 ENV MODE=$MODE
 ENV FLASK_RUN_CERT=adhoc
 RUN echo "MODE is set to $MODE"
+
+# Verify presence of certificate.crt and private.key
+RUN ls /etc/ssl
 
 # Expose port 5000 for the Flask app
 EXPOSE 5000
