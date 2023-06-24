@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {Container, TextField, Button} from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+import {Container, TextField, Button} from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
 import CameraIcon from '@mui/icons-material/Camera';
 import useStyles from '../Styles';
 import BookInfo from './BookInfo';

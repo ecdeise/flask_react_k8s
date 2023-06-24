@@ -7,8 +7,8 @@ import {
   CardHeader,
   Container,
   Typography,
-} from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+} from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import CardMedia from '@mui/material/CardMedia';

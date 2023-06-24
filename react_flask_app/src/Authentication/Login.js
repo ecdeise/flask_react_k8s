@@ -1,12 +1,29 @@
 import React, {useState} from 'react';
-import {Grid, Paper, Typography, TextField, Button} from '@material-ui/core';
+import {Grid, Paper, Typography, TextField, Button} from '@mui/material';
 import axios from 'axios';
 import config from '../config';
+
+import {makeStyles} from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    padding: '2rem',
+    width: '100%',
+    maxWidth: '400px',
+  },
+}));
 
 function Login({onLogin}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const baseUrl = config.baseUrl;
+  const classes = useStyles();
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -37,14 +54,9 @@ function Login({onLogin}) {
   };
 
   return (
-    <Grid
-      container
-      justify="center"
-      alignItems="center"
-      style={{minHeight: '100vh'}}
-    >
+    <Grid container className={classes.container}>
       <Grid item xs={12} sm={8} md={6} lg={4}>
-        <Paper elevation={3} style={{padding: '2rem'}}>
+        <Paper elevation={3} className={classes.paper}>
           <Typography variant="h6" gutterBottom>
             Login
           </Typography>

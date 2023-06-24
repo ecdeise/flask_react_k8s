@@ -11,7 +11,7 @@ import {
   CardContent,
   Dialog,
   DialogContent,
-} from '@material-ui/core';
+} from '@mui/material';
 import ImageCapture from './ImageCapture';
 import RecipeForm from './RecipeForm';
 import UrlInput from './UrlInput';

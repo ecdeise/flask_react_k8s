@@ -4,12 +4,12 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   Add,
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import AddRecipe from './AddRecipe';
 import RecipeDataGrid from './RecipeDataGrid';
 

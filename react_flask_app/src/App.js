@@ -1,13 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {
-  AppBar,
-  Tabs,
-  Tab,
-  Typography,
-  Box,
-  IconButton,
-} from '@material-ui/core';
-import {AccountCircle} from '@material-ui/icons';
+import {AppBar, Tabs, Tab, Typography, Box, IconButton} from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Login from './Authentication/Login';
 import Logout from './Authentication/Logout';
 import ContactApp from './Contact/ContactApp';
@@ -23,6 +16,22 @@ console.log(process.env.NODE_ENV);
 const baseUrl = config.baseUrl;
 console.log(`baseurl: ${baseUrl}`);
 
+// function TabPanel(props) {
+//   const {children, value, index, ...other} = props;
+
+//   return (
+//     <div
+//       role="tabpanel"
+//       hidden={value !== index}
+//       id={`tabpanel-${index}`}
+//       aria-labelledby={`tab-${index}`}
+//       {...other}
+//     >
+//       {value === index && <Box p={3}>{children}</Box>}
+//     </div>
+//   );
+// }
+
 function TabPanel(props) {
   const {children, value, index, ...other} = props;
 
@@ -32,12 +41,14 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
+      style={{width: '100%', flexGrow: 1}}
       {...other}
     >
       {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }
+
 function App() {
   const [value, setValue] = useState(0);
   const [loggedIn, setLoggedIn] = useState(
@@ -130,7 +141,7 @@ function App() {
           )}
 
           <IconButton color="inherit">
-            <AccountCircle />
+            <AccountCircleIcon />
             {loggedIn ? (
               <Typography variant="subtitle1">
                 Logged in as {username}

@@ -12,7 +12,7 @@ import {
   DialogTitle,
   SnackbarContent,
   Snackbar,
-} from '@material-ui/core';
+} from '@mui/material';
 import axios from 'axios';
 import RecipeForm from './RecipeForm';
 import RecipeDialog from './RecipeDialog';

@@ -1,4 +1,4 @@
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles} from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -20,21 +20,21 @@ const useStyles = makeStyles((theme) => ({
   table: {
     borderCollapse: 'collapse',
     width: '120%', // increase table width to 120%
-    marginTop: theme.spacing(2),
+    //marginTop: theme.spacing(2),
   },
   // boldCell: {
   //   fontWeight: 'bold',
   // },
   th: {
     textAlign: 'left',
-    padding: theme.spacing(1),
+    //padding: theme.spacing(1),
     backgroundColor: '#90b2f5',
     color: '#333',
     fontWeight: 'bold',
   },
   td: {
     textAlign: 'left',
-    padding: theme.spacing(1),
+    //padding: theme.spacing(1),
   },
   evenRow: {
     backgroundColor: '#f2f2f2',
@@ -49,14 +49,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     maxWidth: 400,
-    gap: theme.spacing(1),
+    //gap: theme.spacing(1),
     margin: '0 auto',
-    marginBottom: theme.spacing(3),
+    //marginBottom: theme.spacing(3),
   },
   label: {
     display: 'flex',
     flexDirection: 'column',
-    marginBottom: theme.spacing(2),
+    //marginBottom: theme.spacing(2),
     fontWeight: 'bold',
   },
   // button: {

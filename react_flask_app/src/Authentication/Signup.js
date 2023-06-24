@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Typography, Button} from '@material-ui/core';
+import {Typography, Button} from '@mui/material';
 import axios from 'axios';
 import config from '../config';
 

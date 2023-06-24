@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {Button, Container, Grid, Typography} from '@material-ui/core';
-import Snackbar from '@material-ui/core/Snackbar';
+import {Button, Container, Grid, Typography} from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
 import RecipeDialog from './RecipeDialog';
 import RecipeForm from './RecipeForm';
 import config from '../config';

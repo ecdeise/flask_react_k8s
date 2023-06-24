@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dialog, DialogContent, Card, CardContent} from '@material-ui/core';
+import {Dialog, DialogContent, Card, CardContent} from '@mui/material';
 
 function RecipeDialog({open, onClose, maxWidth, children}) {
   return (

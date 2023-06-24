@@ -12,8 +12,9 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-} from '@material-ui/core';
-import {Delete, Save} from '@material-ui/icons';
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 import axios from 'axios';
 import RecipeForm from './RecipeForm';
 import RecipeDialog from './RecipeDialog';
@@ -86,7 +87,7 @@ function RecipeDataGrid({
       renderCell: (params) => (
         <Button
           color="secondary"
-          startIcon={<Delete />}
+          startIcon={<DeleteIcon />}
           size="small"
           style={{fontSize: '0.8rem'}}
         ></Button>

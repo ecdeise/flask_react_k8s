@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-// import {DataGrid} from '@material-ui/data-grid';
 import {DataGrid, GridToolbar} from '@mui/x-data-grid';
-import {Container, Tooltip, TextField, Button} from '@material-ui/core';
-import {Delete, Save} from '@material-ui/icons';
+import {Container, Tooltip, TextField, Button} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 import AddBookForm from './AddBookForm';
 import config from '../config';
 
@@ -62,7 +62,7 @@ export default function LibraryDataGrid() {
         <div>
           <Button
             color="secondary"
-            startIcon={<Delete />}
+            startIcon={<DeleteIcon />}
             onClick={() => handleDelete(params.id)}
             size="small"
             style={{fontSize: '0.8rem'}}

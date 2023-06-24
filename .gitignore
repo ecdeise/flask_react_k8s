@@ -211,7 +211,14 @@ scratch.txt
 notes.txt
 contact.txt
 
-# .gitignore
+# ssl keys and certs
 *.pem
 
 # End of https://www.gitignore.io/api/osx
+node_modules
+node_modules
+node_modules
+node_modules
+node_modules
+node_modules
+node_modules

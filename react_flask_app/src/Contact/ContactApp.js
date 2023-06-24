@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ContactDataGrid from './ContactDataGrid';
-import {Container, Button} from '@material-ui/core';
+import {Container, Button} from '@mui/material';
 
 function ContactApp() {
   return (

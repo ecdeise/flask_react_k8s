@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
 //import {DataGrid} from '@material-ui/data-grid';
 import useStyles from '../Styles';
-import {Container, TextField, Button} from '@material-ui/core';
-import {Delete, Save} from '@material-ui/icons';
+import {Container, TextField, Button} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+
 import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 import axios from 'axios';
 import config from '../config';
@@ -51,7 +53,7 @@ function ContactDataGrid() {
       renderCell: (params) => (
         <Button
           color="secondary"
-          startIcon={<Delete />}
+          startIcon={<DeleteIcon />}
           onClick={() => handleRowDelete(params.id)}
           size="small"
           style={{fontSize: '0.8rem'}}
@@ -136,7 +138,7 @@ function ContactDataGrid() {
     <div style={{height: 400, width: '100%'}}>
       <Button
         color="primary"
-        startIcon={<Save />}
+        startIcon={<SaveIcon />}
         onClick={() => setShowForm(!showForm)}
         size="small"
         style={{fontSize: '0.8rem', marginBottom: 14}}
