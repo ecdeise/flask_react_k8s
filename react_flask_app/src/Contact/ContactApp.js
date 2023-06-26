@@ -1,8 +1,6 @@
-// ContactApp.js
-
 import React from 'react';
 import ContactDataGrid from './ContactDataGrid';
-import {Container, Button} from '@mui/material';
+import {Container} from '@mui/material';
 
 function ContactApp() {
   return (

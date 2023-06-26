@@ -1,13 +1,7 @@
-// LibraryApp.js
-
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import config from '../config';
 import {Container, Button} from '@mui/material';
-//import useStyles from './Styles';
-//import AddBookForm from './AddBookForm';
-//import BookInfoCard from './BookInfoCard';
-//import BookCardCollection from './BookCardCollection';
 import LibraryDataGrid from './LibraryDataGrid';
 
 function LibraryApp() {

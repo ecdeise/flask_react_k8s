@@ -335,7 +335,7 @@ const RecipeForm = ({
       </div>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={5000}
+        autoHideDuration={3000}
         onClose={handleSnackbarClose}
         message={
           saveStatus === 'success'

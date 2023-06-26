@@ -10,6 +10,7 @@ class Config:
     JWT_SECRET_KEY = "jwt_geheimnis_key"
     SQLALCHEMY_ECHO = True
     ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+    JWT_ACCESS_TOKEN_EXPIRES = 4  # 4 hours session ttl
 
 
 class DevelopmentConfig(Config):

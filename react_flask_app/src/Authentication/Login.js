@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Grid, Paper, Typography, TextField, Button} from '@mui/material';
+import {
+  Grid,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Snackbar,
+} from '@mui/material';
 import axios from 'axios';
 import config from '../config';
 
@@ -22,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
 function Login({onLogin}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const baseUrl = config.baseUrl;
   const classes = useStyles();
 
@@ -33,6 +42,10 @@ function Login({onLogin}) {
     setPassword(event.target.value);
   };
 
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
+
   const handleLogin = () => {
     axios
       .post(`${baseUrl}/auth/login`, {
@@ -41,15 +54,23 @@ function Login({onLogin}) {
       })
       .then((response) => {
         console.log('token granted');
-        // console.log(response.data);
         sessionStorage.setItem('access_token', response.data.access_token);
         sessionStorage.setItem('user_id', response.data.user_id);
-        sessionStorage.setItem('created_at', Date.now());
+        localStorage.setItem('loggedIn', true);
+
         onLogin(true, username, password);
-        window.location.href = '/'; // redirect to home page
+        window.location.href = '/'; // Redirect to home page
+
+        // Show success message in snackbar
+        setSnackbarMessage('Logged in successfully');
+        setOpenSnackbar(true);
       })
       .catch((error) => {
         console.log(error);
+
+        // Show error message in snackbar
+        setSnackbarMessage('Error logging in');
+        setOpenSnackbar(true);
       });
   };
 
@@ -89,6 +110,12 @@ function Login({onLogin}) {
           </form>
         </Paper>
       </Grid>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+      />
     </Grid>
   );
 }

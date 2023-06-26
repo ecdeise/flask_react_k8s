@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Typography, Button} from '@mui/material';
+import {Typography, Button, Snackbar} from '@mui/material';
 import axios from 'axios';
 import config from '../config';
 
@@ -7,6 +7,8 @@ function SignUp({onSignUp}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const baseUrl = config.baseUrl;
 
   const handleUsernameChange = (event) => {
@@ -20,6 +22,10 @@ function SignUp({onSignUp}) {
     setPassword(event.target.value);
   };
 
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
+
   const handleSignUp = () => {
     axios
       .post(`${baseUrl}/auth/signup`, {
@@ -28,13 +34,22 @@ function SignUp({onSignUp}) {
         email: email,
       })
       .then((response) => {
-        console.log(response);
         console.log(response.data);
         localStorage.setItem('access_token', response.data.access_token);
         onSignUp(true, username, password);
+
+        setSnackbarMessage('Sign up successful');
+        setOpenSnackbar(true);
       })
       .catch((error) => {
         console.log(error);
+
+        // Show error message in snackbar
+        const errorMessage = `Sign up failed: ${
+          error.response?.data?.message || 'Sign up error!'
+        }`;
+        setSnackbarMessage(errorMessage);
+        setOpenSnackbar(true);
       });
   };
 
@@ -75,109 +90,14 @@ function SignUp({onSignUp}) {
           Sign Up
         </Button>
       </form>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+      />
     </>
   );
 }
 
 export default SignUp;
-
-// import React, {useState} from 'react';
-// import axios from 'axios';
-// import {makeStyles} from '@material-ui/core/styles';
-// import {TextField, Button} from '@material-ui/core';
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     display: 'flex',
-//     flexDirection: 'column',
-//     alignItems: 'center',
-//     marginTop: theme.spacing(10),
-//   },
-//   form: {
-//     display: 'flex',
-//     flexDirection: 'column',
-//     width: '100%',
-//     marginTop: theme.spacing(2),
-//   },
-//   textField: {
-//     marginBottom: theme.spacing(2),
-//   },
-//   button: {
-//     marginTop: theme.spacing(2),
-//   },
-// }));
-
-// function Signup() {
-//   const classes = useStyles();
-//   const [username, setUsername] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [email, setEmail] = useState('');
-
-//   const handleUsernameChange = (event) => {
-//     setUsername(event.target.value);
-//   };
-
-//   const handlePasswordChange = (event) => {
-//     setPassword(event.target.value);
-//   };
-
-//   const handleEmailChange = (event) => {
-//     setEmail(event.target.value);
-//   };
-
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-
-//     try {
-//       const response = await axios.post(`${baseUrl}/signup`, {
-//         username,
-//         password,
-//         email,
-//       });
-//       console.log(response.data);
-//     } catch (error) {
-//       console.error(error.response.data);
-//     }
-//   };
-
-//   return (
-//     <div className={classes.root}>
-//       <h1>Signup</h1>
-//       <form className={classes.form} onSubmit={handleSubmit}>
-//         <TextField
-//           label="Username"
-//           variant="outlined"
-//           className={classes.textField}
-//           value={username}
-//           onChange={handleUsernameChange}
-//         />
-//         <TextField
-//           label="Password"
-//           variant="outlined"
-//           className={classes.textField}
-//           type="password"
-//           value={password}
-//           onChange={handlePasswordChange}
-//         />
-//         <TextField
-//           label="Email"
-//           variant="outlined"
-//           className={classes.textField}
-//           type="email"
-//           value={email}
-//           onChange={handleEmailChange}
-//         />
-//         <Button
-//           type="submit"
-//           variant="contained"
-//           color="primary"
-//           className={classes.button}
-//         >
-//           Signup
-//         </Button>
-//       </form>
-//     </div>
-//   );
-// }
-
-// export default Signup;

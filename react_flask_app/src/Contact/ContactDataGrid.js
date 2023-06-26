@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-//import {DataGrid} from '@material-ui/data-grid';
 import useStyles from '../Styles';
 import {Container, TextField, Button} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -174,7 +173,7 @@ function ContactDataGrid() {
                 value={newContactAddress}
                 onChange={(e) => setNewContactAddress(e.target.value)}
               />
-              <Button color="primary" type="submit" startIcon={<Save />}>
+              <Button color="primary" type="submit" startIcon={<SaveIcon />}>
                 Add Contact
               </Button>
             </form>

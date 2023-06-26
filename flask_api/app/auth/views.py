@@ -1,13 +1,14 @@
+import datetime
+from datetime import timedelta
 from models import Authuser, db
 from . import auth_bp
-from flask import jsonify, request
+from flask import jsonify, request, current_app
 from sqlalchemy.exc import SQLAlchemyError
 from flask_jwt_extended import create_access_token, jwt_required
 
 
 @auth_bp.route("/")
 def index():
-    # return render_template("main/index.html")
     return jsonify({"message": "/auth"})
 
 
@@ -31,36 +32,39 @@ def signup():
     return jsonify({"message": "User created successfully"}), 201
 
 
+def generate_access_token(user_id):
+    access_token = create_access_token(identity=user_id)
+    return access_token
+
+
 @auth_bp.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
     user = Authuser.query.filter_by(username=data["username"]).first()
     if user is None or not user.check_password(data["password"]):
         return jsonify({"message": "Invalid username or password"}), 401
-    access_token = create_access_token(identity=user.id)
-    return jsonify(access_token=access_token, user_id=user.id)
+
+    # Set the expiration time for the access token
+    expires_delta = datetime.timedelta(
+        hours=4
+    )  # modify to use current_app.config.get("JWT_ACCESS_TOKEN_EXPIRES", 4)
+
+    # Generate an access token with the specified expiration time
+    access_token = create_access_token(identity=user.id, expires_delta=expires_delta)
+
+    return (
+        jsonify(
+            access_token=access_token,
+            user_id=user.id,
+        ),
+        200,
+    )
 
 
 @auth_bp.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
     return jsonify({"message": "success"})
-
-
-# @auth_bp.route("/login", methods=["POST"])
-# def login():
-#     username = request.json["username"]
-#     password = request.json["password"]
-
-#     authuser = Authuser.query.filter_by(username=username).first()
-
-#     if not authuser or not authuser.check_password(password):
-#         return jsonify({"error": "Invalid username or password"}), 401
-#     authuser.authenticated = True
-
-#     # if current_user.is_authenticated:
-#     #     logging.info({current_user})
-#     return jsonify({"message": "Logged in successfully"}), 200
 
 
 @auth_bp.route("/logout", methods=["POST"])

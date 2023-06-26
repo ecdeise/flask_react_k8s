@@ -185,7 +185,7 @@ function UrlInput({
       </div>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={5000}
+        autoHideDuration={3000}
         onClose={handleSnackbarClose}
       >
         <SnackbarContent

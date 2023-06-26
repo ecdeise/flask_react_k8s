@@ -9,28 +9,11 @@ import Footer from './Footer';
 import SignUp from './Authentication/Signup';
 import LibraryApp from './Library/LibraryApp';
 import config from './config';
-import {checkSession} from './Authentication/session';
 import RecipeMain from './Recipe/RecipeMain';
 
 console.log(process.env.NODE_ENV);
 const baseUrl = config.baseUrl;
 console.log(`baseurl: ${baseUrl}`);
-
-// function TabPanel(props) {
-//   const {children, value, index, ...other} = props;
-
-//   return (
-//     <div
-//       role="tabpanel"
-//       hidden={value !== index}
-//       id={`tabpanel-${index}`}
-//       aria-labelledby={`tab-${index}`}
-//       {...other}
-//     >
-//       {value === index && <Box p={3}>{children}</Box>}
-//     </div>
-//   );
-// }
 
 function TabPanel(props) {
   const {children, value, index, ...other} = props;
@@ -56,24 +39,43 @@ function App() {
   );
   const [username, setUsername] = useState('');
 
-  // useEffect(() => {
-  //   checkSession;
-  //   if (!loggedIn) {
-  //     setValue(2);
-  //   }
-  // }, [loggedIn]);
-
   useEffect(() => {
-    const checkSessionInterval = setInterval(() => {
-      const valid_session = checkSession();
-      setLoggedIn(valid_session);
-      if (!loggedIn) {
-        setValue(2);
+    const checkTokenExpiration = () => {
+      const token = sessionStorage.getItem('access_token');
+      if (!token) {
+        // Token not found or expired
+        setLoggedIn(false);
+        return false;
       }
-    }, 1 * 60 * 1000); // Check session every 5 minutes
 
-    return () => clearInterval(checkSessionInterval); // Clear the interval on unmount
-  }, [loggedIn]);
+      const tokenData = JSON.parse(atob(token.split('.')[1]));
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+
+      if (currentTimestamp >= tokenData.exp) {
+        // Token has expired
+        // Perform any necessary actions (e.g., logout, redirect to login page)
+        console.log('Token has expired');
+        setLoggedIn(false);
+        setValue(2);
+        return false;
+      }
+
+      // Token is valid
+      console.log('Token valid');
+      setLoggedIn(true);
+      return true;
+    };
+
+    // Check token expiration every 5 minutes
+    const intervalId = setInterval(() => {
+      checkTokenExpiration();
+    }, 5 * 60 * 1000); // 5 minutes in milliseconds
+
+    // Clean up the interval when the component is unmounted
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   const handleLogin = (isLoggedIn, username) => {
     setLoggedIn(isLoggedIn);
