@@ -1,7 +1,8 @@
 import React from 'react';
 import Box from '@mui/material/Box';
+import {Typography} from '@mui/material';
 
-function Footer() {
+function Footer({loggedIn, username}) {
   const currentYear = new Date().getFullYear();
   const environment =
     process.env.NODE_ENV === 'production' ? 'Production' : 'Development';
@@ -18,10 +19,12 @@ function Footer() {
       }}
     >
       <footer>
-        <p>
-          &copy; {currentYear} Deise-Labs. All Rights Reserved. ({environment}{' '}
-          Build)
-        </p>
+        <div>
+          <Typography variant="subtitle1">
+            &copy; {currentYear} Deise-Labs. All Rights Reserved. ({environment}{' '}
+            Build) {loggedIn ? `${username}` : 'Logged out'}
+          </Typography>
+        </div>
       </footer>
     </Box>
   );

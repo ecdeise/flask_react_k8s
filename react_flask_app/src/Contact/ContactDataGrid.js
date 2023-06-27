@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import useStyles from '../Styles';
-import {Container, TextField, Button} from '@mui/material';
+import {Container, TextField, Button, Paper} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 
@@ -146,34 +146,59 @@ function ContactDataGrid() {
       </Button>
       {showForm && (
         <div>
-          <Container maxWidth="sm">
-            <form className={classes.form} onSubmit={handleAddContact}>
+          <Container
+            maxWidth="sm"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxWidth: 400,
+              margin: '0 auto',
+              gap: '16px', // Add spacing between fields
+              marginBottom: '16px', // Add bottom margin
+            }}
+          >
+            <form onSubmit={handleAddContact}>
               <TextField
                 label="First Name"
                 value={newContactFirstName}
                 onChange={(e) => setNewContactFirstName(e.target.value)}
+                fullWidth
+                variant="standard"
               />
               <TextField
                 label="Last Name"
                 value={newContactLastName}
                 onChange={(e) => setNewContactLastName(e.target.value)}
+                fullWidth
+                variant="standard"
               />
               <TextField
                 label="Email"
                 value={newContactEmail}
                 onChange={(e) => setNewContactEmail(e.target.value)}
+                fullWidth
+                variant="standard"
               />
               <TextField
                 label="Phone"
                 value={newContactPhone}
                 onChange={(e) => setNewContactPhone(e.target.value)}
+                fullWidth
+                variant="standard"
               />
               <TextField
                 label="Address"
                 value={newContactAddress}
                 onChange={(e) => setNewContactAddress(e.target.value)}
+                fullWidth
+                variant="standard"
               />
-              <Button color="primary" type="submit" startIcon={<SaveIcon />}>
+              <Button
+                color="primary"
+                type="submit"
+                startIcon={<SaveIcon />}
+                style={{marginTop: '16px'}}
+              >
                 Add Contact
               </Button>
             </form>

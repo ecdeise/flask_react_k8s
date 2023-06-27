@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import {AppBar, Tabs, Tab, Typography, Box, IconButton} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SignUp from './Authentication/Signup';
 import Login from './Authentication/Login';
 import Logout from './Authentication/Logout';
-import ContactApp from './Contact/ContactApp';
 import Main from './Main';
 import Footer from './Footer';
-import SignUp from './Authentication/Signup';
+import ContactApp from './Contact/ContactApp';
 import LibraryApp from './Library/LibraryApp';
-import config from './config';
 import RecipeMain from './Recipe/RecipeMain';
+import config from './config';
 
 console.log(process.env.NODE_ENV);
 const baseUrl = config.baseUrl;
@@ -106,7 +106,7 @@ function App() {
 
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="static" style={{backgroundColor: '#D0D3D4'}}>
         <Tabs
           value={value}
           onChange={(event, newValue) => setValue(newValue)}
@@ -141,17 +141,6 @@ function App() {
           {!loggedIn && (
             <Tab label="Signup" id="tab-5" aria-controls="tabpanel-5" />
           )}
-
-          <IconButton color="inherit">
-            <AccountCircleIcon />
-            {loggedIn ? (
-              <Typography variant="subtitle1">
-                Logged in as {username}
-              </Typography>
-            ) : (
-              <Typography variant="subtitle1">Logged out</Typography>
-            )}
-          </IconButton>
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -181,7 +170,7 @@ function App() {
           <Login onLogin={handleLogin} />
         )}
       </TabPanel>
-      <Footer />
+      <Footer loggedIn={loggedIn} username={username} />
     </div>
   );
 }
