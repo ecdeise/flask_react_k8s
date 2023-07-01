@@ -15,9 +15,11 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
+import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import RecipeForm from './RecipeForm';
 import RecipeDialog from './RecipeDialog';
+import RecipeCard from './RecipeCard';
 import config from '../config';
 
 function RecipeDataGrid({
@@ -51,6 +53,8 @@ function RecipeDataGrid({
   const [rows, setRows] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openRecipeCard, setOpenRecipeCard] = useState(false);
+  //const [openCardDialog, setOpenCardDialog] = useState(false);
 
   const baseUrl = config.baseUrl;
 
@@ -83,14 +87,24 @@ function RecipeDataGrid({
       field: 'action',
       headerName: 'Action',
       sortable: false,
-      width: 100,
+      width: 160,
       renderCell: (params) => (
-        <Button
-          color="secondary"
-          startIcon={<DeleteIcon />}
-          size="small"
-          style={{fontSize: '0.8rem'}}
-        ></Button>
+        <>
+          <Button
+            color="primary"
+            startIcon={<EditIcon />}
+            size="small"
+            style={{fontSize: '0.8rem'}}
+            onClick={() => handleActionCellClick(params, 'edit')}
+          ></Button>
+          <Button
+            color="secondary"
+            startIcon={<DeleteIcon />}
+            size="small"
+            style={{fontSize: '0.8rem'}}
+            onClick={() => handleActionCellClick(params, 'delete')}
+          ></Button>
+        </>
       ),
     },
   ];
@@ -121,22 +135,31 @@ function RecipeDataGrid({
       .catch((error) => console.error(error));
   };
 
-  const handleCellClick = (params) => {
-    const isActionCell = params.field === 'action';
-    if (isActionCell) {
+  const handleActionCellClick = (params, action) => {
+    if (action === 'delete') {
       handleRowDelete(params.id);
-    } else {
+    } else if (action === 'edit') {
       setSelectedRow(params.row);
-      handleDialogOpen();
+      setOpenRecipeCard(false);
+      setOpenDialog(true);
     }
   };
 
-  const handleDialogOpen = () => {
-    setOpenDialog(true);
+  const handleCellClick = (params) => {
+    const field = params.field;
+    if (field !== 'action') {
+      setSelectedRow(params.row);
+      setOpenRecipeCard(true);
+    }
   };
 
-  const handleDialogClose = () => {
+  const handleEditDialogClose = () => {
+    setOpenRecipeCard(false);
     setOpenDialog(false);
+  };
+
+  const handleCloseRecipeCard = () => {
+    setOpenRecipeCard(false);
   };
 
   return (
@@ -151,14 +174,19 @@ function RecipeDataGrid({
             pageSize={10}
             rowsPerPageOptions={[5, 10, 25]}
             slots={{toolbar: GridToolbar}}
-            onCellClick={handleCellClick}
+            onCellClick={(params) => handleCellClick(params, 'view')}
           />
         </Paper>
       </div>
-      {selectedRow && (
+      {selectedRow && openRecipeCard && (
+        <RecipeDialog open={openRecipeCard} onClose={handleCloseRecipeCard}>
+          <RecipeCard recipe={selectedRow.recipe} />
+        </RecipeDialog>
+      )}
+      {selectedRow && openDialog && (
         <RecipeDialog
           open={openDialog}
-          onClose={handleDialogClose}
+          onClose={handleEditDialogClose}
           maxWidth="lg"
           fullWidth
         >
