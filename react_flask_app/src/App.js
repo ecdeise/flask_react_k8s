@@ -153,7 +153,7 @@ function App() {
         {loggedIn && <LibraryApp />}
       </TabPanel>
       <TabPanel value={value} index={3}>
-        {loggedIn && <RecipeMain />}
+        {loggedIn && <RecipeMain username={username} />}
       </TabPanel>
       <TabPanel value={value} index={5}>
         {!loggedIn && <SignUp onSignUp={handleSignUp} />}

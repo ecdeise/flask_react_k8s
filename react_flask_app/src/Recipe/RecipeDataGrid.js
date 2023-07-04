@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
+import {makeStyles, useTheme} from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
@@ -55,6 +56,7 @@ function RecipeDataGrid({
   const [openDialog, setOpenDialog] = useState(false);
   const [openRecipeCard, setOpenRecipeCard] = useState(false);
   //const [openCardDialog, setOpenCardDialog] = useState(false);
+  const classes = useStyles();
 
   const baseUrl = config.baseUrl;
 
@@ -86,6 +88,7 @@ function RecipeDataGrid({
     {
       field: 'action',
       headerName: 'Action',
+      headerAlign: 'center',
       sortable: false,
       width: 160,
       renderCell: (params) => (
@@ -96,13 +99,15 @@ function RecipeDataGrid({
             size="small"
             style={{fontSize: '0.8rem'}}
             onClick={() => handleActionCellClick(params, 'edit')}
+            title="Edit Recipe"
           ></Button>
           <Button
-            color="secondary"
+            color="error"
             startIcon={<DeleteIcon />}
             size="small"
             style={{fontSize: '0.8rem'}}
             onClick={() => handleActionCellClick(params, 'delete')}
+            title="Delete Recipe"
           ></Button>
         </>
       ),
@@ -162,11 +167,32 @@ function RecipeDataGrid({
     setOpenRecipeCard(false);
   };
 
+  const getRowClassName = (params) => {
+    const rowIndex = recipes.findIndex((row) => row.id === params.id);
+    return rowIndex % 2 === 0 ? classes.evenRow : classes.oddRow;
+  };
+
   return (
     <div>
       <div style={{height: 700, width: '100%'}}>
         <Paper elevation={4} style={{padding: '0.5rem'}}>
           <DataGrid
+            initialState={{
+              columns: {
+                columnVisibilityModel: {
+                  // Initially Hide columns , the other columns will remain visible
+                  id: false,
+                  user_id: false,
+                  author: false,
+                  imageurl: false,
+                  allergens: false,
+                  cooktime: false,
+                  recipe: false,
+                  recipesource: false,
+                  keywords: false,
+                },
+              },
+            }}
             rows={recipes}
             columns={columns}
             page={page}
@@ -175,12 +201,21 @@ function RecipeDataGrid({
             rowsPerPageOptions={[5, 10, 25]}
             slots={{toolbar: GridToolbar}}
             onCellClick={(params) => handleCellClick(params, 'view')}
+            //getRowClassName={getRowClassName}
           />
         </Paper>
       </div>
       {selectedRow && openRecipeCard && (
-        <RecipeDialog open={openRecipeCard} onClose={handleCloseRecipeCard}>
-          <RecipeCard recipe={selectedRow.recipe} />
+        <RecipeDialog
+          open={openRecipeCard}
+          onClose={handleCloseRecipeCard}
+          maxWidth="lg"
+          fullWidth
+        >
+          <RecipeCard
+            recipe={selectedRow.recipe}
+            name={selectedRow.recipename}
+          />
         </RecipeDialog>
       )}
       {selectedRow && openDialog && (

@@ -13,7 +13,7 @@ import {
 import AddRecipe from './AddRecipe';
 import RecipeDataGrid from './RecipeDataGrid';
 
-function RecipeMain() {
+function RecipeMain({username}) {
   const [showAddRecipe, setShowAddRecipe] = useState(false);
   const [cameraOn, setCameraOn] = useState(false);
   const [recipes, setRecipes] = useState([]);
@@ -36,7 +36,7 @@ function RecipeMain() {
   return (
     <Container>
       <div>
-        <h1>Recipe Database Home</h1>
+        <h1>Recipe Library - {username.toUpperCase()}</h1>
         <Accordion
           expanded={showAddRecipe}
           style={{
@@ -58,11 +58,7 @@ function RecipeMain() {
             aria-controls="add-recipe-content"
             id="add-recipe-header"
           >
-            {showAddRecipe ? (
-              <h4>Collapse Options</h4>
-            ) : (
-              <h4>Expand Options</h4>
-            )}
+            {showAddRecipe ? <h4>Collapse</h4> : <h4>Add Recipe</h4>}
           </AccordionSummary>
           <AccordionDetails>
             <AddRecipe
