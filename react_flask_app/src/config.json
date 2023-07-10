@@ -3,7 +3,7 @@
     "baseUrl": "http://localhost:5000"
   },
   "production": {
-    "baseUrl": "https://172.18.0.2:30000"
+    "baseUrl": "https://172.18.0.3:30000"
   }
 }
 

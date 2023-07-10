@@ -6,7 +6,7 @@ from . import recipe_bp
 
 
 @recipe_bp.route("/byauthuser", methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def get_all_recipes_by_authuser():
     user_id = request.headers.get("X-User-ID")
     recipes = (
@@ -19,7 +19,7 @@ def get_all_recipes_by_authuser():
 
 
 @recipe_bp.route("/addrecipe", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def add_recipe():
     # Get the data from the request
     data = request.json
@@ -65,7 +65,7 @@ def add_recipe():
 
 
 @recipe_bp.route("/<int:recipe_id>", methods=["DELETE"])
-# @jwt_required()
+@jwt_required()
 def delete_recipe(recipe_id):
     # Get the book from the database
     recipe = Recipe.query.filter_by(id=recipe_id).first()
@@ -82,7 +82,7 @@ def delete_recipe(recipe_id):
 
 
 @recipe_bp.route("/<int:recipe_id>", methods=["PUT"])
-# @jwt_required()
+@jwt_required()
 def update_recipe(recipe_id):
     try:
         recipe = Recipe.query.get_or_404(recipe_id)

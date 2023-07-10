@@ -9,7 +9,7 @@ from . import processurl_bp
 
 
 @processurl_bp.route("/", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def extract_text_from_url():
     try:
         data = request.get_json()

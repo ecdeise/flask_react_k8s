@@ -11,7 +11,7 @@ from . import processimage_bp
 
 
 @processimage_bp.route("/imagetotext", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def extract_text_from_image():
     try:
         # Get the base64 image data from the POST request

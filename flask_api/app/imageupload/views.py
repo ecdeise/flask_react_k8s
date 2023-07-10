@@ -10,7 +10,7 @@ from . import imageupload_bp
 
 
 @imageupload_bp.route("/", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def upload_image():
     if "image" not in request.files:
         return jsonify({"error": "No image file provided"})

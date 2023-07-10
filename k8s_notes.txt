@@ -1,0 +1,19 @@
+context for kubeconfig
+
+To switch back to using your local KIND cluster after updating your kubeconfig file to point to an Amazon EKS cluster, you can use the kubectl config use-context command to change the current context in your kubeconfig file.
+
+Here are the steps to switch back to using your KIND cluster:
+
+Run the kubectl config get-contexts command to see a list of available contexts in your kubeconfig file:
+
+$ kubectl config get-contexts
+Copy
+This command will show you a table of contexts with their names, clusters, and other information. Find the name of the context for your KIND cluster in the NAME column.
+
+Run the kubectl config use-context command with the name of the context for your KIND cluster to switch to that context:
+
+$ kubectl config use-context <your-kind-context>
+Copy
+Replace <your-kind-context> with the name of the context for your KIND cluster that you found in the previous step.
+
+After running these commands, your kubeconfig file should be updated to use the context for your KIND cluster, and you should be able to use kubectl to interact with your local cluster.
